@@ -1,0 +1,45 @@
+﻿<Window 
+    x:Class="WorldStamper.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="World Stamper" Height="350" Width="500" MinHeight="350" MinWidth="500">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="LightGray" BorderBrush="Gray" BorderThickness="0 1 0 1">
+            <StackPanel Orientation="Horizontal">
+                <Button Width="25" Margin="1" Click="MapNew_Click">A</Button>
+                <Button Width="25" Margin="0 1 1 1">B</Button>
+                <Button Width="25" Margin="0 1 1 1">C</Button>
+                <Button Width="25" Margin="0 1 1 1">D</Button>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Background="LightGray" BorderBrush="Gray" BorderThickness="0 0 1 0">
+            
+        </Border>
+
+        <TabControl Name="tcMapEditor" Margin="0 1 0 0"  Grid.Row="1" Grid.Column="1" Background="Black" BorderBrush="Black">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=Map.Name}"/>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate>
+                    <Grid Name="gMap"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    </Grid>
+</Window>

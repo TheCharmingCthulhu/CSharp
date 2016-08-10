@@ -28,24 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pToolbar = new System.Windows.Forms.Panel();
             this.trackBarScale = new System.Windows.Forms.TrackBar();
             this.uctSample = new Timebar.ucTimebar();
-            this.ucCard1 = new Timebar.ucCard();
-            this.panel1.SuspendLayout();
+            this.ucInfo = new Timebar.ucCard();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pToolbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
             this.uctSample.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // pToolbar
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.trackBarScale);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1000, 96);
-            this.panel1.TabIndex = 0;
+            this.pToolbar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pToolbar.Controls.Add(this.trackBarScale);
+            this.pToolbar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pToolbar.Location = new System.Drawing.Point(0, 0);
+            this.pToolbar.Name = "pToolbar";
+            this.pToolbar.Size = new System.Drawing.Size(1000, 96);
+            this.pToolbar.TabIndex = 0;
             // 
             // trackBarScale
             // 
@@ -61,7 +62,8 @@
             // uctSample
             // 
             this.uctSample.AutoScroll = true;
-            this.uctSample.Controls.Add(this.ucCard1);
+            this.uctSample.Controls.Add(this.ucInfo);
+            this.uctSample.Controls.Add(this.panel1);
             this.uctSample.Dock = System.Windows.Forms.DockStyle.Fill;
             this.uctSample.Location = new System.Drawing.Point(0, 96);
             this.uctSample.Name = "uctSample";
@@ -69,14 +71,21 @@
             this.uctSample.TabIndex = 0;
             this.uctSample.WrapContents = false;
             // 
-            // ucCard1
+            // ucInfo
             // 
-            this.ucCard1.Caption = "Trigger Finger";
-            this.ucCard1.Description = null;
-            this.ucCard1.Location = new System.Drawing.Point(3, 3);
-            this.ucCard1.Name = "ucCard1";
-            this.ucCard1.Size = new System.Drawing.Size(200, 100);
-            this.ucCard1.TabIndex = 0;
+            this.ucInfo.Caption = "Trigger Finger";
+            this.ucInfo.Description = null;
+            this.ucInfo.Location = new System.Drawing.Point(3, 3);
+            this.ucInfo.Name = "ucInfo";
+            this.ucInfo.Size = new System.Drawing.Size(200, 100);
+            this.ucInfo.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.Location = new System.Drawing.Point(209, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(5, 100);
+            this.panel1.TabIndex = 1;
             // 
             // Main
             // 
@@ -84,13 +93,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1000, 615);
             this.Controls.Add(this.uctSample);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pToolbar);
             this.DoubleBuffered = true;
             this.Name = "Main";
             this.Text = "Timebar Sample";
             this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pToolbar.ResumeLayout(false);
+            this.pToolbar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).EndInit();
             this.uctSample.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -100,9 +109,10 @@
         #endregion
 
         private ucTimebar uctSample;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pToolbar;
         private System.Windows.Forms.TrackBar trackBarScale;
-        private ucCard ucCard1;
+        private ucCard ucInfo;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

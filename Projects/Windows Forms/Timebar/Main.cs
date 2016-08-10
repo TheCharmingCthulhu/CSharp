@@ -12,6 +12,7 @@ namespace Timebar
 
         private void Main_ResizeEnd(object sender, EventArgs e)
         {
+            uctSample.RefreshControls();
             uctSample.Refresh();
         }
 

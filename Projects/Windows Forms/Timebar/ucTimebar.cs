@@ -14,6 +14,7 @@ namespace Timebar
         public static class Timebar
         {
             private static int[] Levels = { 1, 2, 4, 5, 8, 10, 20, 40, 80, 160 };
+
             public static int Scale { get; set; } = 1;
             public static int Height { get; set; } = 20;
 
@@ -40,6 +41,7 @@ namespace Timebar
         public ucTimebar() : base()
         {
             WrapContents = false;
+
             HorizontalScroll.SmallChange = SPACER;
             HorizontalScroll.LargeChange = SPACER * 2;
 
@@ -87,7 +89,7 @@ namespace Timebar
                     IndexToPosition(i) - Convert.ToInt32(e.Graphics.MeasureString(i.ToString(), DefaultFont).Width / 2), 
                     e.ClipRectangle.Height - Timebar.Height - 15);
 
-                for (int j = 1; j < SPACER / SPACER_TICK; j++)
+                for (int j = 1; j < SPACER; j++)
                 {
                     int start_w = IndexToPosition(i);
 

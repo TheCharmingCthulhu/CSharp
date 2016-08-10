@@ -89,6 +89,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ucCard.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ucTimebar.cs">
       <SubType>Component</SubType>
     </Compile>

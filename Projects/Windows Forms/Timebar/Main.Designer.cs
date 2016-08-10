@@ -28,96 +28,70 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.trackBarScale = new System.Windows.Forms.TrackBar();
             this.uctSample = new Timebar.ucTimebar();
-            this.button42 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.ucCard1 = new Timebar.ucCard();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
             this.uctSample.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.trackBarScale);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1000, 96);
+            this.panel1.TabIndex = 0;
+            // 
+            // trackBarScale
+            // 
+            this.trackBarScale.Location = new System.Drawing.Point(-1, -1);
+            this.trackBarScale.Maximum = 8;
+            this.trackBarScale.Minimum = 1;
+            this.trackBarScale.Name = "trackBarScale";
+            this.trackBarScale.Size = new System.Drawing.Size(136, 45);
+            this.trackBarScale.TabIndex = 0;
+            this.trackBarScale.Value = 1;
+            this.trackBarScale.ValueChanged += new System.EventHandler(this.trackBarScale_ValueChanged);
             // 
             // uctSample
             // 
             this.uctSample.AutoScroll = true;
-            this.uctSample.Controls.Add(this.button42);
-            this.uctSample.Controls.Add(this.button1);
-            this.uctSample.Controls.Add(this.button2);
-            this.uctSample.Controls.Add(this.button3);
-            this.uctSample.Controls.Add(this.button4);
-            this.uctSample.Controls.Add(this.button5);
+            this.uctSample.Controls.Add(this.ucCard1);
             this.uctSample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uctSample.Location = new System.Drawing.Point(0, 0);
+            this.uctSample.Location = new System.Drawing.Point(0, 96);
             this.uctSample.Name = "uctSample";
-            this.uctSample.Size = new System.Drawing.Size(960, 615);
+            this.uctSample.Size = new System.Drawing.Size(1000, 519);
             this.uctSample.TabIndex = 0;
             this.uctSample.WrapContents = false;
             // 
-            // button42
+            // ucCard1
             // 
-            this.button42.Location = new System.Drawing.Point(3, 3);
-            this.button42.Name = "button42";
-            this.button42.Size = new System.Drawing.Size(512, 32);
-            this.button42.TabIndex = 41;
-            this.button42.Text = "button42";
-            this.button42.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(521, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(512, 32);
-            this.button1.TabIndex = 42;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(1039, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(512, 32);
-            this.button2.TabIndex = 43;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(1557, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(512, 32);
-            this.button3.TabIndex = 44;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(2075, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(512, 32);
-            this.button4.TabIndex = 45;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(2593, 3);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(512, 32);
-            this.button5.TabIndex = 46;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
+            this.ucCard1.Caption = "Trigger Finger";
+            this.ucCard1.Description = null;
+            this.ucCard1.Location = new System.Drawing.Point(3, 3);
+            this.ucCard1.Name = "ucCard1";
+            this.ucCard1.Size = new System.Drawing.Size(200, 100);
+            this.ucCard1.TabIndex = 0;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(971, 615);
+            this.ClientSize = new System.Drawing.Size(1000, 615);
             this.Controls.Add(this.uctSample);
+            this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
             this.Name = "Main";
             this.Text = "Timebar Sample";
             this.ResizeEnd += new System.EventHandler(this.Main_ResizeEnd);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).EndInit();
             this.uctSample.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -126,12 +100,9 @@
         #endregion
 
         private ucTimebar uctSample;
-        private System.Windows.Forms.Button button42;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TrackBar trackBarScale;
+        private ucCard ucCard1;
     }
 }
 

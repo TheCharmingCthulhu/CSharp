@@ -12,7 +12,15 @@ namespace Timebar
 
         private void Main_ResizeEnd(object sender, EventArgs e)
         {
-            uctSample.Invalidate();
+            uctSample.Refresh();
+        }
+
+        private void trackBarScale_ValueChanged(object sender, EventArgs e)
+        {
+            ucTimebar.Timebar.Scale = trackBarScale.Value;
+
+            uctSample.RefreshControls();
+            uctSample.Refresh();
         }
     }
 }

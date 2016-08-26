@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using WorldStamper.Forms;
 using WorldStamper.Source.View;
 
@@ -16,9 +18,9 @@ namespace WorldStamper
 
         private void InitializeView()
         {
-            view = new RootView();
+            view = new RootView(true);
 
-            tcMapEditor.ItemsSource = view.Maps;
+            MapEditor.ItemsSource = view.Maps;
         }
 
         private void MapNew_Click(object sender, RoutedEventArgs e)
@@ -48,6 +50,7 @@ namespace WorldStamper
                 });
 
             if (fields != null)
+            {
                 view.Maps.Add(new MapView()
                 {
                     Map = new Source.Map()
@@ -57,6 +60,19 @@ namespace WorldStamper
                         Height = (int)fields[2].Value,
                     }
                 });
+
+                InitializeMap();
+            }
+        }
+
+        private void InitializeMap()
+        {
+            MapEditor.SelectedIndex = view.Maps.Count - 1;
+        }
+
+        private void MapEditor_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

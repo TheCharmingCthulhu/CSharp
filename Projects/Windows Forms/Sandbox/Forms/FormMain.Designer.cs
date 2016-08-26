@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.buttonSequences = new System.Windows.Forms.Button();
+            this.buttonCycles = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
             // 
-            this.flowLayoutPanel1.Controls.Add(this.buttonSequences);
+            this.flowLayoutPanel1.Controls.Add(this.buttonCycles);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -43,15 +43,15 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(466, 235);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
-            // buttonSequences
+            // buttonCycles
             // 
-            this.buttonSequences.Location = new System.Drawing.Point(8, 8);
-            this.buttonSequences.Name = "buttonSequences";
-            this.buttonSequences.Size = new System.Drawing.Size(75, 23);
-            this.buttonSequences.TabIndex = 1;
-            this.buttonSequences.Text = "Sequences";
-            this.buttonSequences.UseVisualStyleBackColor = true;
-            this.buttonSequences.Click += new System.EventHandler(this.buttonSequences_Click);
+            this.buttonCycles.Location = new System.Drawing.Point(8, 8);
+            this.buttonCycles.Name = "buttonCycles";
+            this.buttonCycles.Size = new System.Drawing.Size(75, 23);
+            this.buttonCycles.TabIndex = 1;
+            this.buttonCycles.Text = "Cycles";
+            this.buttonCycles.UseVisualStyleBackColor = true;
+            this.buttonCycles.Click += new System.EventHandler(this.buttonSequences_Click);
             // 
             // FormMain
             // 
@@ -70,7 +70,7 @@
         #endregion
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button buttonSequences;
+        private System.Windows.Forms.Button buttonCycles;
     }
 }
 

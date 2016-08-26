@@ -23,5 +23,10 @@ namespace Timebar
             uctSample.RefreshControls();
             uctSample.Refresh();
         }
+
+        private void btnAddCard_Click(object sender, EventArgs e)
+        {
+            uctSample.Controls.Add(new ucCard() { Caption = textBoxName.Text, Description = textBoxDescription.Text });
+        }
     }
 }

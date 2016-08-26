@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="AdvancedUI.UI.SimplisticButton"
+             x:Name="Control"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AdvancedUI.UI"
+             Width="75">
+    <Grid>
+        <Rectangle Fill="{Binding Color, ElementName=Control}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="{Binding Border, ElementName=Control}" StrokeThickness="1" RadiusX="1" RadiusY="1" Margin="1"/>
+        <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Black" StrokeThickness="1" RadiusX="1" RadiusY="1" Margin="1 1 1 2"/>
+        <Label Content="Hello World" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+    </Grid>
+</UserControl>

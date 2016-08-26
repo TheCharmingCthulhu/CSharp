@@ -5,7 +5,7 @@ namespace Sandbox
 {
     public partial class FormSequences : Form
     {
-        SequenceManager _sequenceMgr;
+        CyclesManager _sequenceMgr;
 
         public FormSequences()
         {
@@ -21,7 +21,7 @@ namespace Sandbox
 
         private void buttonGenerate_Click(object sender, System.EventArgs e)
         {
-            _sequenceMgr = new SequenceManager();
+            _sequenceMgr = new CyclesManager();
 
             var sequences = _sequenceMgr.ParseItems(12 * 60 * 60 * 1000);
             var xml = _sequenceMgr.OutputXML(sequences);

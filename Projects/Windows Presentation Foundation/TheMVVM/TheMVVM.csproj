@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{06BAB575-6ADA-40B4-A12F-33791A337795}</ProjectGuid>
+    <ProjectGuid>{E77A2238-8655-43A4-82DF-550C89920CBA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WorldStamper</RootNamespace>
-    <AssemblyName>WorldStamper</AssemblyName>
+    <RootNamespace>TheMVVM</RootNamespace>
+    <AssemblyName>TheMVVM</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -37,6 +37,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,17 +57,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Core\Converters.cs" />
-    <Compile Include="Forms\DialogFields.xaml.cs">
-      <DependentUpon>DialogFields.xaml</DependentUpon>
+    <Compile Include="Source\Framework\DelegateCommand.cs" />
+    <Compile Include="Source\Framework\NotifyObject.cs" />
+    <Compile Include="Source\Models\Person.cs" />
+    <Compile Include="Source\ViewModels\MainViewModel.cs" />
+    <Compile Include="Source\ViewModels\PersonViewModel.cs" />
+    <Compile Include="UI\PersonWindow.xaml.cs">
+      <DependentUpon>PersonWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Models\Map.cs" />
-    <Compile Include="Source\View\RootView.cs" />
-    <Compile Include="Source\View\MapView.cs" />
-    <Page Include="Forms\DialogFields.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -78,7 +77,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Core\Resources.xaml">
+    <Page Include="UI\PersonWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -111,20 +110,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\..\..\..\Pictures\Icons\Sleeve\bullet_blue.png">
-      <Link>Resources\Icons\bullet_blue.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\..\..\..\..\Pictures\Icons\Sleeve\bullet_green.png">
-      <Link>Resources\Icons\bullet_green.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\..\..\..\..\..\..\Pictures\Icons\Sleeve\bullet_red.png">
-      <Link>Resources\Icons\bullet_red.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <ProjectReference Include="..\Projects\Class Libraries\AdvancedUI\AdvancedUI.csproj">
+      <Project>{5ccca85d-c055-4f5d-8f3d-b86150bccd57}</Project>
+      <Name>AdvancedUI</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace WorldStamper.Source.View
 {
@@ -13,6 +14,7 @@ namespace WorldStamper.Source.View
                 DebugView();
         }
 
+        #region <- Debugging ->
         private void DebugView()
         {
             Maps.Add(new MapView()
@@ -24,6 +26,9 @@ namespace WorldStamper.Source.View
                     Height = 20
                 }
             });
-        }
+        } 
+        #endregion
+
+
     }
 }

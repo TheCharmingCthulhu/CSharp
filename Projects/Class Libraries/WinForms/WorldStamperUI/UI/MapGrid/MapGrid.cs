@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using WorldStamper.Sources.Utilities;
+using WorldStamperUI.UI.MapGrid;
 
 namespace WorldStamper.Sources.UI
 {
@@ -16,6 +17,8 @@ namespace WorldStamper.Sources.UI
         private int _OffsetX = 0, _OffsetY = 0;
         private Image[,] _Grid;
 
+        private FocusRectangle _Hightlight;
+
         public MapGrid()
         {
             InitializeComponent();
@@ -27,12 +30,30 @@ namespace WorldStamper.Sources.UI
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
 
             _Grid = new Image[GridWidth, GridHeight];
+
+            _Hightlight = new FocusRectangle();
         }
 
         #region <- Functions ->
         public void AddImage(int x, int y, Image image)
         {
             _Grid[x, y] = image;
+        }
+        #endregion
+
+        #region <- UI Functions ->
+        public Point MouseToCoordinates(Point location)
+        {
+            if (location.X >= 0 && location.X <= (GridWidth * CellWidth) - (_OffsetX * CellWidth) - 1 && 
+                location.Y >= 0 && location.Y <= (GridHeight * CellHeight) - (_OffsetY * CellHeight) - 1)
+                return new Point(location.X / CellWidth, location.Y / CellHeight);
+
+            return new Point(-1, -1);
+        }
+
+        private Size GetGridSize()
+        {
+            return new Size(GridWidth * CellWidth, GridHeight * CellHeight);
         }
         #endregion
 
@@ -47,15 +68,27 @@ namespace WorldStamper.Sources.UI
 
         protected override void OnResize(EventArgs e)
         {
-            UpdateScrollbars();
+            UpdateGrid();
 
             base.OnResize(e);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            UpdateFocus(e);
+
+            base.OnMouseMove(e);
+        }
+
+        private void UpdateFocus(MouseEventArgs e)
+        {
+            _Hightlight.Location = MouseToCoordinates(e.Location);
+
+            Invalidate();
         }
         #endregion
 
         #region <- Drawing ->
-        bool _showEdge;
-
         protected override void OnPaint(PaintEventArgs e)
         {
             DrawGrid(e);
@@ -66,11 +99,8 @@ namespace WorldStamper.Sources.UI
 
         private void DrawScrollbarEdge(PaintEventArgs e)
         {
-            if (_showEdge)
-            {
-                var size = new Size(vScrollBar.Width, hScrollBar.Height);
-                e.Graphics.FillRectangle(SystemBrushes.Control, new RectangleF(new Point(Width - size.Width, Height - size.Height), size));
-            }
+            var size = new Size(vScrollBar.Width, hScrollBar.Height);
+            e.Graphics.FillRectangle(SystemBrushes.Control, new RectangleF(new Point(Width - size.Width, Height - size.Height), size));
         }
 
         private void DrawGrid(PaintEventArgs e)
@@ -80,29 +110,36 @@ namespace WorldStamper.Sources.UI
                 {
                     var rect = new Rectangle(((CellWidth * x) - (CellWidth * _OffsetX)), ((CellHeight * y) - (CellHeight * _OffsetY)), CellWidth, CellHeight);
 
-                    if (_Grid != null && _Grid[x, y] != null)
-                        e.Graphics.DrawImage(_Grid[x, y], rect);
+                    DrawImage(e, x, y, rect);
+                    DrawScrollbarEdge(e);
+                    DrawFocus(e);
 
                     e.Graphics.DrawRectangle(Pens.Black, rect);
                 }
         }
 
-        private Size GetGridSize()
+        private void DrawFocus(PaintEventArgs e)
         {
-            return new Size(GridWidth * CellWidth, GridHeight * CellHeight);
+            if (_Hightlight != null)
+                if (_Hightlight.Location != new Point(-1, -1))
+                    e.Graphics.DrawRectangle(new Pen(_Hightlight.Color, 2), 
+                        new Rectangle(CellWidth * _Hightlight.Location.X, CellHeight * _Hightlight.Location.Y, CellWidth, CellHeight));
+        }
+
+        private void DrawImage(PaintEventArgs e, int x, int y, Rectangle rect)
+        {
+            if (_Grid != null && _Grid[x, y] != null)
+                e.Graphics.DrawImage(_Grid[x, y], rect);
         }
         #endregion
 
         #region <- Scrollbars ->
-        int _scrollLimitX = 0, _scrollLimitY = 0;
 
         private void hScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            if (_scrollLimitX < e.NewValue) e.NewValue = _scrollLimitX;
-
             var view = (sender as HScrollBar);
 
-            _OffsetX = DrawingUtils.TransformValue(e.NewValue, view.Maximum - (view.LargeChange - 1), GridWidth);
+            _OffsetX = DrawingUtils.TransformValue(e.NewValue, view.Maximum - (view.LargeChange - 1), GridWidth - 1);
 
             view.Value = e.NewValue;
 
@@ -111,34 +148,20 @@ namespace WorldStamper.Sources.UI
 
         private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            if (_scrollLimitY < e.NewValue) e.NewValue = _scrollLimitY;
-
             var view = (sender as VScrollBar);
 
-            _OffsetY = DrawingUtils.TransformValue(e.NewValue, view.Maximum - (view.LargeChange - 1), GridHeight);
+            _OffsetY = DrawingUtils.TransformValue(e.NewValue, view.Maximum - (view.LargeChange - 1), GridHeight - 1);
 
             view.Value = e.NewValue;
 
             Invalidate();
         }
 
-        private void UpdateScrollbars()
+        private void UpdateGrid()
         {
-            var gridSize = GetGridSize();
+            var size = GetGridSize();
 
-            hScrollBar.Visible = Width < gridSize.Width && Width > 0;
-            vScrollBar.Visible = Height < gridSize.Height && Width > 0;
-
-            _scrollLimitX = hScrollBar.Visible ? DrawingUtils.TransformValue(gridSize.Width - Width + CellWidth + 17, gridSize.Width, hScrollBar.Maximum - (hScrollBar.LargeChange - 1)) : hScrollBar.Maximum;
-            _scrollLimitY = vScrollBar.Visible ? DrawingUtils.TransformValue(gridSize.Height - Height + CellHeight + 17, gridSize.Height, vScrollBar.Maximum - (vScrollBar.LargeChange - 1)) : vScrollBar.Maximum - (vScrollBar.LargeChange - 1);
-
-            _OffsetX = 0;
-            _OffsetY = 0;
-
-            hScrollBar.Value = 0;
-            vScrollBar.Value = 0;
-
-            _showEdge = !(!hScrollBar.Visible && !vScrollBar.Visible);
+            var offscreenX = DrawingUtils.TransformValue(size.Width - (Width - vScrollBar.Width), size.Width, GridWidth);
         }
         #endregion
     }

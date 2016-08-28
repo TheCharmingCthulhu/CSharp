@@ -44,16 +44,20 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\MapGrid.cs">
+    <Compile Include="UI\MapGrid\FocusRectangle.cs" />
+    <Compile Include="UI\MapGrid\MapGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UI\MapGrid.Designer.cs">
+    <Compile Include="UI\MapGrid\MapGrid.Designer.cs">
       <DependentUpon>MapGrid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Toolkit\ImageBox.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Utilities\DrawingHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\MapGrid.resx">
+    <EmbeddedResource Include="UI\MapGrid\MapGrid.resx">
       <DependentUpon>MapGrid.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>

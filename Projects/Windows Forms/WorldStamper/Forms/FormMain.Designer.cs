@@ -57,7 +57,7 @@
             this.tabControlMaps.Location = new System.Drawing.Point(0, 24);
             this.tabControlMaps.Name = "tabControlMaps";
             this.tabControlMaps.SelectedIndex = 0;
-            this.tabControlMaps.Size = new System.Drawing.Size(444, 255);
+            this.tabControlMaps.Size = new System.Drawing.Size(828, 395);
             this.tabControlMaps.TabIndex = 1;
             // 
             // menuBar
@@ -66,7 +66,7 @@
             this.fileToolStripMenuItem});
             this.menuBar.Location = new System.Drawing.Point(0, 0);
             this.menuBar.Name = "menuBar";
-            this.menuBar.Size = new System.Drawing.Size(444, 24);
+            this.menuBar.Size = new System.Drawing.Size(828, 24);
             this.menuBar.TabIndex = 1;
             // 
             // fileToolStripMenuItem
@@ -91,14 +91,16 @@
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.loadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // menuItemExit
@@ -116,7 +118,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tileBox1.Location = new System.Drawing.Point(6, 93);
             this.tileBox1.Name = "tileBox1";
-            this.tileBox1.Size = new System.Drawing.Size(160, 154);
+            this.tileBox1.Size = new System.Drawing.Size(160, 294);
             this.tileBox1.TabIndex = 0;
             // 
             // comboBox1
@@ -143,10 +145,10 @@
             // 
             this.tabControlToolkits.Controls.Add(this.tabPageTilesets);
             this.tabControlToolkits.Dock = System.Windows.Forms.DockStyle.Right;
-            this.tabControlToolkits.Location = new System.Drawing.Point(444, 0);
+            this.tabControlToolkits.Location = new System.Drawing.Point(828, 0);
             this.tabControlToolkits.Name = "tabControlToolkits";
             this.tabControlToolkits.SelectedIndex = 0;
-            this.tabControlToolkits.Size = new System.Drawing.Size(180, 279);
+            this.tabControlToolkits.Size = new System.Drawing.Size(180, 419);
             this.tabControlToolkits.TabIndex = 4;
             // 
             // tabPageTilesets
@@ -158,7 +160,7 @@
             this.tabPageTilesets.Location = new System.Drawing.Point(4, 22);
             this.tabPageTilesets.Name = "tabPageTilesets";
             this.tabPageTilesets.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageTilesets.Size = new System.Drawing.Size(172, 253);
+            this.tabPageTilesets.Size = new System.Drawing.Size(172, 393);
             this.tabPageTilesets.TabIndex = 0;
             this.tabPageTilesets.Text = "Tilesets";
             this.tabPageTilesets.UseVisualStyleBackColor = true;
@@ -194,9 +196,9 @@
             // 
             // statusStripInformation
             // 
-            this.statusStripInformation.Location = new System.Drawing.Point(0, 279);
+            this.statusStripInformation.Location = new System.Drawing.Point(0, 419);
             this.statusStripInformation.Name = "statusStripInformation";
-            this.statusStripInformation.Size = new System.Drawing.Size(624, 22);
+            this.statusStripInformation.Size = new System.Drawing.Size(1008, 22);
             this.statusStripInformation.SizingGrip = false;
             this.statusStripInformation.TabIndex = 5;
             this.statusStripInformation.Text = "statusStrip1";
@@ -205,7 +207,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 301);
+            this.ClientSize = new System.Drawing.Size(1008, 441);
             this.Controls.Add(this.tabControlMaps);
             this.Controls.Add(this.menuBar);
             this.Controls.Add(this.tabControlToolkits);

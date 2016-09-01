@@ -94,6 +94,28 @@ namespace WorldStamper.Sources.UI
             base.OnResize(e);
         }
 
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            int oldValue = vScrollBar.Value;
+
+            if (e.Delta < 0)
+                if (vScrollBar.Maximum > vScrollBar.Value)
+                {
+                    vScrollBar.Value += vScrollBar.LargeChange;
+
+                    vScrollBar_Scroll(vScrollBar, new ScrollEventArgs(ScrollEventType.LargeIncrement, oldValue, vScrollBar.Value));
+                }
+            if (e.Delta > 0)
+                if (vScrollBar.Minimum < vScrollBar.Value)
+                {
+                    vScrollBar.Value -= vScrollBar.LargeChange;
+
+                    vScrollBar_Scroll(vScrollBar, new ScrollEventArgs(ScrollEventType.LargeDecrement, oldValue, vScrollBar.Value));
+                }
+
+            base.OnMouseWheel(e);
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             UpdateFocus(e);

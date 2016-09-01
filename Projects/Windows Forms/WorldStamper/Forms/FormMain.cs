@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using WorldStamper.Forms;
+using WorldStamper.Sources.Models;
 using WorldStamper.Sources.UI;
 using WorldStamper.Sources.Views;
 
@@ -22,16 +22,33 @@ namespace WorldStamper
         private void InitializeView()
         {
             _view.OnMapsChanged += _view_OnMapsChanged;
+
+            toolStripStatusToolMode.Text = "Cursor";
         }
 
-        private void _view_OnMapsChanged(Sources.Models.Map map)
+        private void _view_OnMapsChanged(Map map)
         {
-            InitializeNewMapView(map);
+            ShowMap(map);
+            ShowTilesets(map);
         }
 
-        private void InitializeNewMapView(Sources.Models.Map map)
+        #region <- GUI ->
+        private void ShowTilesets(Map map)
+        {
+            comboBoxTilesets.Items.Clear();
+
+            map.Tilesets.ForEach(t =>
+            {
+                comboBoxTilesets.Items.Add(t);
+            });
+
+            comboBoxTilesets.Enabled = comboBoxTilesets.Items.Count > 0;
+        }
+
+        private void ShowMap(Map map)
         {
             var tab = new TabPage(map.Name);
+            tab.Tag = map;
 
             var grid = new MapGrid()
             {
@@ -43,11 +60,24 @@ namespace WorldStamper
             grid.Dock = DockStyle.Fill;
             grid.Parent = tab;
 
-            foreach(var tile in map.Tiles)
+            foreach (var tile in map.Tiles)
                 grid.AddImage(tile.X, tile.Y, tile.Sprite.Texture);
 
             tabControlMaps.TabPages.Add(tab);
         }
+
+        private void ShowImages(Tileset tileset)
+        {
+            comboBoxImages.Items.Clear();
+
+            tileset.Images.ForEach(i =>
+            {
+                comboBoxImages.Items.Add(i);
+            });
+
+            comboBoxImages.Enabled = comboBoxImages.Items.Count > 0;
+        } 
+        #endregion
 
         #region <- Main Menu ->
         private void menuItemNew_Click(object sender, System.EventArgs e)
@@ -83,7 +113,32 @@ namespace WorldStamper
         #endregion
 
         #region <- Toolkit Panel ->
+        private void buttonCursor_Click(object sender, EventArgs e)
+        {
+            _view.ToolMode = MainView.MapToolMode.Cursor;
 
+            toolStripStatusToolMode.Text = "Cursor";
+        }
+
+        private void buttonPaint_Click(object sender, EventArgs e)
+        {
+            _view.ToolMode = MainView.MapToolMode.Paint;
+
+            toolStripStatusToolMode.Text = "Paint";
+        }
+
+        private void tabControlMaps_TabIndexChanged(object sender, EventArgs e)
+        {
+            var map = tabControlMaps.SelectedTab.Tag as Map;
+
+            ShowTilesets(map);
+        }
+
+        private void comboBoxTilesets_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxTilesets.SelectedItem != null)
+                ShowImages(comboBoxTilesets.SelectedItem as Tileset);
+        }
         #endregion
     }
 }

@@ -9,6 +9,7 @@ namespace WorldStamper.Sources.Models
 {
     class Tileset
     {
+        public string Name { get; set; }
         public List<Image> Images { get; set; } = new List<Image>();
 
         internal static Tileset ParseFile(string fileName)
@@ -20,7 +21,10 @@ namespace WorldStamper.Sources.Models
                 var xml = new XmlDocument();
                 xml.Load(fileName);
 
-                tileset = new Tileset();
+                tileset = new Tileset()
+                {
+                    Name = Path.GetFileNameWithoutExtension(fileName)
+                };
 
                 // Tileset->Images
                 foreach (XmlNode imageNode in xml.ChildNodes[0].ChildNodes)
@@ -54,6 +58,11 @@ namespace WorldStamper.Sources.Models
             }
 
             return tileset;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

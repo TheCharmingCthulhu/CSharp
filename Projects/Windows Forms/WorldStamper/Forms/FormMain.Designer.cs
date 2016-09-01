@@ -37,18 +37,21 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tileBox1 = new WorldStamperUI.UI.Toolkit.ImageBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxImages = new System.Windows.Forms.ComboBox();
+            this.comboBoxTilesets = new System.Windows.Forms.ComboBox();
             this.tabControlToolkits = new System.Windows.Forms.TabControl();
             this.tabPageTilesets = new System.Windows.Forms.TabPage();
             this.panelTilesetsDrawing = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonPaint = new System.Windows.Forms.Button();
+            this.buttonCursor = new System.Windows.Forms.Button();
             this.statusStripInformation = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusToolMode = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuBar.SuspendLayout();
             this.tabControlToolkits.SuspendLayout();
             this.tabPageTilesets.SuspendLayout();
             this.panelTilesetsDrawing.SuspendLayout();
+            this.statusStripInformation.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControlMaps
@@ -59,6 +62,7 @@
             this.tabControlMaps.SelectedIndex = 0;
             this.tabControlMaps.Size = new System.Drawing.Size(828, 395);
             this.tabControlMaps.TabIndex = 1;
+            this.tabControlMaps.TabIndexChanged += new System.EventHandler(this.tabControlMaps_TabIndexChanged);
             // 
             // menuBar
             // 
@@ -84,7 +88,7 @@
             // 
             this.menuItemNew.Name = "menuItemNew";
             this.menuItemNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.menuItemNew.Size = new System.Drawing.Size(141, 22);
+            this.menuItemNew.Size = new System.Drawing.Size(143, 22);
             this.menuItemNew.Text = "New";
             this.menuItemNew.Click += new System.EventHandler(this.menuItemNew_Click);
             // 
@@ -92,7 +96,7 @@
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             this.loadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
@@ -100,14 +104,14 @@
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // menuItemExit
             // 
             this.menuItemExit.Name = "menuItemExit";
             this.menuItemExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.menuItemExit.Size = new System.Drawing.Size(141, 22);
+            this.menuItemExit.Size = new System.Drawing.Size(143, 22);
             this.menuItemExit.Text = "Exit";
             this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
             // 
@@ -121,25 +125,30 @@
             this.tileBox1.Size = new System.Drawing.Size(160, 294);
             this.tileBox1.TabIndex = 0;
             // 
-            // comboBox1
+            // comboBoxImages
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.comboBoxImages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(6, 66);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(160, 21);
-            this.comboBox1.TabIndex = 2;
+            this.comboBoxImages.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxImages.Enabled = false;
+            this.comboBoxImages.FormattingEnabled = true;
+            this.comboBoxImages.Location = new System.Drawing.Point(6, 66);
+            this.comboBoxImages.Name = "comboBoxImages";
+            this.comboBoxImages.Size = new System.Drawing.Size(160, 21);
+            this.comboBoxImages.TabIndex = 2;
             // 
-            // comboBox2
+            // comboBoxTilesets
             // 
-            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.comboBoxTilesets.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(6, 39);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(160, 21);
-            this.comboBox2.TabIndex = 3;
+            this.comboBoxTilesets.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTilesets.Enabled = false;
+            this.comboBoxTilesets.FormattingEnabled = true;
+            this.comboBoxTilesets.Location = new System.Drawing.Point(6, 39);
+            this.comboBoxTilesets.Name = "comboBoxTilesets";
+            this.comboBoxTilesets.Size = new System.Drawing.Size(160, 21);
+            this.comboBoxTilesets.TabIndex = 3;
+            this.comboBoxTilesets.SelectedIndexChanged += new System.EventHandler(this.comboBoxTilesets_SelectedIndexChanged);
             // 
             // tabControlToolkits
             // 
@@ -154,8 +163,8 @@
             // tabPageTilesets
             // 
             this.tabPageTilesets.Controls.Add(this.panelTilesetsDrawing);
-            this.tabPageTilesets.Controls.Add(this.comboBox2);
-            this.tabPageTilesets.Controls.Add(this.comboBox1);
+            this.tabPageTilesets.Controls.Add(this.comboBoxTilesets);
+            this.tabPageTilesets.Controls.Add(this.comboBoxImages);
             this.tabPageTilesets.Controls.Add(this.tileBox1);
             this.tabPageTilesets.Location = new System.Drawing.Point(4, 22);
             this.tabPageTilesets.Name = "tabPageTilesets";
@@ -167,41 +176,57 @@
             // 
             // panelTilesetsDrawing
             // 
-            this.panelTilesetsDrawing.Controls.Add(this.button2);
-            this.panelTilesetsDrawing.Controls.Add(this.button1);
+            this.panelTilesetsDrawing.Controls.Add(this.buttonPaint);
+            this.panelTilesetsDrawing.Controls.Add(this.buttonCursor);
             this.panelTilesetsDrawing.Location = new System.Drawing.Point(6, 6);
             this.panelTilesetsDrawing.Name = "panelTilesetsDrawing";
             this.panelTilesetsDrawing.Size = new System.Drawing.Size(160, 30);
             this.panelTilesetsDrawing.TabIndex = 4;
             // 
-            // button2
+            // buttonPaint
             // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(30, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(24, 24);
-            this.button2.TabIndex = 1;
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonPaint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPaint.Image = ((System.Drawing.Image)(resources.GetObject("buttonPaint.Image")));
+            this.buttonPaint.Location = new System.Drawing.Point(30, 3);
+            this.buttonPaint.Name = "buttonPaint";
+            this.buttonPaint.Size = new System.Drawing.Size(24, 24);
+            this.buttonPaint.TabIndex = 1;
+            this.buttonPaint.UseVisualStyleBackColor = true;
+            this.buttonPaint.Click += new System.EventHandler(this.buttonPaint_Click);
             // 
-            // button1
+            // buttonCursor
             // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(0, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(24, 24);
-            this.button1.TabIndex = 0;
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonCursor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonCursor.Image = ((System.Drawing.Image)(resources.GetObject("buttonCursor.Image")));
+            this.buttonCursor.Location = new System.Drawing.Point(0, 3);
+            this.buttonCursor.Name = "buttonCursor";
+            this.buttonCursor.Size = new System.Drawing.Size(24, 24);
+            this.buttonCursor.TabIndex = 0;
+            this.buttonCursor.UseVisualStyleBackColor = true;
+            this.buttonCursor.Click += new System.EventHandler(this.buttonCursor_Click);
             // 
             // statusStripInformation
             // 
+            this.statusStripInformation.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.toolStripStatusToolMode});
             this.statusStripInformation.Location = new System.Drawing.Point(0, 419);
             this.statusStripInformation.Name = "statusStripInformation";
             this.statusStripInformation.Size = new System.Drawing.Size(1008, 22);
             this.statusStripInformation.SizingGrip = false;
             this.statusStripInformation.TabIndex = 5;
             this.statusStripInformation.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(33, 17);
+            this.toolStripStatusLabel1.Text = "Tool:";
+            // 
+            // toolStripStatusToolMode
+            // 
+            this.toolStripStatusToolMode.Name = "toolStripStatusToolMode";
+            this.toolStripStatusToolMode.Size = new System.Drawing.Size(0, 17);
             // 
             // Main
             // 
@@ -223,6 +248,8 @@
             this.tabControlToolkits.ResumeLayout(false);
             this.tabPageTilesets.ResumeLayout(false);
             this.panelTilesetsDrawing.ResumeLayout(false);
+            this.statusStripInformation.ResumeLayout(false);
+            this.statusStripInformation.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -237,14 +264,16 @@
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuItemExit;
         private WorldStamperUI.UI.Toolkit.ImageBox tileBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxTilesets;
+        private System.Windows.Forms.ComboBox comboBoxImages;
         private System.Windows.Forms.TabControl tabControlToolkits;
         private System.Windows.Forms.TabPage tabPageTilesets;
         private System.Windows.Forms.StatusStrip statusStripInformation;
         private System.Windows.Forms.Panel panelTilesetsDrawing;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonCursor;
+        private System.Windows.Forms.Button buttonPaint;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusToolMode;
     }
 }
 

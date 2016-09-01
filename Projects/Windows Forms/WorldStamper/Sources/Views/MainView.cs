@@ -7,24 +7,42 @@ namespace WorldStamper.Sources.Views
 {
     class MainView
     {
+        #region <- Events & Delegates ->
         public delegate void MapItemHandler(Map map);
-        public event MapItemHandler OnMapsChanged;
+        public event MapItemHandler OnMapsChanged; 
+        #endregion
 
-        List<Map> Maps { get; set; } = new List<Map>();
+        public enum MapToolMode
+        {
+            Cursor,
+            Paint,
+            Entity
+        }
+
+        List<Map> _maps = new List<Map>();
+
+        public MapToolMode ToolMode { get; set; } = MainView.MapToolMode.Cursor;
 
         public MainView()
         {
-
+            
         }
 
-        public int GetNewID()
+        private void HandleOnMapsChanged()
         {
-            return Maps.Count;
+            if (OnMapsChanged != null)
+                foreach (var map in _maps)
+                    OnMapsChanged(map);
+        }
+
+        internal int GetNewID()
+        {
+            return _maps.Count;
         }
 
         internal void AddMap(int id, string name, int width, int height)
         {
-            Maps.Add(new Map()
+            _maps.Add(new Map()
             {
                 ID = id,
                 Name = name,
@@ -35,18 +53,11 @@ namespace WorldStamper.Sources.Views
             HandleOnMapsChanged();
         }
 
-        private void HandleOnMapsChanged()
-        {
-            if (OnMapsChanged != null)
-                foreach (var map in Maps)
-                    OnMapsChanged(map);
-        }
-
         internal bool LoadMap(string fileName)
         {
             if (File.Exists(fileName))
             {
-                Maps.Add(Map.ParseFile(fileName));
+                _maps.Add(Map.ParseFile(fileName));
 
                 HandleOnMapsChanged();
 

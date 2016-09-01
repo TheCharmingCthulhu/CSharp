@@ -10,10 +10,11 @@ namespace FSync
     {
         static Sync _sync;
         static SyncSettings _settings;
+        static SyncLog _log = new SyncLog();
 
         static void Main(string[] args)
         {
-            Console.WriteLine(string.Format("FSync - Ultimate SSH Tool : Version \"{0}\"", Assembly.GetExecutingAssembly().GetName().Version.ToString()));
+            Initialize();
 
             string[] parameters = null;
             do
@@ -28,8 +29,27 @@ namespace FSync
             } while (!parameters.Contains("exit"));
 
             if (_sync != null) _sync.Disconnect();
+            if (_log != null) _log.Dispose();
         }
-        
+
+        private static void Initialize()
+        {
+            Console.Title = string.Format("FSync - Ultimate SSH Tool : Version \"{0}\"", Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+            ConsoleUtils.OnExit(() => {
+                Console.WriteLine("\nApplication succesfully terminated : Saving...");
+
+                _log.Dispose();
+            });
+        }
+    
+        private static void Log(string description, SyncLog.LogType type = SyncLog.LogType.Info)
+        {
+            Console.WriteLine(string.Format("[{0}]: {1}", DateTime.Now, description));
+
+            _log.Push(type, description);
+        }
+
         #region <- Parser ->
         private static string[] ParseLine(string line)
         {
@@ -62,7 +82,14 @@ namespace FSync
             if (ParseUtils(args)) return;
             if (ParseSync(args)) return;
 
-            Console.WriteLine("Invalid arguments!");
+            if (_sync == null)
+            {
+                Log("No connection! : Use \"connect -n\" for a new connection.", SyncLog.LogType.Warning);
+
+                return;
+            }
+
+            Log("Invalid arguments!", SyncLog.LogType.Error);
         }
 
         private static bool ParseSync(string[] args)
@@ -79,31 +106,76 @@ namespace FSync
                 return true;
             }
 
-            if (args.Contains("disconnect"))
-            {
-                Disconnect();
-
-                return true;
-            }
-
-            // Parsing on valid connection!
             if (_sync != null && _sync.IsConnected)
             {
-                if (args.Contains("exec"))
+                if (args.Contains("disconnect"))
                 {
-                    string[] parameters = args.Count() > 1 ? args.Skip(1).ToArray() : null;
+                    Disconnect();
 
-                    if (parameters != null)
-                    {
-                        var result = _sync.Execute(parameters);
-
-                        Console.WriteLine(result.IsSuccess ? (result.Output != null ? result.Output : "") : "Execution Failed: \"{0}\"", result.ErrorOutput);
-                    }
+                    Log("Session disconnected!");
 
                     return true;
                 }
+
+                if (args.Contains("execute") | args.Contains("exec") | args.Contains("->"))
+                {
+                    return ParseArguments(args, (x) =>
+                    {
+                        var result = _sync.Execute(x);
+
+                        Log(string.Format(result.IsSuccess ? string.Format("({0}>\"{1}\")", _settings.Hostname, (result.Output != null ? result.Output : "")) 
+                            : "Execution Failed: \"{0}\"", result.ErrorOutput), result.IsSuccess ? SyncLog.LogType.Info : SyncLog.LogType.Error);
+                    });
+                }
+
+                if (args.Contains("sync"))
+                {
+                    return ParseArguments(args, (x) =>
+                    {
+                        if (x.Length == 3)
+                        {
+                            WinSCP.SynchronizationResult result = null;
+
+                            if (x.Contains("--local"))
+                                result = _sync.Synchronize(WinSCP.SynchronizationMode.Local, x[1], x[2], x.Length == 4 ? x[3] : "");
+
+                            if (x.Contains("--remote"))
+                            {
+
+                            }
+
+                            if (x.Contains("--both"))
+                            {
+
+                            }
+
+
+                            PrintResults(result);
+                        }
+                        else Log("Command: \"sync -l\" has missing parameters!", SyncLog.LogType.Error);
+                    });
+                }
             }
-            else Console.WriteLine("No connection has been established!");
+
+            return false;
+        }
+
+        private static void PrintResults(WinSCP.SynchronizationResult result)
+        {
+            Log(string.Format("Sync complete : Downloads {0} : Uploads {1} : Removed {2} : Failures {3}", 
+                result.Downloads.Count, result.Uploads.Count, result.Removals.Count, result.Failures.Count));
+        }
+
+        private static bool ParseArguments(string[] args, Action<string[]> callback)
+        {
+            string[] parameters = args.Count() > 1 ? args.Skip(1).ToArray() : null;
+
+            if (parameters != null)
+            {
+                callback?.Invoke(parameters);
+
+                return true;
+            }
 
             return false;
         }
@@ -164,12 +236,12 @@ namespace FSync
             _sync = new Sync(_settings.Hostname, _settings.Username, _settings.Password);
 
             if (_sync.Connect(WinSCP.Protocol.Sftp))
-                Console.WriteLine("Connection established!");
+                Log("Connection established!");
         }
 
         internal static string Seperator()
         {
-            return string.Format("<{0}>", new String('-', 30));
+            return string.Format("<{0}>", new string('-', 30));
         }
     }
 }

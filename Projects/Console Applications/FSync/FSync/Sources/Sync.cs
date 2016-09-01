@@ -21,11 +21,18 @@ namespace FSync.Sources
             };
         }
 
+        public void Dispose()
+        {
+            if (_session != null)
+                Disconnect();
+        }
+
         internal CommandExecutionResult Execute(string[] args)
         {
             return _session.ExecuteCommand(string.Join(" ", args));
         }
-
+        
+        #region <- Transfer ->
         internal string GetRemoteCurrentDirectory()
         {
             return _session.ExecuteCommand("pwd").Output;
@@ -36,6 +43,17 @@ namespace FSync.Sources
             return _session.ListDirectory(path).Files.ToArray();
         }
 
+        internal SynchronizationResult Synchronize(SynchronizationMode mode, string localPath, string remotePath, string fileMask = "")
+        {
+            return _session.SynchronizeDirectories(mode, localPath, remotePath, false, false, SynchronizationCriteria.Time, new TransferOptions()
+            {
+                FileMask = fileMask,
+                OverwriteMode = OverwriteMode.Overwrite
+            });
+        } 
+        #endregion
+
+        #region <- Connection ->
         internal bool Connect(Protocol protocol, string fingerPrint = "")
         {
             _session = new Session();
@@ -56,7 +74,8 @@ namespace FSync.Sources
                 _session.Open(_credentials);
 
                 return true;
-            } catch (SessionException e)
+            }
+            catch (SessionException e)
             {
                 Console.WriteLine(Program.Seperator());
                 Console.WriteLine(e.Message);
@@ -68,14 +87,10 @@ namespace FSync.Sources
 
         internal void Disconnect()
         {
-            _session.Close();
-            _session = null;
-        }
+            if (_session != null) _session.Close();
 
-        public void Dispose()
-        {
-            if (_session != null)
-                Disconnect();
-        }
+            _session = null;
+        } 
+        #endregion
     }
 }

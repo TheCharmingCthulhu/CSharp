@@ -12,11 +12,6 @@ namespace WorldStamperUI.UI.Toolkit
         public int ImageWidth { get; set; } = 32;
         public int ImageHeight { get; set; } = 32;
 
-        public ImageBox()
-        {
-
-        }
-
         #region <- Functions ->
         public void AddImage(Image image)
         {
@@ -52,7 +47,7 @@ namespace WorldStamperUI.UI.Toolkit
                     if (x == 0) { x++; };
 
                     e.Graphics.DrawImageUnscaledAndClipped(item,
-                        new Rectangle((x * ImageWidth) - ((ImageWidth / 2) * 2) + (x * (ImageWidth / 2)), 
+                        new Rectangle((x * ImageWidth) - ImageWidth + (x * (ImageWidth / 2)), 
                                       (y * ImageWidth) + (ImageHeight / 2) + (y * (ImageWidth / 2)), ImageWidth, ImageHeight));
 
                     x++;

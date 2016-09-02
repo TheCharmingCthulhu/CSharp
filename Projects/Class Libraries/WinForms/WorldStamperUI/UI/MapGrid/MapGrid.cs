@@ -89,29 +89,49 @@ namespace WorldStamper.Sources.UI
 
         protected override void OnResize(EventArgs e)
         {
-            UpdateGrid();
+            ResizeUpdateGrid();
 
             base.OnResize(e);
+        }
+
+        private void ResizeUpdateGrid()
+        {
+            int horizontalWidth = GridWidth * CellWidth + vScrollBar.Width + hScrollBar.LargeChange + CellWidth;
+            hScrollBar.Visible = horizontalWidth > Width;
+            hScrollBar.Maximum = hScrollBar.Visible ? horizontalWidth - Width : Width;
+            hScrollBar.Value = 0;
+
+            int verticalWidth = GridHeight * CellHeight + hScrollBar.Height + vScrollBar.LargeChange + CellHeight;
+            vScrollBar.Visible = verticalWidth > Height;
+            vScrollBar.Maximum = vScrollBar.Visible ? verticalWidth - Height : Height;
+            vScrollBar.Value = 0;
+
+            _OffsetX = 0;
+            _OffsetY = 0;
         }
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             int oldValue = vScrollBar.Value;
+            int delta = vScrollBar.LargeChange + Math.Abs(e.Delta) / 4;
 
             if (e.Delta < 0)
-                if (vScrollBar.Maximum > vScrollBar.Value)
+                if (vScrollBar.Maximum > vScrollBar.Value + delta)
                 {
-                    vScrollBar.Value += vScrollBar.LargeChange;
+                    vScrollBar.Value += delta;
 
                     vScrollBar_Scroll(vScrollBar, new ScrollEventArgs(ScrollEventType.LargeIncrement, oldValue, vScrollBar.Value));
                 }
+                else vScrollBar.Value = vScrollBar.Maximum;
             if (e.Delta > 0)
-                if (vScrollBar.Minimum < vScrollBar.Value)
+                if (vScrollBar.Minimum < vScrollBar.Value - delta)
                 {
-                    vScrollBar.Value -= vScrollBar.LargeChange;
+                    vScrollBar.Value -= delta;
 
                     vScrollBar_Scroll(vScrollBar, new ScrollEventArgs(ScrollEventType.LargeDecrement, oldValue, vScrollBar.Value));
                 }
+                else
+                    vScrollBar.Value = vScrollBar.Minimum;
 
             base.OnMouseWheel(e);
         }
@@ -180,56 +200,28 @@ namespace WorldStamper.Sources.UI
         #endregion
 
         #region <- Scrollbars ->
-
         private void hScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            var view = (sender as HScrollBar);
-            var sizeX = (GridWidth - _OffsetX) * CellWidth + vScrollBar.Width;
-            var overscrollX = DrawingUtils.TransformValue(e.NewValue, view.Maximum - (view.LargeChange - 1), GridWidth);
+            if (e.Type != ScrollEventType.EndScroll && e.Type != ScrollEventType.ThumbPosition)
+            {
+                var view = (sender as HScrollBar);
 
-            if (sizeX > Width | (e.NewValue - e.OldValue < 0 && _OffsetX >= overscrollX && _OffsetX > 0))
-                _OffsetX = DrawingUtils.TransformValue(e.NewValue, view.Maximum - (view.LargeChange - 1), GridWidth);
+                _OffsetX = DrawingUtils.TransformValue(e.NewValue, GridHeight * CellWidth, GridWidth);
 
-            Invalidate();
+                Invalidate();
+            }
         }
 
         private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            var view = (sender as VScrollBar);
-            var sizeY = (GridHeight - _OffsetY) * CellHeight + hScrollBar.Height;
-            var overscrollY = DrawingUtils.TransformValue(e.NewValue, view.Maximum - (view.LargeChange - 1), GridHeight);
+            if (e.Type != ScrollEventType.EndScroll && e.Type != ScrollEventType.ThumbPosition)
+            {
+                var view = (sender as VScrollBar);
+                
+                _OffsetY = DrawingUtils.TransformValue(e.NewValue, GridHeight * CellHeight, GridHeight);
 
-            if (sizeY > Height | (e.NewValue - e.OldValue < 0 && _OffsetY >= overscrollY && _OffsetY > 0))
-                _OffsetY = DrawingUtils.TransformValue(e.NewValue, view.Maximum - (view.LargeChange - 1), GridHeight);
-
-            Invalidate();
-        }
-
-        Size _resize;
-        private void UpdateGrid()
-        {
-            MoveInGrid();
-
-            _resize = new Size(Width, Height);
-
-            vScrollBar.Value = 0;
-            hScrollBar.Value = 0;
-        }
-
-        private void MoveInGrid()
-        {
-            var deltaX = Math.Abs(_resize.Width - Width);
-            var deltaY = Math.Abs(_resize.Height - Height);
-
-            deltaX = deltaX > CellWidth ? CellWidth - 1 : deltaX;
-            if (deltaX != 0)
-                if (_OffsetX > 0 && (Width + vScrollBar.Width) % (CellWidth / deltaX) == 0)
-                    _OffsetX--;
-
-            deltaY = deltaY > CellHeight ? CellHeight - 1 : deltaY;
-            if (deltaY != 0)
-                if (_OffsetY > 0 && (Height + hScrollBar.Height) % (CellHeight / deltaY) == 0)
-                    _OffsetY--;
+                Invalidate();
+            }
         }
         #endregion
     }

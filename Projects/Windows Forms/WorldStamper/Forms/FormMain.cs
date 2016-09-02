@@ -76,7 +76,19 @@ namespace WorldStamper
             });
 
             comboBoxImages.Enabled = comboBoxImages.Items.Count > 0;
-        } 
+        }
+
+        private void ShowTiles(Image image)
+        {
+            imageBoxTiles.Clear();
+
+            image.Sprites.ForEach(s =>
+            {
+                imageBoxTiles.AddImage(s.Texture);
+            });
+
+            imageBoxTiles.Refresh();
+        }
         #endregion
 
         #region <- Main Menu ->
@@ -136,8 +148,16 @@ namespace WorldStamper
 
         private void comboBoxTilesets_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBoxTilesets.SelectedItem != null)
-                ShowImages(comboBoxTilesets.SelectedItem as Tileset);
+            var view = sender as ComboBox;
+            if (view.SelectedItem != null)
+                ShowImages(view.SelectedItem as Tileset);
+        }
+
+        private void comboBoxImages_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var view = sender as ComboBox;
+            if (view.SelectedItem != null)
+                ShowTiles(view.SelectedItem as Image);
         }
         #endregion
     }

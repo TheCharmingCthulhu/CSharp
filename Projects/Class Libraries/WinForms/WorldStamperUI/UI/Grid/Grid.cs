@@ -1,26 +1,36 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using WorldStamper.Sources.Utilities;
-using WorldStamperUI.UI.MapGrid;
+using WorldStamperUI.UI.Grid;
 
 namespace WorldStamper.Sources.UI
 {
-    public partial class MapGrid : UserControl
+    public partial class Grid : UserControl
     {
+        public class GridArgs
+        {
+            public int X { get; set; }
+            public int Y { get; set; }
+        }
+
+        #region <- Events ->
+        public delegate void GridHandler(object sender, GridArgs e);
+        public event GridHandler TileSelect;
+        #endregion
+
         public int GridWidth { get; set; } = 20;
         public int GridHeight { get; set; } = 20;
 
         public int CellWidth { get; set; } = 32;
         public int CellHeight { get; set; } = 32;
 
-        private int _OffsetX = 0, _OffsetY = 0;
-        private Bitmap[,] _Grid;
+        int _OffsetX = 0, _OffsetY = 0;
 
-        private FocusRectangle _Hightlight;
+        Bitmap[,] _Grid;
+        Focus _Hightlight = new Focus();
 
-        public MapGrid()
+        public Grid()
         {
             InitializeComponent();
             InitializeControl();
@@ -31,12 +41,10 @@ namespace WorldStamper.Sources.UI
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
 
             _Grid = new Bitmap[GridWidth, GridHeight];
-
-            _Hightlight = new FocusRectangle();
         }
 
         #region <- Functions ->
-        public void AddImage(int x, int y, Image image)
+        public void SetTile(int x, int y, Image image)
         {
             _Grid[x, y] = new Bitmap(image);
         }
@@ -55,6 +63,13 @@ namespace WorldStamper.Sources.UI
         private Size GetGridSize()
         {
             return new Size(GridWidth * CellWidth, GridHeight * CellHeight);
+        }
+
+        private void SetFocus(MouseEventArgs e)
+        {
+            _Hightlight.Location = MouseToCoordinates(e.Location);
+
+            Invalidate();
         }
         #endregion
 
@@ -136,18 +151,40 @@ namespace WorldStamper.Sources.UI
             base.OnMouseWheel(e);
         }
 
+        bool _drag = false;
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            _drag = true;
+
+            HandleTileSelect(e);
+
+            base.OnMouseDown(e);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            _drag = false;
+
+            base.OnMouseUp(e);
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            UpdateFocus(e);
+            SetFocus(e);
+
+            HandleTileSelect(e);
 
             base.OnMouseMove(e);
         }
 
-        private void UpdateFocus(MouseEventArgs e)
+        private void HandleTileSelect(MouseEventArgs e)
         {
-            _Hightlight.Location = MouseToCoordinates(e.Location);
+            if (e.Button == MouseButtons.Left && _drag)
+            {
+                var coords = MouseToCoordinates(e.Location);
 
-            Invalidate();
+                if (coords != new Point(-1, -1) && TileSelect != null) TileSelect(this, new GridArgs() { X = coords.X + _OffsetX, Y = coords.Y + _OffsetY });
+            }
         }
         #endregion
 

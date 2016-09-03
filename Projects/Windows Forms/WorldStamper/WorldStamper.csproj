@@ -75,6 +75,7 @@
     <Compile Include="Sources\Utilities\GraphicUtils.cs" />
     <Compile Include="Sources\Utilities\ResourceUtils.cs" />
     <Compile Include="Sources\Views\MainView.cs" />
+    <Compile Include="Sources\Views\Tool.cs" />
     <EmbeddedResource Include="Forms\FormNewMap.resx">
       <DependentUpon>FormNewMap.cs</DependentUpon>
     </EmbeddedResource>

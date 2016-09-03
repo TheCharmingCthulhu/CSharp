@@ -1,6 +1,6 @@
 ﻿namespace WorldStamper.Sources.UI
 {
-    partial class MapGrid
+    partial class Grid
     {
         /// <summary> 
         /// Required designer variable.

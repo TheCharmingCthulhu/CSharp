@@ -41,8 +41,6 @@ namespace WorldStamper
             {
                 comboBoxTilesets.Items.Add(t);
             });
-
-            comboBoxTilesets.Enabled = comboBoxTilesets.Items.Count > 0;
         }
 
         private void ShowMap(Map map)
@@ -50,7 +48,7 @@ namespace WorldStamper
             var tab = new TabPage(map.Name);
             tab.Tag = map;
 
-            var grid = new MapGrid()
+            var grid = new Grid()
             {
                 GridWidth = map.Width,
                 GridHeight = map.Height,
@@ -59,9 +57,10 @@ namespace WorldStamper
             };
             grid.Dock = DockStyle.Fill;
             grid.Parent = tab;
+            grid.TileSelect += Grid_TileSelect;
 
             foreach (var tile in map.Tiles)
-                grid.AddImage(tile.X, tile.Y, tile.Sprite.Texture);
+                grid.SetTile(tile.X, tile.Y, tile.Sprite.Texture);
 
             tabControlMaps.TabPages.Add(tab);
         }
@@ -84,12 +83,22 @@ namespace WorldStamper
 
             image.Sprites.ForEach(s =>
             {
-                imageBoxTiles.AddImage(s.Texture);
+                imageBoxTiles.AddImage(s.Texture, s);
             });
+
+            imageBoxTiles.Enabled = imageBoxTiles.Count() > 0;
 
             imageBoxTiles.Refresh();
         }
         #endregion
+
+        private void Grid_TileSelect(object sender, Grid.GridArgs e)
+        {
+            var view = sender as Grid;
+
+            if (_view.Tool.Sprite != null)
+                view.SetTile(e.X, e.Y, _view.Tool.Sprite.Texture);
+        }
 
         #region <- Main Menu ->
         private void menuItemNew_Click(object sender, System.EventArgs e)
@@ -107,7 +116,7 @@ namespace WorldStamper
             Close();
         }
 
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        private void menuItemLoad_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog()
             {
@@ -127,16 +136,24 @@ namespace WorldStamper
         #region <- Toolkit Panel ->
         private void buttonCursor_Click(object sender, EventArgs e)
         {
-            _view.ToolMode = MainView.MapToolMode.Cursor;
+            _view.Tool.Mode = Tool.ToolMode.Cursor;
 
             toolStripStatusToolMode.Text = "Cursor";
+
+            comboBoxTilesets.Enabled = false;
+            comboBoxImages.Enabled = false;
+            imageBoxTiles.Enabled = false;
         }
 
         private void buttonPaint_Click(object sender, EventArgs e)
         {
-            _view.ToolMode = MainView.MapToolMode.Paint;
+            _view.Tool.Mode = Tool.ToolMode.Paint;
 
             toolStripStatusToolMode.Text = "Paint";
+
+            comboBoxTilesets.Enabled = true;
+            comboBoxImages.Enabled = false;
+            imageBoxTiles.Enabled = false;
         }
 
         private void tabControlMaps_TabIndexChanged(object sender, EventArgs e)
@@ -158,6 +175,11 @@ namespace WorldStamper
             var view = sender as ComboBox;
             if (view.SelectedItem != null)
                 ShowTiles(view.SelectedItem as Image);
+        }
+
+        private void imageBoxTiles_ImageSelected(WorldStamperUI.UI.Toolkit.ImageBox.ImageBoxArgs e)
+        {
+            _view.Tool.Sprite = e.Item.Tag as Sprite;
         }
         #endregion
     }

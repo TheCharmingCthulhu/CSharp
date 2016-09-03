@@ -9,24 +9,12 @@ namespace WorldStamper.Sources.Views
     {
         #region <- Events & Delegates ->
         public delegate void MapItemHandler(Map map);
-        public event MapItemHandler OnMapsChanged; 
+        public event MapItemHandler OnMapsChanged;
         #endregion
 
-        public enum MapToolMode
-        {
-            Cursor,
-            Paint,
-            Entity
-        }
+        public Tool Tool { get; set; } = new Tool();
 
         List<Map> _maps = new List<Map>();
-
-        public MapToolMode ToolMode { get; set; } = MainView.MapToolMode.Cursor;
-
-        public MainView()
-        {
-            
-        }
 
         private void HandleOnMapsChanged()
         {
@@ -40,6 +28,7 @@ namespace WorldStamper.Sources.Views
             return _maps.Count;
         }
 
+        #region <- Map Control ->
         internal void AddMap(int id, string name, int width, int height)
         {
             _maps.Add(new Map()
@@ -65,6 +54,7 @@ namespace WorldStamper.Sources.Views
             }
 
             return false;
-        }
+        } 
+        #endregion
     }
 }

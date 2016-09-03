@@ -43,10 +43,10 @@
             this.panelTilesetsDrawing = new System.Windows.Forms.Panel();
             this.buttonPaint = new System.Windows.Forms.Button();
             this.buttonCursor = new System.Windows.Forms.Button();
-            this.imageBoxTiles = new WorldStamperUI.UI.Toolkit.ImageBox();
             this.statusStripInformation = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusToolMode = new System.Windows.Forms.ToolStripStatusLabel();
+            this.imageBoxTiles = new WorldStamperUI.UI.Toolkit.ImageBox();
             this.menuBar.SuspendLayout();
             this.tabControlToolkits.SuspendLayout();
             this.tabPageTilesets.SuspendLayout();
@@ -98,7 +98,7 @@
             this.loadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.loadToolStripMenuItem.Text = "Load";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.menuItemLoad_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -196,18 +196,6 @@
             this.buttonCursor.UseVisualStyleBackColor = true;
             this.buttonCursor.Click += new System.EventHandler(this.buttonCursor_Click);
             // 
-            // imageBoxTiles
-            // 
-            this.imageBoxTiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imageBoxTiles.ImageHeight = 32;
-            this.imageBoxTiles.ImageWidth = 32;
-            this.imageBoxTiles.Location = new System.Drawing.Point(6, 93);
-            this.imageBoxTiles.Name = "imageBoxTiles";
-            this.imageBoxTiles.Size = new System.Drawing.Size(160, 294);
-            this.imageBoxTiles.TabIndex = 0;
-            // 
             // statusStripInformation
             // 
             this.statusStripInformation.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -230,6 +218,20 @@
             // 
             this.toolStripStatusToolMode.Name = "toolStripStatusToolMode";
             this.toolStripStatusToolMode.Size = new System.Drawing.Size(0, 17);
+            // 
+            // imageBoxTiles
+            // 
+            this.imageBoxTiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imageBoxTiles.Enabled = false;
+            this.imageBoxTiles.ImageHeight = 32;
+            this.imageBoxTiles.ImageWidth = 32;
+            this.imageBoxTiles.Location = new System.Drawing.Point(6, 93);
+            this.imageBoxTiles.Name = "imageBoxTiles";
+            this.imageBoxTiles.Size = new System.Drawing.Size(160, 294);
+            this.imageBoxTiles.TabIndex = 0;
+            this.imageBoxTiles.ImageSelected += new WorldStamperUI.UI.Toolkit.ImageBox.ImageBoxHandler(this.imageBoxTiles_ImageSelected);
             // 
             // Main
             // 

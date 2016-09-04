@@ -16,20 +16,13 @@ namespace WorldStamper.Sources.Views
 
         List<Map> _maps = new List<Map>();
 
-        private void HandleOnMapsChanged()
-        {
-            if (OnMapsChanged != null)
-                foreach (var map in _maps)
-                    OnMapsChanged(map);
-        }
-
         internal int GetNewID()
         {
             return _maps.Count;
         }
 
         #region <- Map Control ->
-        internal void AddMap(int id, string name, int width, int height)
+        internal void CreateMap(int id, string name, int width, int height)
         {
             _maps.Add(new Map()
             {
@@ -39,7 +32,8 @@ namespace WorldStamper.Sources.Views
                 Height = height
             });
 
-            HandleOnMapsChanged();
+            if (OnMapsChanged != null)
+                OnMapsChanged(_maps[_maps.Count - 1]);
         }
 
         internal bool LoadMap(string fileName)
@@ -48,7 +42,8 @@ namespace WorldStamper.Sources.Views
             {
                 _maps.Add(Map.ParseFile(fileName));
 
-                HandleOnMapsChanged();
+                if (OnMapsChanged != null)
+                    OnMapsChanged(_maps[_maps.Count - 1]);
 
                 return true;
             }

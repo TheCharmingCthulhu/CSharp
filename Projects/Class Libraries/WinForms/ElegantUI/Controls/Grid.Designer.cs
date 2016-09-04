@@ -1,4 +1,4 @@
-﻿namespace WorldStamper.Sources.UI
+﻿namespace ElegantUI.Controls
 {
     partial class Grid
     {
@@ -34,7 +34,7 @@
             // 
             // hScrollBar
             // 
-            this.hScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.hScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.hScrollBar.Location = new System.Drawing.Point(0, 283);
             this.hScrollBar.Name = "hScrollBar";
@@ -45,7 +45,7 @@
             // 
             // vScrollBar
             // 
-            this.vScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.vScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.vScrollBar.Location = new System.Drawing.Point(283, 0);
             this.vScrollBar.Name = "vScrollBar";

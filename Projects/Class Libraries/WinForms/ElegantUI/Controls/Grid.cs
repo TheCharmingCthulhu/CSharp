@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using WorldStamper.Sources.Utilities;
-using WorldStamperUI.UI.Grid;
+using ElegantUI.Utilities;
+using ElegantUI.Controls.Modules;
 
-namespace WorldStamper.Sources.UI
+namespace ElegantUI.Controls
 {
     public partial class Grid : UserControl
     {
@@ -28,7 +28,7 @@ namespace WorldStamper.Sources.UI
         int _OffsetX = 0, _OffsetY = 0;
 
         Bitmap[,] _Grid;
-        Focus _Hightlight = new Focus();
+        Highlight _Hightlight = new Highlight();
 
         public Grid()
         {

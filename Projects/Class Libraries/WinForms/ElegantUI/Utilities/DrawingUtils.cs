@@ -1,4 +1,4 @@
-﻿namespace WorldStamper.Sources.Utilities
+﻿namespace ElegantUI.Utilities
 {
     class DrawingUtils
     {

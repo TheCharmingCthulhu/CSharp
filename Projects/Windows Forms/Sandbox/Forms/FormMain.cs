@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sandbox.Sources.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -32,6 +33,13 @@ namespace Sandbox
             callback?.Invoke();
 
             Show();
+        }
+
+        private void buttonInterfaces_Click(object sender, EventArgs e)
+        {
+            IItem x = new Shape();
+            (x as Shape).GetArea();
+            x.GetArea();
         }
     }
 }

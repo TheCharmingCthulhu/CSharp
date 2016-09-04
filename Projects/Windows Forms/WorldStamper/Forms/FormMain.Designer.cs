@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.tabControlMaps = new System.Windows.Forms.TabControl();
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,26 +42,20 @@
             this.panelTilesetsDrawing = new System.Windows.Forms.Panel();
             this.buttonPaint = new System.Windows.Forms.Button();
             this.buttonCursor = new System.Windows.Forms.Button();
+            this.imageBoxTiles = new WorldStamperUI.UI.Toolkit.ImageBox();
+            this.tabPageEntities = new System.Windows.Forms.TabPage();
             this.statusStripInformation = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusToolMode = new System.Windows.Forms.ToolStripStatusLabel();
-            this.imageBoxTiles = new WorldStamperUI.UI.Toolkit.ImageBox();
+            this.tabsMaps = new ElegantUI.Controls.Tabs();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.menuBar.SuspendLayout();
             this.tabControlToolkits.SuspendLayout();
             this.tabPageTilesets.SuspendLayout();
             this.panelTilesetsDrawing.SuspendLayout();
             this.statusStripInformation.SuspendLayout();
+            this.tabsMaps.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // tabControlMaps
-            // 
-            this.tabControlMaps.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlMaps.Location = new System.Drawing.Point(0, 24);
-            this.tabControlMaps.Name = "tabControlMaps";
-            this.tabControlMaps.SelectedIndex = 0;
-            this.tabControlMaps.Size = new System.Drawing.Size(828, 395);
-            this.tabControlMaps.TabIndex = 1;
-            this.tabControlMaps.TabIndexChanged += new System.EventHandler(this.tabControlMaps_TabIndexChanged);
             // 
             // menuBar
             // 
@@ -144,6 +137,7 @@
             // tabControlToolkits
             // 
             this.tabControlToolkits.Controls.Add(this.tabPageTilesets);
+            this.tabControlToolkits.Controls.Add(this.tabPageEntities);
             this.tabControlToolkits.Dock = System.Windows.Forms.DockStyle.Right;
             this.tabControlToolkits.Location = new System.Drawing.Point(828, 0);
             this.tabControlToolkits.Name = "tabControlToolkits";
@@ -196,6 +190,32 @@
             this.buttonCursor.UseVisualStyleBackColor = true;
             this.buttonCursor.Click += new System.EventHandler(this.buttonCursor_Click);
             // 
+            // imageBoxTiles
+            // 
+            this.imageBoxTiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imageBoxTiles.BackColor = System.Drawing.Color.White;
+            this.imageBoxTiles.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.imageBoxTiles.Enabled = false;
+            this.imageBoxTiles.ImageHeight = 32;
+            this.imageBoxTiles.ImageWidth = 32;
+            this.imageBoxTiles.Location = new System.Drawing.Point(6, 93);
+            this.imageBoxTiles.Name = "imageBoxTiles";
+            this.imageBoxTiles.Size = new System.Drawing.Size(160, 294);
+            this.imageBoxTiles.TabIndex = 0;
+            this.imageBoxTiles.ImageSelected += new WorldStamperUI.UI.Toolkit.ImageBox.ImageBoxHandler(this.imageBoxTiles_ImageSelected);
+            // 
+            // tabPageEntities
+            // 
+            this.tabPageEntities.BackColor = System.Drawing.Color.White;
+            this.tabPageEntities.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEntities.Name = "tabPageEntities";
+            this.tabPageEntities.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageEntities.Size = new System.Drawing.Size(172, 393);
+            this.tabPageEntities.TabIndex = 1;
+            this.tabPageEntities.Text = "Entities";
+            // 
             // statusStripInformation
             // 
             this.statusStripInformation.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -219,26 +239,32 @@
             this.toolStripStatusToolMode.Name = "toolStripStatusToolMode";
             this.toolStripStatusToolMode.Size = new System.Drawing.Size(0, 17);
             // 
-            // imageBoxTiles
+            // tabsMaps
             // 
-            this.imageBoxTiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.imageBoxTiles.Enabled = false;
-            this.imageBoxTiles.ImageHeight = 32;
-            this.imageBoxTiles.ImageWidth = 32;
-            this.imageBoxTiles.Location = new System.Drawing.Point(6, 93);
-            this.imageBoxTiles.Name = "imageBoxTiles";
-            this.imageBoxTiles.Size = new System.Drawing.Size(160, 294);
-            this.imageBoxTiles.TabIndex = 0;
-            this.imageBoxTiles.ImageSelected += new WorldStamperUI.UI.Toolkit.ImageBox.ImageBoxHandler(this.imageBoxTiles_ImageSelected);
+            this.tabsMaps.Controls.Add(this.tabPage1);
+            this.tabsMaps.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabsMaps.Location = new System.Drawing.Point(0, 24);
+            this.tabsMaps.Name = "tabsMaps";
+            this.tabsMaps.SelectedIndex = 0;
+            this.tabsMaps.Size = new System.Drawing.Size(828, 395);
+            this.tabsMaps.TabIndex = 6;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.BackColor = System.Drawing.Color.White;
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(820, 366);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1008, 441);
-            this.Controls.Add(this.tabControlMaps);
+            this.Controls.Add(this.tabsMaps);
             this.Controls.Add(this.menuBar);
             this.Controls.Add(this.tabControlToolkits);
             this.Controls.Add(this.statusStripInformation);
@@ -255,13 +281,13 @@
             this.panelTilesetsDrawing.ResumeLayout(false);
             this.statusStripInformation.ResumeLayout(false);
             this.statusStripInformation.PerformLayout();
+            this.tabsMaps.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.TabControl tabControlMaps;
         private System.Windows.Forms.MenuStrip menuBar;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuItemNew;
@@ -279,6 +305,9 @@
         private System.Windows.Forms.Button buttonPaint;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusToolMode;
+        private ElegantUI.Controls.Tabs tabsMaps;
+        private System.Windows.Forms.TabPage tabPageEntities;
+        private System.Windows.Forms.TabPage tabPage1;
     }
 }
 

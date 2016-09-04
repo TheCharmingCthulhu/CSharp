@@ -63,6 +63,8 @@
     <Compile Include="Forms\FormSequences.Designer.cs">
       <DependentUpon>FormSequences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sources\Interfaces\IItem.cs" />
+    <Compile Include="Sources\Interfaces\Shape.cs" />
     <Compile Include="Sources\Sequences\CustomItems.cs" />
     <Compile Include="Sources\Sequences\Cycles.cs" />
     <Compile Include="Sources\Sequences\CyclesManager.cs" />

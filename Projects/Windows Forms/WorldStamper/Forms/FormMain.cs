@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ElegantUI.Controls;
+using System;
 using System.Windows.Forms;
 using WorldStamper.Forms;
 using WorldStamper.Sources.Models;
-using WorldStamper.Sources.UI;
 using WorldStamper.Sources.Views;
 
 namespace WorldStamper
@@ -28,6 +28,8 @@ namespace WorldStamper
 
         private void _view_OnMapsChanged(Map map)
         {
+            ToolkitResetTilesets();
+
             ShowMap(map);
             ShowTilesets(map);
         }
@@ -62,8 +64,9 @@ namespace WorldStamper
             foreach (var tile in map.Tiles)
                 grid.SetTile(tile.X, tile.Y, tile.Sprite.Texture);
 
-            tabControlMaps.TabPages.Add(tab);
+            tabsMaps.TabPages.Add(tab);
         }
+
 
         private void ShowImages(Tileset tileset)
         {
@@ -104,11 +107,7 @@ namespace WorldStamper
         private void menuItemNew_Click(object sender, System.EventArgs e)
         {
             if (FormNewMap.Run() == DialogResult.OK)
-            {
-                tabControlMaps.TabPages.Clear();
-
-                _view.AddMap(_view.GetNewID(), FormNewMap.MapName, FormNewMap.MapWidth, FormNewMap.MapHeight);
-            }
+                _view.CreateMap(_view.GetNewID(), FormNewMap.MapName, FormNewMap.MapWidth, FormNewMap.MapHeight);
         }
 
         private void menuItemExit_Click(object sender, System.EventArgs e)
@@ -120,15 +119,16 @@ namespace WorldStamper
         {
             OpenFileDialog ofd = new OpenFileDialog()
             {
-                Filter = "Map Files (*.xml)|*.xml",
-                InitialDirectory = "..\\assets"
+                Filter = "Map Files|*.xml;*.json;*.bin;*.zip",
+                InitialDirectory = "..\\assets",
+                Multiselect = true
             };
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                tabControlMaps.TabPages.Clear();
-
-                _view.LoadMap(ofd.FileName);
+                if (ofd.FileNames.Length > 0)
+                    foreach (var file in ofd.FileNames)
+                        _view.LoadMap(file);
             }
         }
         #endregion
@@ -156,13 +156,6 @@ namespace WorldStamper
             imageBoxTiles.Enabled = false;
         }
 
-        private void tabControlMaps_TabIndexChanged(object sender, EventArgs e)
-        {
-            var map = tabControlMaps.SelectedTab.Tag as Map;
-
-            ShowTilesets(map);
-        }
-
         private void comboBoxTilesets_SelectedIndexChanged(object sender, EventArgs e)
         {
             var view = sender as ComboBox;
@@ -181,6 +174,29 @@ namespace WorldStamper
         {
             _view.Tool.Sprite = e.Item.Tag as Sprite;
         }
+
+        private void tabControlMaps_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabsMaps.SelectedTab != null)
+            {
+                var map = tabsMaps.SelectedTab.Tag as Map;
+
+                ToolkitResetTilesets();
+                ShowTilesets(map);
+            }
+        }
+
+        private void ToolkitResetTilesets()
+        {
+            comboBoxTilesets.Items.Clear();
+            comboBoxTilesets.Enabled = false;
+            comboBoxImages.Items.Clear();
+            comboBoxImages.Enabled = false;
+            imageBoxTiles.Clear();
+        }
+        #endregion
+
+        #region <- Paint ->
         #endregion
     }
 }

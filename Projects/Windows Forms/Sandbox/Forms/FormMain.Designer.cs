@@ -30,12 +30,14 @@
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonCycles = new System.Windows.Forms.Button();
+            this.buttonInterfaces = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.buttonCycles);
+            this.flowLayoutPanel1.Controls.Add(this.buttonInterfaces);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -52,6 +54,16 @@
             this.buttonCycles.Text = "Cycles";
             this.buttonCycles.UseVisualStyleBackColor = true;
             this.buttonCycles.Click += new System.EventHandler(this.buttonSequences_Click);
+            // 
+            // buttonInterfaces
+            // 
+            this.buttonInterfaces.Location = new System.Drawing.Point(89, 8);
+            this.buttonInterfaces.Name = "buttonInterfaces";
+            this.buttonInterfaces.Size = new System.Drawing.Size(75, 23);
+            this.buttonInterfaces.TabIndex = 1;
+            this.buttonInterfaces.Text = "Interfaces";
+            this.buttonInterfaces.UseVisualStyleBackColor = true;
+            this.buttonInterfaces.Click += new System.EventHandler(this.buttonInterfaces_Click);
             // 
             // FormMain
             // 
@@ -71,6 +83,7 @@
 
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button buttonCycles;
+        private System.Windows.Forms.Button buttonInterfaces;
     }
 }
 

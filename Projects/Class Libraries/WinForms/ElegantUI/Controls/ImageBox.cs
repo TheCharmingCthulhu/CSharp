@@ -32,8 +32,36 @@ namespace WorldStamperUI.UI.Toolkit
 
         public ImageBox()
         {
+            InitializeComponent();
+
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
         }
+
+        #region <- Designer ->
+        private void InitializeComponent()
+        {
+            this.vScrollBar = new System.Windows.Forms.VScrollBar();
+            this.SuspendLayout();
+            // 
+            // vScrollBar
+            // 
+            this.vScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
+            this.vScrollBar.Location = new System.Drawing.Point(133, 0);
+            this.vScrollBar.Name = "vScrollBar";
+            this.vScrollBar.Size = new System.Drawing.Size(17, 150);
+            this.vScrollBar.TabIndex = 0;
+            this.vScrollBar.Visible = false;
+            // 
+            // ImageBox
+            // 
+            this.Controls.Add(this.vScrollBar);
+            this.Name = "ImageBox";
+            this.ResumeLayout(false);
+
+        }
+
+        VScrollBar vScrollBar;
+        #endregion
 
         #region <- Functions ->
         public void AddImage(Image image, object tag = null)
@@ -57,6 +85,9 @@ namespace WorldStamperUI.UI.Toolkit
         public void Clear()
         {
             _items.Clear();
+            _selection = null;
+
+            Invalidate();
         }
 
         public int Count()
@@ -77,7 +108,6 @@ namespace WorldStamperUI.UI.Toolkit
         #region <- Usercontrol ->
         protected override void OnPaint(PaintEventArgs e)
         {
-            DrawFrame(e);
             DrawImages(e);
             DrawHighlight(e);
             DrawSelection(e);
@@ -122,9 +152,7 @@ namespace WorldStamperUI.UI.Toolkit
                 Invalidate();
 
                 if (ImageSelected != null)
-                    ImageSelected(new ImageBoxArgs() {
-                        Item = _items.Find(i => i.Image == _item)
-                    });
+                    ImageSelected(new ImageBoxArgs() { Item = _items.Find(i => i.Image == _item) });
             }
         }
         #endregion
@@ -135,7 +163,10 @@ namespace WorldStamperUI.UI.Toolkit
             if (_items != null && _items.Count > 0)
             {
                 int x = 1, y = 1;
-                int columns = (Width / ImageWidth);
+                int columns = ((Width - (vScrollBar.Visible ? vScrollBar.Width : 0)) / ImageWidth);
+                int rows = (_items.Count / (columns - 2));
+
+                vScrollBar.Visible = rows > (Height / ImageHeight);
 
                 foreach (var item in _items)
                 {
@@ -152,13 +183,6 @@ namespace WorldStamperUI.UI.Toolkit
                     if (x % (columns - 1) == 0) { x = 1; y++; }
                 }
             }
-        }
-
-        private void DrawFrame(PaintEventArgs e)
-        {
-            var frame = new Rectangle(e.ClipRectangle.Left, e.ClipRectangle.Top, e.ClipRectangle.Width - 1, e.ClipRectangle.Height - 1);
-            e.Graphics.FillRectangle(Brushes.White, frame);
-            e.Graphics.DrawRectangle(Pens.Black, frame);
         }
 
         private void DrawHighlight(PaintEventArgs e)

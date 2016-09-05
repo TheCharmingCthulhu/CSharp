@@ -13,6 +13,7 @@ namespace WorldStamper.Sources.Models
         public string Name { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public System.Drawing.Point Spawn { get; set; }
         public List<Tileset> Tilesets { get; set; } = new List<Tileset>();
         public List<Tile> Tiles { get; set; } = new List<Tile>();
 
@@ -26,16 +27,6 @@ namespace WorldStamper.Sources.Models
         }
 
         public void LoadFile(string fileName)
-        {
-            switch (Path.GetExtension(fileName).ToLower())
-            {
-                case ".xml":
-                    LoadFileAsXML(fileName);
-                    break;
-            }
-        }
-
-        private void LoadFileAsXML(string fileName)
         {
             var xml = new XmlDocument();
             xml.Load(fileName);
@@ -52,10 +43,19 @@ namespace WorldStamper.Sources.Models
             foreach (XmlNode tilesetNode in tilesetsNode.ChildNodes)
             {
                 var tileset = Tileset.ParseFile(Path.Combine(ResourceUtils.GetResourcePath(ResourceUtils.AssetsType.Gfx),
-                                                             tilesetNode.Attributes["file"].Value));
+                                                tilesetNode.Attributes["file"].Value));
 
                 Tilesets.Add(tileset);
             }
+
+            // Map->Objects
+
+            // Map->Overlays
+
+            // Map->Transitions
+
+            // Map->Spawn
+            Spawn = new System.Drawing.Point(int.Parse(mapNode.ChildNodes[4].Attributes["x"].Value), int.Parse(mapNode.ChildNodes[4].Attributes["y"].Value));
 
             // Map->Tiles
             foreach (XmlNode node in mapNode.ChildNodes)
@@ -74,11 +74,59 @@ namespace WorldStamper.Sources.Models
 
         public void SaveFile(string fileName)
         {
-            switch (Path.GetExtension(fileName).ToLower())
+            using (var writer = XmlWriter.Create(fileName, new XmlWriterSettings() { Indent = true, OmitXmlDeclaration = true }))
             {
-                case ".xml":
+                writer.WriteStartDocument();
+                writer.WriteStartElement("map");
 
-                    break;
+                writer.WriteAttributeString("id", ID.ToString());
+                writer.WriteAttributeString("name", Name);
+                writer.WriteAttributeString("width", Width.ToString());
+                writer.WriteAttributeString("height", Height.ToString());
+
+                writer.WriteStartElement("tilesets");
+                foreach (var tileset in Tilesets)
+                {
+                    writer.WriteStartElement("tileset");
+                    writer.WriteAttributeString("file", tileset.Filename);
+                    writer.WriteEndElement();
+                }
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("objects");
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("overlays");
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("transitions");
+                writer.WriteEndElement();
+
+                writer.WriteStartElement("spawn");
+                writer.WriteAttributeString("x", Spawn.X.ToString());
+                writer.WriteAttributeString("y", Spawn.Y.ToString());
+                writer.WriteEndElement();
+
+                foreach(var tile in Tiles)
+                {
+                    writer.WriteStartElement("tile");
+                    writer.WriteAttributeString("x", tile.X.ToString());
+                    writer.WriteAttributeString("y", tile.Y.ToString());
+                    writer.WriteAttributeString("spriteid", tile.Sprite.ID.ToString());
+
+                    // Tile->Scripts
+                    writer.WriteStartElement("script");
+                    writer.WriteEndElement();
+
+                    // Tile->Properties
+
+                    // Tile->Overlays
+
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
             }
         }
         #endregion
@@ -91,6 +139,11 @@ namespace WorldStamper.Sources.Models
                         if (sprite.ID == spriteID)
                             return sprite;
             return null;
+        }
+
+        internal Tile GetTile(int x, int y)
+        {
+            return Tiles.Find(t => t.X == x && t.Y == y);
         }
     }
 }

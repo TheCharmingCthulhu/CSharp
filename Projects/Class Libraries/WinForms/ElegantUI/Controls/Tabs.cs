@@ -14,6 +14,16 @@ namespace ElegantUI.Controls
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
         }
 
+        #region <- Events ->
+        public class TabsEventArgs
+        {
+            public int TabIndex { get; set; }
+        }
+
+        public delegate void TabsHandler(TabsEventArgs e);
+        public event TabsHandler TabClosing;
+        #endregion
+
         #region <- Functions ->
         private int GetTabByLocation(Point location)
         {
@@ -38,11 +48,28 @@ namespace ElegantUI.Controls
             Invalidate();
         }
 
-        protected override void OnMouseClick(MouseEventArgs e)
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            OnTabCloseDown(e);
+
+            base.OnMouseDown(e);
+        }
+
+        private void OnTabCloseDown(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && _HoverTabIndex != -1 && _CloseButtonTarget.Contains(e.Location) || 
-                e.Button == MouseButtons.Middle && _HoverTabIndex != -1) TabPages.RemoveAt(_HoverTabIndex);
+                e.Button == MouseButtons.Middle && _HoverTabIndex != -1)
+            {
+                TabClosing?.Invoke(new TabsEventArgs() { TabIndex = _HoverTabIndex });
 
+                TabPages.RemoveAt(_HoverTabIndex);
+
+                SelectedIndex = _HoverTabIndex != TabPages.Count ? _HoverTabIndex : TabPages.Count - 1;
+            }
+        }
+
+        protected override void OnMouseClick(MouseEventArgs e)
+        {
             base.OnMouseClick(e);
         }
 
@@ -50,9 +77,6 @@ namespace ElegantUI.Controls
         {
             _HoverTabIndex = GetTabByLocation(e.Location);
             _MousePosition = e.Location;
-
-            if (e.Button == MouseButtons.Left)
-                if (_CloseButtonTarget.Contains(e.Location) && _HoverTabIndex != -1) TabPages.RemoveAt(_HoverTabIndex);
 
             Invalidate();
 
@@ -113,7 +137,7 @@ namespace ElegantUI.Controls
                     e.Graphics.DrawLine(_FramePen, rect.Left, rect.Top, rect.Left + rect.Width - 1, rect.Top);
                 }
 
-                DrawCloseButton(e, rect);
+                DrawCloseButton(e, rect, ref i);
 
                 var textRect = new Rectangle(rect.Left + 4, rect.Top, rect.Width, rect.Height);
                 e.Graphics.DrawString(TabPages[i].Text, Font, Brushes.Black, textRect, new StringFormat()
@@ -126,19 +150,24 @@ namespace ElegantUI.Controls
 
         RectangleF _CloseButtonTarget;
         Pen _CloseColorPen = Pens.Black;
-        private void DrawCloseButton(PaintEventArgs e, Rectangle rectangle)
-        { 
-            var closeRect = new Rectangle(rectangle.Left + rectangle.Width - 15, (rectangle.Top + (rectangle.Height / 2)) - 5, 8, 8);
-            var hoverRect = new RectangleF(rectangle.Left + rectangle.Width - 20, rectangle.Top, 19, rectangle.Height);
+        private void DrawCloseButton(PaintEventArgs e, Rectangle rectangle, ref int index)
+        {
+            var offset_ns = SelectedIndex != index ? 2 : 0;
+            var offset_s = SelectedIndex == index ? 1 : 0;
 
-            _CloseColorPen = (_HoverTabIndex == -1 || !hoverRect.Contains(_MousePosition)) ? Pens.Black : Pens.White;
+            var closeRect = new RectangleF(rectangle.Left + rectangle.Width - 12, (rectangle.Top + (rectangle.Height / 2)) - 4 - offset_s, 8, 8);
+            var hoverRect = new RectangleF(rectangle.Left + rectangle.Width - 15, rectangle.Top - offset_s, 15, rectangle.Height + offset_s);
 
-            if (_HoverTabIndex != -1 && hoverRect.Contains(_MousePosition))
-            {
-                e.Graphics.FillRectangle(Brushes.Red, hoverRect);
+            if (!DesignMode)
+                _CloseColorPen = (_HoverTabIndex == -1 || !hoverRect.Contains(_MousePosition)) ? Pens.Black : Pens.White;
 
-                _CloseButtonTarget = hoverRect;
-            }
+            if (!DesignMode)
+                if (_HoverTabIndex != -1 && hoverRect.Contains(_MousePosition))
+                {
+                    e.Graphics.FillRectangle(Brushes.Red, hoverRect);
+
+                    _CloseButtonTarget = hoverRect;
+                }
 
             e.Graphics.DrawLine(_CloseColorPen, closeRect.Left, closeRect.Top, closeRect.Left + closeRect.Width, closeRect.Top + closeRect.Height);
             e.Graphics.DrawLine(_CloseColorPen, closeRect.Left + closeRect.Width, closeRect.Top, closeRect.Left, closeRect.Top + closeRect.Height);

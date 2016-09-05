@@ -3,6 +3,7 @@ using System;
 using System.Windows.Forms;
 using WorldStamper.Forms;
 using WorldStamper.Sources.Models;
+using WorldStamper.Sources.Models.Editor;
 using WorldStamper.Sources.Views;
 
 namespace WorldStamper
@@ -28,9 +29,10 @@ namespace WorldStamper
 
         private void _view_OnMapsChanged(Map map)
         {
-            ToolkitResetTilesets();
-
             ShowMap(map);
+
+            ToolkitResetTilesetsTab();
+
             ShowTilesets(map);
         }
 
@@ -65,6 +67,7 @@ namespace WorldStamper
                 grid.SetTile(tile.X, tile.Y, tile.Sprite.Texture);
 
             tabsMaps.TabPages.Add(tab);
+            tabsMaps.SelectedTab = tab;
         }
 
 
@@ -90,7 +93,6 @@ namespace WorldStamper
             });
 
             imageBoxTiles.Enabled = imageBoxTiles.Count() > 0;
-
             imageBoxTiles.Refresh();
         }
         #endregion
@@ -98,9 +100,13 @@ namespace WorldStamper
         private void Grid_TileSelect(object sender, Grid.GridArgs e)
         {
             var view = sender as Grid;
+            var map = GetCurrentTabMap();
+            var config = GetCurrentTabMapConfig();
 
-            if (_view.Tool.Sprite != null)
-                view.SetTile(e.X, e.Y, _view.Tool.Sprite.Texture);
+            if (config.Tool.Sprite != null)
+                view.SetTile(e.X, e.Y, config.Tool.Sprite.Texture);
+
+            map.GetTile(e.X, e.Y).Sprite = config.Tool.Sprite;
         }
 
         #region <- Main Menu ->
@@ -125,10 +131,23 @@ namespace WorldStamper
             };
 
             if (ofd.ShowDialog() == DialogResult.OK)
-            {
                 if (ofd.FileNames.Length > 0)
                     foreach (var file in ofd.FileNames)
                         _view.LoadMap(file);
+        }
+
+        private void menuItemSave_Click(object sender, EventArgs e)
+        {
+            if (GetCurrentTabMap() != null)
+            {
+                SaveFileDialog sfd = new SaveFileDialog()
+                {
+                    Filter = "Map Files|*.xml;*.json;*.bin;*.zip",
+                    InitialDirectory = "..\\assets",
+                };
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                    _view.SaveMap(GetCurrentTabMap(), sfd.FileName);
             }
         }
         #endregion
@@ -136,24 +155,30 @@ namespace WorldStamper
         #region <- Toolkit Panel ->
         private void buttonCursor_Click(object sender, EventArgs e)
         {
-            _view.Tool.Mode = Tool.ToolMode.Cursor;
-
-            toolStripStatusToolMode.Text = "Cursor";
+            GetCurrentTabMapConfig().Tool.Mode = Tool.DrawMode.Cursor;
 
             comboBoxTilesets.Enabled = false;
             comboBoxImages.Enabled = false;
             imageBoxTiles.Enabled = false;
+
+            GetCurrentTabMapConfig().ClearSelection();
+
+            ToolkitResetTilesetsTab(false);
+
+            UpdateTool();
         }
 
         private void buttonPaint_Click(object sender, EventArgs e)
         {
-            _view.Tool.Mode = Tool.ToolMode.Paint;
-
-            toolStripStatusToolMode.Text = "Paint";
+            GetCurrentTabMapConfig().Tool.Mode = Tool.DrawMode.Paint;
 
             comboBoxTilesets.Enabled = true;
             comboBoxImages.Enabled = false;
             imageBoxTiles.Enabled = false;
+
+            ToolkitResetTilesetsTab(false);
+
+            UpdateTool();
         }
 
         private void comboBoxTilesets_SelectedIndexChanged(object sender, EventArgs e)
@@ -161,6 +186,10 @@ namespace WorldStamper
             var view = sender as ComboBox;
             if (view.SelectedItem != null)
                 ShowImages(view.SelectedItem as Tileset);
+
+            imageBoxTiles.Clear();
+
+            GetCurrentTabMapConfig().SelectedTileset = view.SelectedItem as Tileset;
         }
 
         private void comboBoxImages_SelectedIndexChanged(object sender, EventArgs e)
@@ -168,35 +197,129 @@ namespace WorldStamper
             var view = sender as ComboBox;
             if (view.SelectedItem != null)
                 ShowTiles(view.SelectedItem as Image);
+
+            GetCurrentTabMapConfig().SelectedImage = view.SelectedItem as Image;
         }
 
         private void imageBoxTiles_ImageSelected(WorldStamperUI.UI.Toolkit.ImageBox.ImageBoxArgs e)
         {
-            _view.Tool.Sprite = e.Item.Tag as Sprite;
+            GetCurrentTabMapConfig().Tool.Sprite = e.Item.Tag as Sprite;
         }
 
         private void tabControlMaps_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabsMaps.SelectedTab != null)
             {
-                var map = tabsMaps.SelectedTab.Tag as Map;
+                var map = GetCurrentTabMap();
 
-                ToolkitResetTilesets();
+                ToolkitResetTilesetsTab();
+
                 ShowTilesets(map);
             }
         }
 
-        private void ToolkitResetTilesets()
+        private void ToolkitUpdate(Map map, MapConfig config)
         {
-            comboBoxTilesets.Items.Clear();
-            comboBoxTilesets.Enabled = false;
-            comboBoxImages.Items.Clear();
+            if (map != null)
+            {
+                ShowTilesets(map);
+            }
+
+            if (config != null)
+            {
+
+                if (config.SelectedTileset != null)
+                {
+                    ShowImages(config.SelectedTileset);
+
+                    comboBoxTilesets.SelectedItem = config.SelectedTileset;
+                }
+
+                if (config.SelectedImage != null)
+                {
+                    ShowTiles(config.SelectedImage);
+
+                    comboBoxImages.SelectedItem = config.SelectedImage;
+                }
+            }
+        }
+
+        private void ToolkitResetTilesetsTab(bool clear = true)
+        {
+            buttonCursor.Enabled = GetCurrentTabMap() != null;
+            buttonPaint.Enabled = GetCurrentTabMap() != null;
+
+            if (clear) comboBoxTilesets.Items.Clear();
+            else comboBoxTilesets.SelectedIndex = -1;
+            comboBoxTilesets.Enabled = GetCurrentTabMapConfig()?.Tool.Mode == Tool.DrawMode.Paint;
+
+            if (clear) comboBoxImages.Items.Clear();
+            else comboBoxImages.SelectedIndex = -1;
             comboBoxImages.Enabled = false;
+
             imageBoxTiles.Clear();
         }
         #endregion
 
+        #region <- Statusbar & Buttons ->
+        private void UpdateTool()
+        {
+            var config = GetCurrentTabMapConfig();
+
+            if (config != null)
+            {
+                toolStripStatusToolMode.Text = Enum.GetName(typeof(Tool.DrawMode), config.Tool.Mode);
+
+                switch (config.Tool.Mode)
+                {
+                    case Tool.DrawMode.Cursor:
+                        buttonCursor.Focus();
+                        break;
+                    case Tool.DrawMode.Paint:
+                        buttonPaint.Focus();
+                        break;
+                }
+            }
+        }
+        #endregion
+
         #region <- Paint ->
+        #endregion
+
+        #region <- Tabs Control ->
+        private MapConfig GetCurrentTabMapConfig()
+        {
+            if (GetCurrentTabMap() != null)
+                return _view.GetConfig(GetCurrentTabMap());
+
+            return null;
+        }
+
+        private Map GetCurrentTabMap()
+        {
+            if (tabsMaps.TabPages.Count > 0)
+                return tabsMaps.SelectedTab.Tag as Map;
+
+            return null;
+        }
+
+        private void tabsMaps_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var view = (sender as Tabs);
+            var map = GetCurrentTabMap();
+            var config = GetCurrentTabMapConfig();
+
+            ToolkitResetTilesetsTab();
+
+            ToolkitUpdate(map, config);
+
+            UpdateTool();
+        }
+
+        private void tabsMaps_TabClosing(Tabs.TabsEventArgs e)
+        {
+            _view.RemoveMap(GetCurrentTabMap());
+        }
         #endregion
     }
 }

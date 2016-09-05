@@ -32,8 +32,8 @@
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemNew = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemLoad = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemSave = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.comboBoxImages = new System.Windows.Forms.ComboBox();
             this.comboBoxTilesets = new System.Windows.Forms.ComboBox();
@@ -48,13 +48,14 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusToolMode = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabsMaps = new ElegantUI.Controls.Tabs();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
             this.menuBar.SuspendLayout();
             this.tabControlToolkits.SuspendLayout();
             this.tabPageTilesets.SuspendLayout();
             this.panelTilesetsDrawing.SuspendLayout();
             this.statusStripInformation.SuspendLayout();
-            this.tabsMaps.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuBar
@@ -70,8 +71,8 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuItemNew,
-            this.loadToolStripMenuItem,
-            this.saveToolStripMenuItem,
+            this.menuItemLoad,
+            this.menuItemSave,
             this.menuItemExit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -81,30 +82,31 @@
             // 
             this.menuItemNew.Name = "menuItemNew";
             this.menuItemNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.menuItemNew.Size = new System.Drawing.Size(143, 22);
+            this.menuItemNew.Size = new System.Drawing.Size(152, 22);
             this.menuItemNew.Text = "New";
             this.menuItemNew.Click += new System.EventHandler(this.menuItemNew_Click);
             // 
-            // loadToolStripMenuItem
+            // menuItemLoad
             // 
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.loadToolStripMenuItem.Text = "Load";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.menuItemLoad_Click);
+            this.menuItemLoad.Name = "menuItemLoad";
+            this.menuItemLoad.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.menuItemLoad.Size = new System.Drawing.Size(152, 22);
+            this.menuItemLoad.Text = "Load";
+            this.menuItemLoad.Click += new System.EventHandler(this.menuItemLoad_Click);
             // 
-            // saveToolStripMenuItem
+            // menuItemSave
             // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.saveToolStripMenuItem.Text = "Save";
+            this.menuItemSave.Name = "menuItemSave";
+            this.menuItemSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.menuItemSave.Size = new System.Drawing.Size(152, 22);
+            this.menuItemSave.Text = "Save";
+            this.menuItemSave.Click += new System.EventHandler(this.menuItemSave_Click);
             // 
             // menuItemExit
             // 
             this.menuItemExit.Name = "menuItemExit";
             this.menuItemExit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.menuItemExit.Size = new System.Drawing.Size(143, 22);
+            this.menuItemExit.Size = new System.Drawing.Size(152, 22);
             this.menuItemExit.Text = "Exit";
             this.menuItemExit.Click += new System.EventHandler(this.menuItemExit_Click);
             // 
@@ -170,6 +172,7 @@
             // 
             // buttonPaint
             // 
+            this.buttonPaint.Enabled = false;
             this.buttonPaint.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonPaint.Image = ((System.Drawing.Image)(resources.GetObject("buttonPaint.Image")));
             this.buttonPaint.Location = new System.Drawing.Point(30, 3);
@@ -181,6 +184,7 @@
             // 
             // buttonCursor
             // 
+            this.buttonCursor.Enabled = false;
             this.buttonCursor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonCursor.Image = ((System.Drawing.Image)(resources.GetObject("buttonCursor.Image")));
             this.buttonCursor.Location = new System.Drawing.Point(0, 3);
@@ -241,23 +245,44 @@
             // 
             // tabsMaps
             // 
-            this.tabsMaps.Controls.Add(this.tabPage1);
             this.tabsMaps.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabsMaps.Location = new System.Drawing.Point(0, 24);
             this.tabsMaps.Name = "tabsMaps";
             this.tabsMaps.SelectedIndex = 0;
             this.tabsMaps.Size = new System.Drawing.Size(828, 395);
             this.tabsMaps.TabIndex = 6;
+            this.tabsMaps.TabClosing += new ElegantUI.Controls.Tabs.TabsHandler(this.tabsMaps_TabClosing);
+            this.tabsMaps.SelectedIndexChanged += new System.EventHandler(this.tabsMaps_SelectedIndexChanged);
             // 
-            // tabPage1
+            // tabPage2
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.White;
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(820, 366);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(820, 366);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(820, 366);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Location = new System.Drawing.Point(4, 25);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage8.Size = new System.Drawing.Size(820, 366);
+            this.tabPage8.TabIndex = 5;
+            this.tabPage8.Text = "tabPage8";
+            this.tabPage8.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -281,7 +306,6 @@
             this.panelTilesetsDrawing.ResumeLayout(false);
             this.statusStripInformation.ResumeLayout(false);
             this.statusStripInformation.PerformLayout();
-            this.tabsMaps.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,8 +315,8 @@
         private System.Windows.Forms.MenuStrip menuBar;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuItemNew;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuItemSave;
+        private System.Windows.Forms.ToolStripMenuItem menuItemLoad;
         private System.Windows.Forms.ToolStripMenuItem menuItemExit;
         private WorldStamperUI.UI.Toolkit.ImageBox imageBoxTiles;
         private System.Windows.Forms.ComboBox comboBoxTilesets;
@@ -307,7 +331,9 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusToolMode;
         private ElegantUI.Controls.Tabs tabsMaps;
         private System.Windows.Forms.TabPage tabPageEntities;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage8;
     }
 }
 

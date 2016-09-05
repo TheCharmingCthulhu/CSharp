@@ -10,6 +10,7 @@ namespace WorldStamper.Sources.Models
 {
     class Tileset : IResource
     {
+        public string Filename { get; set; }
         public string Name { get; set; }
         public List<Image> Images { get; set; } = new List<Image>();
 
@@ -29,50 +30,45 @@ namespace WorldStamper.Sources.Models
 
         public void LoadFile(string fileName)
         {
-            switch (Path.GetExtension(fileName).ToLower())
-            {
-                case ".xml":
-                    LoadFileAsXML(fileName);
-                    break;
-            }
-        }
+            if (File.Exists(fileName))
+            { 
+                var xml = new XmlDocument();
+                xml.Load(fileName);
 
-        private void LoadFileAsXML(string fileName)
-        {
-            var xml = new XmlDocument();
-            xml.Load(fileName);
+                Filename = Path.GetFileName(fileName);
+                Name = Path.GetFileNameWithoutExtension(fileName);
 
-            Name = Path.GetFileNameWithoutExtension(fileName);
-
-            // Tileset->Images
-            foreach (XmlNode imageNode in xml.ChildNodes[0].ChildNodes)
-            {
-                var image = new Image()
+                // Tileset->Images
+                foreach (XmlNode imageNode in xml.ChildNodes[0].ChildNodes)
                 {
-                    Name = imageNode.Attributes["file"].Value,
-                    SpriteWidth = int.Parse(imageNode.Attributes["width"].Value),
-                    SpriteHeight = int.Parse(imageNode.Attributes["height"].Value)
-                };
-
-                var file = new Bitmap(Path.Combine(ResourceUtils.GetResourcePath(ResourceUtils.AssetsType.Gfx), imageNode.Attributes["file"].Value));
-
-                foreach (XmlNode spriteNode in imageNode.ChildNodes)
-                {
-                    var sprite = new Sprite()
+                    var image = new Image()
                     {
-                        ID = int.Parse(spriteNode.Attributes["id"].Value),
-                        X = int.Parse(spriteNode.Attributes["x"].Value),
-                        Y = int.Parse(spriteNode.Attributes["y"].Value),
-                        Frames = int.Parse(spriteNode.Attributes["frames"].Value)
+                        Name = imageNode.Attributes["file"].Value,
+                        SpriteWidth = int.Parse(imageNode.Attributes["width"].Value),
+                        SpriteHeight = int.Parse(imageNode.Attributes["height"].Value)
                     };
 
-                    sprite.Texture = GraphicUtils.Cut(image.SpriteWidth * sprite.X, image.SpriteHeight * sprite.Y,
-                        image.SpriteWidth, image.SpriteHeight, file);
+                    var file = new Bitmap(Path.Combine(ResourceUtils.GetResourcePath(ResourceUtils.AssetsType.Gfx),
+                                                       imageNode.Attributes["file"].Value));
 
-                    image.Sprites.Add(sprite);
+                    foreach (XmlNode spriteNode in imageNode.ChildNodes)
+                    {
+                        var sprite = new Sprite()
+                        {
+                            ID = int.Parse(spriteNode.Attributes["id"].Value),
+                            X = int.Parse(spriteNode.Attributes["x"].Value),
+                            Y = int.Parse(spriteNode.Attributes["y"].Value),
+                            Frames = int.Parse(spriteNode.Attributes["frames"].Value)
+                        };
+
+                        sprite.Texture = GraphicUtils.Cut(image.SpriteWidth * sprite.X, image.SpriteHeight * sprite.Y,
+                            image.SpriteWidth, image.SpriteHeight, file);
+
+                        image.Sprites.Add(sprite);
+                    }
+
+                    Images.Add(image);
                 }
-
-                Images.Add(image);
             }
         }
 

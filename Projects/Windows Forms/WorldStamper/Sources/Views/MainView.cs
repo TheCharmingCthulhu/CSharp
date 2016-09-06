@@ -76,6 +76,24 @@ namespace WorldStamper.Sources.Views
         {
             map.SaveFile(fileName);
         }
+
+        internal List<Map> OverwriteChanges()
+        {
+            var maps = new List<Map>();
+
+            _maps.ForEach(m => { m.Copy(); maps.Add(m); });
+
+            return maps;
+        }
+
+        internal bool HasMapChanges()
+        {
+            foreach (var map in _maps)
+                if (map.HasChanges())
+                    return true;
+
+            return false;
+        }
         #endregion
     }
 }

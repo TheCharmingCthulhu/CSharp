@@ -97,6 +97,7 @@ namespace WorldStamper
         }
         #endregion
 
+        #region <- Grid ->
         private void Grid_TileSelect(object sender, Grid.GridArgs e)
         {
             var view = sender as Grid;
@@ -106,8 +107,20 @@ namespace WorldStamper
             if (config.Tool.Sprite != null)
                 view.SetTile(e.X, e.Y, config.Tool.Sprite.Texture);
 
-            map.GetTile(e.X, e.Y).Sprite = config.Tool.Sprite;
+            map.ReplaceTile(e.X, e.Y, new Tile() {
+                X = e.X,
+                Y = e.Y,
+                Sprite = new Sprite()
+                {
+                    ID = config.Tool.Sprite.ID,
+                    X = config.Tool.Sprite.X,
+                    Y = config.Tool.Sprite.Y,
+                    Texture = config.Tool.Sprite.Texture,
+                    Frames = config.Tool.Sprite.Frames
+                }
+            });
         }
+        #endregion
 
         #region <- Main Menu ->
         private void menuItemNew_Click(object sender, System.EventArgs e)
@@ -139,16 +152,19 @@ namespace WorldStamper
         private void menuItemSave_Click(object sender, EventArgs e)
         {
             if (GetCurrentTabMap() != null)
-            {
-                SaveFileDialog sfd = new SaveFileDialog()
-                {
-                    Filter = "Map Files|*.xml;*.json;*.bin;*.zip",
-                    InitialDirectory = "..\\assets",
-                };
+                SaveMapFileDialog(GetCurrentTabMap());
+        }
 
-                if (sfd.ShowDialog() == DialogResult.OK)
-                    _view.SaveMap(GetCurrentTabMap(), sfd.FileName);
-            }
+        private void SaveMapFileDialog(Map map)
+        {
+            SaveFileDialog sfd = new SaveFileDialog()
+            {
+                Filter = "Map Files|*.xml;*.json;*.bin;*.zip",
+                InitialDirectory = "..\\assets",
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+                _view.SaveMap(GetCurrentTabMap(), sfd.FileName);
         }
         #endregion
 
@@ -318,8 +334,31 @@ namespace WorldStamper
 
         private void tabsMaps_TabClosing(Tabs.TabsEventArgs e)
         {
+            ValidateMapChanges();
+
             _view.RemoveMap(GetCurrentTabMap());
         }
         #endregion
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ValidateMapChanges();
+        }
+
+        private void ValidateMapChanges()
+        {
+            if (_view.HasMapChanges())
+            {
+                var result = MessageBox.Show("Would you like to save your changes?", "Save changes", MessageBoxButtons.YesNo);
+
+                if (result == DialogResult.Yes)
+                {
+                    var maps = _view.OverwriteChanges();
+
+                    foreach (var map in maps)
+                        SaveMapFileDialog(map);
+                }
+            }
+        }
     }
 }

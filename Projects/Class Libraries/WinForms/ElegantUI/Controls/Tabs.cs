@@ -57,14 +57,19 @@ namespace ElegantUI.Controls
 
         private void OnTabCloseDown(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && _HoverTabIndex != -1 && _CloseButtonTarget.Contains(e.Location) || 
+            if (e.Button == MouseButtons.Left && _HoverTabIndex != -1 && _CloseButtonTarget.Contains(e.Location) ||
                 e.Button == MouseButtons.Middle && _HoverTabIndex != -1)
             {
-                TabClosing?.Invoke(new TabsEventArgs() { TabIndex = _HoverTabIndex });
+                var tabIndex = _HoverTabIndex;
+                
+                TabClosing?.Invoke(new TabsEventArgs() { TabIndex = tabIndex });
 
-                TabPages.RemoveAt(_HoverTabIndex);
+                if (tabIndex > -1)
+                {
+                    TabPages.RemoveAt(tabIndex);
 
-                SelectedIndex = _HoverTabIndex != TabPages.Count ? _HoverTabIndex : TabPages.Count - 1;
+                    SelectedIndex = tabIndex != TabPages.Count ? tabIndex : TabPages.Count - 1;
+                }
             }
         }
 

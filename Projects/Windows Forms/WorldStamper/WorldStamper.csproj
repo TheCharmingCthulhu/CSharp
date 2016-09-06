@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sources\Interfaces\ICopy.cs" />
     <Compile Include="Sources\Interfaces\IResource.cs" />
     <Compile Include="Sources\Models\Editor\MapConfig.cs" />
     <Compile Include="Sources\Models\Gfx\Image.cs" />

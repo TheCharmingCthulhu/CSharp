@@ -7,8 +7,10 @@ using WorldStamper.Sources.Utilities;
 
 namespace WorldStamper.Sources.Models
 {
-    class Map : IResource
+    class Map : IResource, ICopy
     {
+        Map _original;
+
         public int ID { get; set; }
         public string Name { get; set; }
         public int Width { get; set; }
@@ -17,11 +19,62 @@ namespace WorldStamper.Sources.Models
         public List<Tileset> Tilesets { get; set; } = new List<Tileset>();
         public List<Tile> Tiles { get; set; } = new List<Tile>();
 
+        public Map()
+        {
+
+        }
+
+        #region <- Duplicating ->
+        public void Copy()
+        {
+            _original = new Map()
+            {
+                ID = ID,
+                Name = Name,
+                Width = Width,
+                Height = Height,
+                Spawn = Spawn
+            };
+            _original.Tiles.AddRange(Tiles);
+            _original.Tilesets.AddRange(Tilesets);
+        }
+
+        public bool HasChanges()
+        {
+            if (HasUpdatedTiles() || HasUpdateTilesets()) return true;
+
+            return  !(_original.ID == ID &&
+                    _original.Name.Equals(Name) &&
+                    _original.Width == Width &&
+                    _original.Height == Height &&
+                    _original.Spawn == Spawn);
+        }
+
+        private bool HasUpdatedTiles()
+        {
+            foreach (var tile in Tiles)
+                if (!_original.Tiles.Contains(tile))
+                    return true;
+
+            return false;
+        }
+
+        private bool HasUpdateTilesets()
+        {
+            foreach (var tileset in Tilesets)
+                if (!_original.Tilesets.Contains(tileset))
+                    return true;
+
+            return false;
+        } 
+        #endregion
+
         #region <- File Parsing ->
         internal static Map ParseFile(string fileName)
         {
             var map = new Map();
             map.LoadFile(fileName);
+            map.Copy();
 
             return map;
         }
@@ -79,13 +132,13 @@ namespace WorldStamper.Sources.Models
                 writer.WriteStartDocument();
                 writer.WriteStartElement("map");
 
-                writer.WriteAttributeString("id", ID.ToString());
-                writer.WriteAttributeString("name", Name);
-                writer.WriteAttributeString("width", Width.ToString());
-                writer.WriteAttributeString("height", Height.ToString());
+                writer.WriteAttributeString("id", _original.ID.ToString());
+                writer.WriteAttributeString("name", _original.Name);
+                writer.WriteAttributeString("width", _original.Width.ToString());
+                writer.WriteAttributeString("height", _original.Height.ToString());
 
                 writer.WriteStartElement("tilesets");
-                foreach (var tileset in Tilesets)
+                foreach (var tileset in _original.Tilesets)
                 {
                     writer.WriteStartElement("tileset");
                     writer.WriteAttributeString("file", tileset.Filename);
@@ -103,11 +156,11 @@ namespace WorldStamper.Sources.Models
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("spawn");
-                writer.WriteAttributeString("x", Spawn.X.ToString());
-                writer.WriteAttributeString("y", Spawn.Y.ToString());
+                writer.WriteAttributeString("x", _original.Spawn.X.ToString());
+                writer.WriteAttributeString("y", _original.Spawn.Y.ToString());
                 writer.WriteEndElement();
 
-                foreach(var tile in Tiles)
+                foreach(var tile in _original.Tiles)
                 {
                     writer.WriteStartElement("tile");
                     writer.WriteAttributeString("x", tile.X.ToString());
@@ -139,6 +192,14 @@ namespace WorldStamper.Sources.Models
                         if (sprite.ID == spriteID)
                             return sprite;
             return null;
+        }
+
+        internal void ReplaceTile(int x, int y, Tile tile)
+        {
+            var t = GetTile(x, y);
+
+            Tiles.Remove(t);
+            Tiles.Add(tile);
         }
 
         internal Tile GetTile(int x, int y)

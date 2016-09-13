@@ -1,12 +1,6 @@
-﻿using Sandbox.Sources.Interfaces;
+﻿using Sandbox.Forms;
+using Sandbox.Sources.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sandbox
@@ -40,6 +34,14 @@ namespace Sandbox
             IItem x = new Shape();
             (x as Shape).GetArea();
             x.GetArea();
+        }
+
+        private void buttonClock_Click(object sender, EventArgs e)
+        {
+            ShowForm(() =>
+            {
+                FormClock.Run();
+            });
         }
     }
 }

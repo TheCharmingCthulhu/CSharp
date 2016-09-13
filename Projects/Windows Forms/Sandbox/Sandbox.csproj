@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\FormClock.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormClock.Designer.cs">
+      <DependentUpon>FormClock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -68,6 +74,9 @@
     <Compile Include="Sources\Sequences\CustomItems.cs" />
     <Compile Include="Sources\Sequences\Cycles.cs" />
     <Compile Include="Sources\Sequences\CyclesManager.cs" />
+    <EmbeddedResource Include="Forms\FormClock.resx">
+      <DependentUpon>FormClock.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

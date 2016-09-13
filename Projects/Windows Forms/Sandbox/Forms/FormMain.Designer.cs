@@ -31,6 +31,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonCycles = new System.Windows.Forms.Button();
             this.buttonInterfaces = new System.Windows.Forms.Button();
+            this.buttonClock = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -38,6 +39,7 @@
             // 
             this.flowLayoutPanel1.Controls.Add(this.buttonCycles);
             this.flowLayoutPanel1.Controls.Add(this.buttonInterfaces);
+            this.flowLayoutPanel1.Controls.Add(this.buttonClock);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -65,6 +67,16 @@
             this.buttonInterfaces.UseVisualStyleBackColor = true;
             this.buttonInterfaces.Click += new System.EventHandler(this.buttonInterfaces_Click);
             // 
+            // buttonClock
+            // 
+            this.buttonClock.Location = new System.Drawing.Point(170, 8);
+            this.buttonClock.Name = "buttonClock";
+            this.buttonClock.Size = new System.Drawing.Size(75, 23);
+            this.buttonClock.TabIndex = 2;
+            this.buttonClock.Text = "Clock";
+            this.buttonClock.UseVisualStyleBackColor = true;
+            this.buttonClock.Click += new System.EventHandler(this.buttonClock_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -84,6 +96,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button buttonCycles;
         private System.Windows.Forms.Button buttonInterfaces;
+        private System.Windows.Forms.Button buttonClock;
     }
 }
 

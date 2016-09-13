@@ -1,4 +1,4 @@
-﻿namespace WorldStamper.Sources.Models
+﻿namespace WorldStamper.Sources.Models.MapModules
 {
     class Tile
     {

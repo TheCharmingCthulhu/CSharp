@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Xml;
+using WorldStamper.Sources.Extensions;
 using WorldStamper.Sources.Interfaces;
 using WorldStamper.Sources.Utilities;
 
@@ -31,7 +32,7 @@ namespace WorldStamper.Sources.Models
         public void LoadFile(string fileName)
         {
             if (File.Exists(fileName))
-            { 
+            {
                 var xml = new XmlDocument();
                 xml.Load(fileName);
 
@@ -40,35 +41,37 @@ namespace WorldStamper.Sources.Models
 
                 // Tileset->Images
                 foreach (XmlNode imageNode in xml.ChildNodes[0].ChildNodes)
-                {
-                    var image = new Image()
+                    if (imageNode.Name.ToLower().Equals("image"))
                     {
-                        Name = imageNode.Attributes["file"].Value,
-                        SpriteWidth = int.Parse(imageNode.Attributes["width"].Value),
-                        SpriteHeight = int.Parse(imageNode.Attributes["height"].Value)
-                    };
-
-                    var file = new Bitmap(Path.Combine(ResourceUtils.GetResourcePath(ResourceUtils.AssetsType.Gfx),
-                                                       imageNode.Attributes["file"].Value));
-
-                    foreach (XmlNode spriteNode in imageNode.ChildNodes)
-                    {
-                        var sprite = new Sprite()
+                        var image = new Image()
                         {
-                            ID = int.Parse(spriteNode.Attributes["id"].Value),
-                            X = int.Parse(spriteNode.Attributes["x"].Value),
-                            Y = int.Parse(spriteNode.Attributes["y"].Value),
-                            Frames = int.Parse(spriteNode.Attributes["frames"].Value)
+                            Name = imageNode.Attributes["file"].Value,
+                            SpriteWidth = imageNode.Attributes["width"].ToValue<int>(),
+                            SpriteHeight = imageNode.Attributes["height"].ToValue<int>()
                         };
 
-                        sprite.Texture = GraphicUtils.Cut(image.SpriteWidth * sprite.X, image.SpriteHeight * sprite.Y,
-                            image.SpriteWidth, image.SpriteHeight, file);
+                        var texture = new Bitmap(Path.Combine(ResourceUtils.GetResourcePath(ResourceUtils.AssetsType.Gfx),
+                                                           imageNode.Attributes["file"].Value));
 
-                        image.Sprites.Add(sprite);
+                        foreach (XmlNode spriteNode in imageNode.ChildNodes)
+                            if (spriteNode.Name.ToLower().Equals("sprite"))
+                            {
+                                var sprite = new Sprite()
+                                {
+                                    ID = spriteNode.Attributes["id"].ToValue<int>(),
+                                    X = spriteNode.Attributes["x"].ToValue<int>(),
+                                    Y = spriteNode.Attributes["y"].ToValue<int>(),
+                                    Frames = spriteNode.Attributes["frames"].ToValue<int>()
+                                };
+
+                                sprite.Texture = GraphicsUtils.Cut(image.SpriteWidth * sprite.X, image.SpriteHeight * sprite.Y,
+                                    image.SpriteWidth, image.SpriteHeight, texture);
+
+                                image.Sprites.Add(sprite);
+                            }
+
+                        Images.Add(image);
                     }
-
-                    Images.Add(image);
-                }
             }
         }
 
@@ -77,5 +80,20 @@ namespace WorldStamper.Sources.Models
             throw new NotImplementedException();
         }
         #endregion
+
+        public void Copy()
+        {
+
+        }
+
+        public bool HasChanges()
+        {
+            return false;
+        }
+
+        public bool IsEqual<IResource>(IResource resource)
+        {
+            return false;
+        }
     }
 }

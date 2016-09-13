@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using WorldStamper.Sources.Extensions;
 using WorldStamper.Sources.Interfaces;
+using WorldStamper.Sources.Models.MapModules;
 using WorldStamper.Sources.Utilities;
 
 namespace WorldStamper.Sources.Models
 {
-    class Map : IResource, ICopy
+    class Map : IResource
     {
         Map _original;
 
         public int ID { get; set; }
+        public string Filename { get; set; }
         public string Name { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public System.Drawing.Point Spawn { get; set; }
+        public List<EntityCollection> EntityCollections { get; set; } = new List<EntityCollection>();
+        public List<Transition> Transitions { get; set; } = new List<Transition>();
         public List<Tileset> Tilesets { get; set; } = new List<Tileset>();
         public List<Tile> Tiles { get; set; } = new List<Tile>();
 
@@ -24,7 +29,7 @@ namespace WorldStamper.Sources.Models
 
         }
 
-        #region <- Duplicating ->
+        #region <- Duplicate ->
         public void Copy()
         {
             _original = new Map()
@@ -41,32 +46,9 @@ namespace WorldStamper.Sources.Models
 
         public bool HasChanges()
         {
-            if (HasUpdatedTiles() || HasUpdateTilesets()) return true;
-
-            return  !(_original.ID == ID &&
-                    _original.Name.Equals(Name) &&
-                    _original.Width == Width &&
-                    _original.Height == Height &&
-                    _original.Spawn == Spawn);
+            return IsEqual(_original);
         }
-
-        private bool HasUpdatedTiles()
-        {
-            foreach (var tile in Tiles)
-                if (!_original.Tiles.Contains(tile))
-                    return true;
-
-            return false;
-        }
-
-        private bool HasUpdateTilesets()
-        {
-            foreach (var tileset in Tilesets)
-                if (!_original.Tilesets.Contains(tileset))
-                    return true;
-
-            return false;
-        } 
+ 
         #endregion
 
         #region <- File Parsing ->
@@ -81,48 +63,83 @@ namespace WorldStamper.Sources.Models
 
         public void LoadFile(string fileName)
         {
-            var xml = new XmlDocument();
-            xml.Load(fileName);
-
-            // Map
-            var mapNode = xml.ChildNodes[0];
-            ID = int.Parse(mapNode.Attributes["id"].Value);
-            Name = mapNode.Attributes["name"].Value;
-            Width = int.Parse(mapNode.Attributes["width"].Value);
-            Height = int.Parse(mapNode.Attributes["height"].Value);
-
-            // Map->Tilesets
-            var tilesetsNode = mapNode.ChildNodes[0];
-            foreach (XmlNode tilesetNode in tilesetsNode.ChildNodes)
+            if (File.Exists(fileName))
             {
-                var tileset = Tileset.ParseFile(Path.Combine(ResourceUtils.GetResourcePath(ResourceUtils.AssetsType.Gfx),
-                                                tilesetNode.Attributes["file"].Value));
+                Filename = fileName;
 
-                Tilesets.Add(tileset);
-            }
+                var xml = new XmlDocument();
+                xml.Load(fileName);
 
-            // Map->Objects
+                // Map
+                var mapNode = xml.ChildNodes[0];
+                ID = mapNode.Attributes["id"].ToValue<int>();
+                Name = mapNode.Attributes["name"].Value;
+                Width = mapNode.Attributes["width"].ToValue<int>();
+                Height = mapNode.Attributes["height"].ToValue<int>();
 
-            // Map->Overlays
-
-            // Map->Transitions
-
-            // Map->Spawn
-            Spawn = new System.Drawing.Point(int.Parse(mapNode.ChildNodes[4].Attributes["x"].Value), int.Parse(mapNode.ChildNodes[4].Attributes["y"].Value));
-
-            // Map->Tiles
-            foreach (XmlNode node in mapNode.ChildNodes)
-                if (node.Name.Equals("tile"))
+                // Map->Tilesets
+                if (mapNode.ChildNodes.HasNode("tilesets"))
                 {
-                    var tile = new Tile()
+                    var tilesetsNode = mapNode.ChildNodes.FindNode("tilesets");
+                    foreach (XmlNode tilesetNode in tilesetsNode.ChildNodes)
                     {
-                        X = int.Parse(node.Attributes["x"].Value),
-                        Y = int.Parse(node.Attributes["y"].Value),
-                        Sprite = FindSpriteByID(int.Parse(node.Attributes["spriteid"].Value))
-                    };
-
-                    Tiles.Add(tile);
+                        var tileset = Tileset.ParseFile(Path.Combine(ResourceUtils.GetResourcePath(ResourceUtils.AssetsType.Gfx),
+                                                        tilesetNode.Attributes["file"].Value));
+                        Tilesets.Add(tileset);
+                    }
                 }
+
+                // Map->Entities
+                if (mapNode.ChildNodes.HasNode("objects"))
+                {
+                    var entityCollectionNodes = mapNode.ChildNodes.FindNode("objects");
+                    foreach (XmlNode entityCollectionNode in entityCollectionNodes)
+                    {
+                        var entityCollection = EntityCollection.ParseFile(Path.Combine(ResourceUtils.GetResourcePath(ResourceUtils.AssetsType.Gfx),
+                                                                          entityCollectionNode.Attributes["file"].Value));
+                        EntityCollections.Add(entityCollection);
+                    }
+                }
+
+                // Map->Transitions
+                if (mapNode.ChildNodes.HasNode("transitions"))
+                {
+                    var transitionsNode = mapNode.ChildNodes.FindNode("transitions");
+                    foreach (XmlNode transitionNode in transitionsNode.ChildNodes)
+                    {
+                        var transition = new Transition()
+                        {
+                            X = transitionNode.Attributes["x"].ToValue<int>(),
+                            Y = transitionNode.Attributes["y"].ToValue<int>(),
+                            Target = new Transition.TransitionTarget()
+                            {
+                                ID = transitionNode.ChildNodes[0].Attributes["mapid"].ToValue<int>(),
+                                X = transitionNode.ChildNodes[0].Attributes["x"].ToValue<int>(),
+                                Y = transitionNode.ChildNodes[0].Attributes["y"].ToValue<int>(),
+                            }
+                        };
+
+                        Transitions.Add(transition);
+                    }
+                }
+
+                // Map->Spawn
+                Spawn = new System.Drawing.Point(mapNode.ChildNodes[4].Attributes["x"].ToValue<int>(), mapNode.ChildNodes[4].Attributes["y"].ToValue<int>());
+
+                // Map->Tiles
+                foreach (XmlNode node in mapNode.ChildNodes)
+                    if (node.Name.ToLower().Equals("tile"))
+                    {
+                        var tile = new Tile()
+                        {
+                            X = node.Attributes["x"].ToValue<int>(),
+                            Y = node.Attributes["y"].ToValue<int>(),
+                            Sprite = FindSpriteByID(node.Attributes["spriteid"].ToValue<int>())
+                        };
+
+                        Tiles.Add(tile);
+                    }
+            }
         }
 
         public void SaveFile(string fileName)
@@ -206,5 +223,43 @@ namespace WorldStamper.Sources.Models
         {
             return Tiles.Find(t => t.X == x && t.Y == y);
         }
+
+        #region <- Equality ->
+        public bool IsEqual<IResource>(IResource resource)
+        {
+            if (resource is Map)
+            {
+                var map = resource as Map;
+
+                return  map.ID == ID &&
+                        map.Name.Equals(Name) &&
+                        map.Width == Width &&
+                        map.Height == Height &&
+                        map.Spawn == Spawn &&
+                        ValidateCollections(resource);
+            }
+
+            return false;
+        }
+
+        private bool ValidateCollections<IResource>(IResource resource)
+        {
+            bool result = false;
+
+            if (resource is Map)
+            {
+                var map = resource as Map;
+
+                foreach (var entityCollection in map.EntityCollections)
+                    foreach (var item in EntityCollections)
+                        if (!item.IsEqual(entityCollection))
+                            return false;
+
+                return true;
+            }
+
+            return result;
+        }
+        #endregion
     }
 }

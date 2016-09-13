@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using WorldStamper.Sources.Interfaces;
 using WorldStamper.Sources.Models;
 using WorldStamper.Sources.Models.Editor;
+using WorldStamper.Sources.Utilities;
 
 namespace WorldStamper.Sources.Views
 {
@@ -14,22 +17,26 @@ namespace WorldStamper.Sources.Views
         #endregion
 
         Dictionary<Map, MapConfig> _mapConfigs = new Dictionary<Map, MapConfig>();
-        List<Map> _maps = new List<Map>();
+        List<IResource> _resources = new List<IResource>();
 
-        internal int GetNewID()
+        public MainView()
         {
-            return _maps.Count;
+            _resources = ResourceUtils.LoadResources();
+
+            InitializeView();
         }
 
-        internal MapConfig GetConfig(Map map)
+        private void InitializeView()
         {
-            if (_mapConfigs.ContainsKey(map))
-                return _mapConfigs[map];
+            foreach (IResource resource in _resources)
+            {
+                if (resource is Map)
+                    OnMapsChanged?.Invoke(resource as Map);
+            }
 
-            return null;
         }
 
-        #region <- Map Control ->
+        #region <- Map Controller ->
         internal void CreateMap(int id, string name, int width, int height)
         {
             var map = new Map()
@@ -40,11 +47,10 @@ namespace WorldStamper.Sources.Views
                 Height = height
             };
 
-            _maps.Add(map);
+            _resources.Add(map);
             _mapConfigs.Add(map, new MapConfig());
 
-            if (OnMapsChanged != null)
-                OnMapsChanged(_maps[_maps.Count - 1]);
+            OnMapsChanged?.Invoke(_resources[_resources.Count - 1] as Map);
         }
 
         internal bool LoadMap(string fileName)
@@ -52,21 +58,38 @@ namespace WorldStamper.Sources.Views
             if (File.Exists(fileName))
             {
                 var map = Map.ParseFile(fileName);
-                _maps.Add(map);
-                _mapConfigs.Add(map, new MapConfig());
 
-                if (OnMapsChanged != null)
-                    OnMapsChanged(_maps[_maps.Count - 1]);
+                if (!HasResource(map))
+                {
+                    _resources.Add(map);
+                    _mapConfigs.Add(map, new MapConfig());
 
-                return true;
+                    OnMapsChanged?.Invoke(_resources[_resources.Count - 1] as Map);
+
+                    return true;
+                }
             }
 
             return false;
         }
 
+        internal bool LoadMap(int id)
+        {
+            var maps = GetResources<Map>();
+            foreach (var map in maps)
+                if (map.ID == id)
+                {
+                    OnMapsChanged?.Invoke(map);
+
+                    return true;
+                }
+
+            return false;
+        } 
+
         internal void RemoveMap(Map map)
         {
-            _maps.Remove(map);
+            _resources.Remove(map);
 
             if (_mapConfigs.ContainsKey(map))
                 _mapConfigs.Remove(map);
@@ -77,23 +100,49 @@ namespace WorldStamper.Sources.Views
             map.SaveFile(fileName);
         }
 
-        internal List<Map> OverwriteChanges()
+        internal MapConfig GetConfig(Map map)
         {
-            var maps = new List<Map>();
+            if (_mapConfigs.ContainsKey(map))
+                return _mapConfigs[map];
 
-            _maps.ForEach(m => { m.Copy(); maps.Add(m); });
+            return null;
+        }
+        #endregion
 
-            return maps;
+        internal int GetResourceID<IResource>()
+        {
+            return _resources.OfType<IResource>().Count();
         }
 
-        internal bool HasMapChanges()
+        internal List<IResource> GetResources<IResource>()
         {
-            foreach (var map in _maps)
-                if (map.HasChanges())
+            return _resources.OfType<IResource>().ToList();
+        }
+
+        private bool HasResource<IResource>(IResource resource)
+        {
+            foreach (var item in _resources)
+                if (item.IsEqual(resource))
                     return true;
 
             return false;
         }
-        #endregion
+
+        internal void OverwriteChanges()
+        {
+            _resources.ForEach(r =>
+            {
+                r.Copy();
+            });
+        }
+
+        internal bool HasChanges()
+        {
+            foreach (IResource resource in _resources)
+                if (resource.HasChanges())
+                    return true;
+
+            return false;
+        }
     }
 }

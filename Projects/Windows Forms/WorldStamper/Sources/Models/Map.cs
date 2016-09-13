@@ -46,7 +46,7 @@ namespace WorldStamper.Sources.Models
 
         public bool HasChanges()
         {
-            return IsEqual(_original);
+            return !IsEqual(_original);
         }
  
         #endregion
@@ -124,7 +124,9 @@ namespace WorldStamper.Sources.Models
                 }
 
                 // Map->Spawn
-                Spawn = new System.Drawing.Point(mapNode.ChildNodes[4].Attributes["x"].ToValue<int>(), mapNode.ChildNodes[4].Attributes["y"].ToValue<int>());
+                if (mapNode.ChildNodes.HasNode("spawn"))
+                    Spawn = new System.Drawing.Point(mapNode.ChildNodes.FindNode("spawn").Attributes["x"].ToValue<int>(), 
+                                                     mapNode.ChildNodes.FindNode("spawn").Attributes["y"].ToValue<int>());
 
                 // Map->Tiles
                 foreach (XmlNode node in mapNode.ChildNodes)
@@ -231,18 +233,19 @@ namespace WorldStamper.Sources.Models
             {
                 var map = resource as Map;
 
-                return  map.ID == ID &&
-                        map.Name.Equals(Name) &&
+                if (map.ID == ID) return true;
+
+                return map.Name.Equals(Name) &&
                         map.Width == Width &&
                         map.Height == Height &&
                         map.Spawn == Spawn &&
-                        ValidateCollections(resource);
+                        HasEqualCollections(resource);
             }
 
             return false;
         }
 
-        private bool ValidateCollections<IResource>(IResource resource)
+        private bool HasEqualCollections<IResource>(IResource resource)
         {
             bool result = false;
 
@@ -254,6 +257,19 @@ namespace WorldStamper.Sources.Models
                     foreach (var item in EntityCollections)
                         if (!item.IsEqual(entityCollection))
                             return false;
+
+                foreach (var transition in map.Transitions)
+                    if (!Transitions.Contains(transition))
+                        return false;
+
+                foreach (var tileset in map.Tilesets)
+                    foreach (var item in Tilesets)
+                        if (!item.IsEqual(tileset))
+                            return false;
+
+                foreach (var tile in map.Tiles)
+                    if (!Tiles.Contains(tile))
+                        return false;
 
                 return true;
             }

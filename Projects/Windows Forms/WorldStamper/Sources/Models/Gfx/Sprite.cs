@@ -20,5 +20,26 @@ namespace WorldStamper.Sources.Models
         {
             return Name;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Sprite)
+            {
+                var sprite = obj as Sprite;
+
+                return sprite.ID == ID &&
+                        sprite.Name == Name &&
+                        sprite.X == X &&
+                        sprite.Y == Y &&
+                        sprite.Frames == Frames;
+            }
+
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

@@ -23,7 +23,15 @@ namespace WorldStamper.Sources.Views
         {
             _resources = ResourceUtils.LoadResources();
 
+            InitializeResources();
             InitializeView();
+        }
+
+        private void InitializeResources()
+        {
+            var maps = GetResources<Map>();
+            foreach (var map in maps)
+                _mapConfigs.Add(map, new MapConfig());
         }
 
         private void InitializeView()
@@ -75,14 +83,14 @@ namespace WorldStamper.Sources.Views
 
         internal bool LoadMap(int id)
         {
-            var maps = GetResources<Map>();
-            foreach (var map in maps)
-                if (map.ID == id)
-                {
-                    OnMapsChanged?.Invoke(map);
+            var map = GetResources<Map>().FirstOrDefault(m => m.ID == id);
 
-                    return true;
-                }
+            if (map != null)
+            {
+                OnMapsChanged?.Invoke(map);
+
+                return true;
+            }
 
             return false;
         } 

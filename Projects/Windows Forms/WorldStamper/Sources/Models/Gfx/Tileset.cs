@@ -93,6 +93,30 @@ namespace WorldStamper.Sources.Models
 
         public bool IsEqual<IResource>(IResource resource)
         {
+            if (resource is Tileset)
+            {
+                var tileset = resource as Tileset;
+
+                return  tileset.Name.Equals(Name) &&
+                        HasEqualCollections(resource);
+            }
+
+            return false;
+        }
+
+        private bool HasEqualCollections<IResource>(IResource resource)
+        {
+            if (resource is Tileset)
+            {
+                var tileset = resource as Tileset;
+
+                foreach (var image in tileset.Images)
+                    if (!Images.Contains(image))
+                        return false;
+
+                return true;
+            }
+
             return false;
         }
     }

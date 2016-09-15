@@ -30,18 +30,28 @@ namespace WorldStamper.Sources.Models
         }
 
         #region <- Duplicate ->
-        public void Copy()
+        internal void CopyToOriginal()
         {
-            _original = new Map()
+            _original = Copy() as Map;
+        }
+
+        public IResource Copy()
+        {
+            var map = new Map()
             {
-                ID = ID,
+                ID = -1,
+                Filename = Filename,
                 Name = Name,
                 Width = Width,
                 Height = Height,
                 Spawn = Spawn
             };
-            _original.Tiles.AddRange(Tiles);
-            _original.Tilesets.AddRange(Tilesets);
+            map.EntityCollections.AddRange(EntityCollections);
+            map.Transitions.AddRange(Transitions);
+            map.Tilesets.AddRange(Tilesets);
+            map.Tiles.AddRange(Tiles);
+
+            return map;
         }
 
         public bool HasChanges()
@@ -56,7 +66,7 @@ namespace WorldStamper.Sources.Models
         {
             var map = new Map();
             map.LoadFile(fileName);
-            map.Copy();
+            map.CopyToOriginal();
 
             return map;
         }
@@ -277,5 +287,10 @@ namespace WorldStamper.Sources.Models
             return result;
         }
         #endregion
+
+        public string GetFilename()
+        {
+            return Filename;
+        }
     }
 }

@@ -9,6 +9,7 @@ namespace WorldStamper.Sources.Interfaces
         /// </summary>
         /// <param name="fileName"></param>
         void LoadFile(string fileName);
+
         /// <summary>
         /// Saves current object to a file on disk.
         /// </summary>
@@ -20,5 +21,11 @@ namespace WorldStamper.Sources.Interfaces
         /// </summary>
         /// <param name="resource"></param>
         bool IsEqual<IResource>(IResource resource);
+
+        /// <summary>
+        /// Get's the resource's filename.
+        /// </summary>
+        /// <returns>Returns the resource's filename.</returns>
+        string GetFilename();
     }
 }

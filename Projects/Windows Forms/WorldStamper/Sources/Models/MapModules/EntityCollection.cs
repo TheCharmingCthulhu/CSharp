@@ -22,9 +22,9 @@ namespace WorldStamper.Sources.Models.MapModules
             return entityCollection;
         }
 
-        public void Copy()
+        public IResource Copy()
         {
-
+            return null;
         }
 
         public bool HasChanges()
@@ -88,6 +88,11 @@ namespace WorldStamper.Sources.Models.MapModules
             }
 
             return false;
+        }
+
+        public string GetFilename()
+        {
+            return null;
         }
     }
 }

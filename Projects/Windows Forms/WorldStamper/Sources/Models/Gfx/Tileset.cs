@@ -81,9 +81,9 @@ namespace WorldStamper.Sources.Models
         }
         #endregion
 
-        public void Copy()
+        public IResource Copy()
         {
-
+            return null;
         }
 
         public bool HasChanges()
@@ -118,6 +118,11 @@ namespace WorldStamper.Sources.Models
             }
 
             return false;
+        }
+
+        public string GetFilename()
+        {
+            return Filename;
         }
     }
 }

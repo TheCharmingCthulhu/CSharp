@@ -27,8 +27,9 @@ namespace WorldStamper.Sources.Models
             {
                 var sprite = obj as Sprite;
 
-                return sprite.ID == ID &&
-                        sprite.Name == Name &&
+                if (sprite.ID == ID) return true;
+
+                return  sprite.Name == Name &&
                         sprite.X == X &&
                         sprite.Y == Y &&
                         sprite.Frames == Frames;

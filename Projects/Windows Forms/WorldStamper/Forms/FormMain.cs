@@ -2,6 +2,8 @@
 using System;
 using System.Windows.Forms;
 using WorldStamper.Forms;
+using WorldStamper.Forms.Dialogs;
+using WorldStamper.Sources.Interfaces;
 using WorldStamper.Sources.Models;
 using WorldStamper.Sources.Models.Editor;
 using WorldStamper.Sources.Models.MapModules;
@@ -100,8 +102,8 @@ namespace WorldStamper
         private void Grid_TileSelect(object sender, Grid.GridArgs e)
         {
             var view = sender as Grid;
-            var map = GetCurrentTabMap();
-            var config = GetCurrentTabMapConfig();
+            var map = GetCurrentTabResource();
+            var config = GetCurrentTabMapConfig() as MapConfig;
 
             if (config.Tool.Sprite != null)
             {
@@ -138,17 +140,18 @@ namespace WorldStamper
 
         private void menuItemLoad_Click(object sender, EventArgs e)
         {
-            FormMaps.Run();
+            DialogMaps.Run();
         }
 
         private void menuItemSave_Click(object sender, EventArgs e)
         {
-            if (GetCurrentTabMap() != null)
-                SaveMapFileDialog(GetCurrentTabMap());
+            SaveMapFileDialog();
         }
 
-        private void SaveMapFileDialog(Map map)
+        private void SaveMapFileDialog()
         {
+            if (GetCurrentTabResource() == null) return;
+
             SaveFileDialog sfd = new SaveFileDialog()
             {
                 Filter = "Map Files|*.xml;*.json;*.bin;*.zip",
@@ -156,7 +159,7 @@ namespace WorldStamper
             };
 
             if (sfd.ShowDialog() == DialogResult.OK)
-                View.SaveMap(GetCurrentTabMap(), sfd.FileName);
+                View.SaveMap(GetCurrentTabResource(), sfd.FileName);
         }
 
         private void menuItemCloseAll_Click(object sender, EventArgs e)
@@ -175,7 +178,7 @@ namespace WorldStamper
         {
             if (tabPage == null) return;
 
-            ValidateMapChanges();
+            ValidateResources();
 
             tabsMaps.TabPages.Remove(tabPage);
         }
@@ -184,13 +187,13 @@ namespace WorldStamper
         #region <- Toolkit Panel ->
         private void buttonCursor_Click(object sender, EventArgs e)
         {
-            GetCurrentTabMapConfig().Tool.Mode = Tool.DrawMode.Cursor;
+            (GetCurrentTabMapConfig() as MapConfig).Tool.Mode = Tool.DrawMode.Cursor;
 
             comboBoxTilesets.Enabled = false;
             comboBoxImages.Enabled = false;
             imageBoxTiles.Enabled = false;
 
-            GetCurrentTabMapConfig().ClearSelection();
+            GetCurrentTabMapConfig().Clear();
 
             ToolkitResetTilesetsTab(false);
 
@@ -199,7 +202,7 @@ namespace WorldStamper
 
         private void buttonPaint_Click(object sender, EventArgs e)
         {
-            GetCurrentTabMapConfig().Tool.Mode = Tool.DrawMode.Paint;
+            (GetCurrentTabMapConfig() as MapConfig).Tool.Mode = Tool.DrawMode.Paint;
 
             comboBoxTilesets.Enabled = true;
             comboBoxImages.Enabled = false;
@@ -218,7 +221,7 @@ namespace WorldStamper
 
             imageBoxTiles.Clear();
 
-            GetCurrentTabMapConfig().SelectedTileset = view.SelectedItem as Tileset;
+            (GetCurrentTabMapConfig() as MapConfig).SelectedTileset = view.SelectedItem as Tileset;
         }
 
         private void comboBoxImages_SelectedIndexChanged(object sender, EventArgs e)
@@ -227,19 +230,19 @@ namespace WorldStamper
             if (view.SelectedItem != null)
                 ShowTiles(view.SelectedItem as Image);
 
-            GetCurrentTabMapConfig().SelectedImage = view.SelectedItem as Image;
+            (GetCurrentTabMapConfig() as MapConfig).SelectedImage = view.SelectedItem as Image;
         }
 
         private void imageBoxTiles_ImageSelected(WorldStamperUI.UI.Toolkit.ImageBox.ImageBoxArgs e)
         {
-            GetCurrentTabMapConfig().Tool.Sprite = e.Item.Tag as Sprite;
+            (GetCurrentTabMapConfig() as MapConfig).Tool.Sprite = e.Item.Tag as Sprite;
         }
 
         private void tabControlMaps_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabsMaps.SelectedTab != null)
             {
-                var map = GetCurrentTabMap();
+                var map = GetCurrentTabResource();
 
                 ToolkitResetTilesetsTab();
 
@@ -275,12 +278,12 @@ namespace WorldStamper
 
         private void ToolkitResetTilesetsTab(bool clear = true)
         {
-            buttonCursor.Enabled = GetCurrentTabMap() != null;
-            buttonPaint.Enabled = GetCurrentTabMap() != null;
+            buttonCursor.Enabled = GetCurrentTabResource() != null;
+            buttonPaint.Enabled = GetCurrentTabResource() != null;
 
             if (clear) comboBoxTilesets.Items.Clear();
             else comboBoxTilesets.SelectedIndex = -1;
-            comboBoxTilesets.Enabled = GetCurrentTabMapConfig()?.Tool.Mode == Tool.DrawMode.Paint;
+            comboBoxTilesets.Enabled = (GetCurrentTabMapConfig() as MapConfig)?.Tool.Mode == Tool.DrawMode.Paint;
 
             if (clear) comboBoxImages.Items.Clear();
             else comboBoxImages.SelectedIndex = -1;
@@ -293,7 +296,7 @@ namespace WorldStamper
         #region <- Statusbar & Buttons ->
         private void UpdateTool()
         {
-            var config = GetCurrentTabMapConfig();
+            var config = (GetCurrentTabMapConfig() as MapConfig);
 
             if (config != null)
             {
@@ -316,15 +319,15 @@ namespace WorldStamper
         #endregion
 
         #region <- Tabs Control ->
-        private MapConfig GetCurrentTabMapConfig()
+        private IConfig GetCurrentTabMapConfig()
         {
-            if (GetCurrentTabMap() != null)
-                return View.GetConfig(GetCurrentTabMap());
+            if (GetCurrentTabResource() != null)
+                return View.GetConfig(GetCurrentTabResource());
 
             return null;
         }
 
-        private Map GetCurrentTabMap()
+        private Map GetCurrentTabResource()
         {
             if (tabsMaps.TabPages.Count > 0)
                 return tabsMaps.SelectedTab.Tag as Map;
@@ -335,8 +338,8 @@ namespace WorldStamper
         private void tabsMaps_SelectedIndexChanged(object sender, EventArgs e)
         {
             var view = (sender as Tabs);
-            var map = GetCurrentTabMap();
-            var config = GetCurrentTabMapConfig();
+            var map = GetCurrentTabResource();
+            var config = GetCurrentTabMapConfig() as MapConfig;
 
             ToolkitResetTilesetsTab();
 
@@ -347,24 +350,43 @@ namespace WorldStamper
 
         private void tabsMaps_TabClosing(Tabs.TabsEventArgs e)
         {
-            ValidateMapChanges();
-
-            View.RemoveMap(GetCurrentTabMap());
+            if (ValidateResource())
+                SaveMapFileDialog();
         }
         #endregion
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ValidateMapChanges();
+            if (ValidateResources())
+                View.SaveResources();
         }
 
-        private void ValidateMapChanges()
+        private bool ValidateResource()
+        {
+            if (GetCurrentTabResource().HasChanges())
+            {
+                if (MessageBox.Show("Would you like to save your changes?", "Save changes", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    View.OverwriteChange(GetCurrentTabResource());
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool ValidateResources()
         {
             if (View.HasChanges())
-            {
-                if (MessageBox.Show("Would you like to commit your changes?", "Save changes", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (DialogResources.Run("Save file changes", "Would you like to save your changes?", View.GetModifiedResources<Map>().ToArray()) == DialogResult.OK)
+                {
                     View.OverwriteChanges();
-            }
+
+                    return true;
+                }
+
+            return false;
         }
     }
 }

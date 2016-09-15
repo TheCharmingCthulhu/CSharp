@@ -83,7 +83,7 @@ namespace WorldStamper.Sources.Utilities
             return resources;
         }
 
-        internal static void SaveResources()
+        internal static void SaveResources(IResource[] resources)
         {
 
         }

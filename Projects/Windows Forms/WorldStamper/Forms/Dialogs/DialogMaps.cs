@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
+using WorldStamper.Forms.Dialogs;
 using WorldStamper.Sources.Models;
 
 namespace WorldStamper.Forms
 {
-    public partial class FormMaps : FormBase
+    public partial class DialogMaps : DialogBase
     {
-        public FormMaps()
+        public DialogMaps()
         {
             InitializeComponent();
             RefreshList();
@@ -41,29 +42,34 @@ namespace WorldStamper.Forms
                     foreach (var file in ofd.FileNames)
                         if (!FormMain.View.LoadMap(file))
                         {
-                            MessageBox.Show(string.Format("Map: \"{0}\" has not been imported.\nError: Duplicate found!", file), 
-                                "Map import failed!");
+                            MessageBox.Show(string.Format("\"{0}\"\nMap has not been imported.\nError: Duplicate Map found!", file), "Import failed!");
 
                             return;
                         }
 
             RefreshList();
-
-            buttonAccept_Click(buttonAccept, e);
+            LoadSelectedMaps();
+            Close();
         }
 
         internal static DialogResult Run()
         {
-            var f = new FormMaps();
+            var f = new DialogMaps();
 
             return f.ShowDialog();
         }
 
         private void buttonAccept_Click(object sender, EventArgs e)
         {
+            LoadSelectedMaps();
+        }
+
+        private void LoadSelectedMaps()
+        {
             if (listViewMaps.SelectedItems.Count > 0)
             {
-                FormMain.View.LoadMap(int.Parse(listViewMaps.SelectedItems[0].SubItems[0].Text));
+                foreach (ListViewItem listViewItem in listViewMaps.SelectedItems)
+                    FormMain.View.LoadMap(int.Parse(listViewItem.SubItems[0].Text));
 
                 Close();
             }
@@ -72,7 +78,13 @@ namespace WorldStamper.Forms
         private void listViewMaps_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (listViewMaps.SelectedItems.Count > 0)
-                buttonAccept_Click(buttonAccept, e);
+                LoadSelectedMaps();
+        }
+
+        private void listViewMaps_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+                LoadSelectedMaps();
         }
     }
 }

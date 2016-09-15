@@ -1,6 +1,6 @@
 ﻿namespace WorldStamper.Forms
 {
-    partial class FormMaps
+    partial class DialogMaps
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMaps));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DialogMaps));
             this.listViewMaps = new System.Windows.Forms.ListView();
             this.columnHeaderID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -56,12 +56,12 @@
             this.listViewMaps.FullRowSelect = true;
             this.listViewMaps.HideSelection = false;
             this.listViewMaps.Location = new System.Drawing.Point(12, 65);
-            this.listViewMaps.MultiSelect = false;
             this.listViewMaps.Name = "listViewMaps";
             this.listViewMaps.Size = new System.Drawing.Size(366, 196);
             this.listViewMaps.TabIndex = 0;
             this.listViewMaps.UseCompatibleStateImageBehavior = false;
             this.listViewMaps.View = System.Windows.Forms.View.Details;
+            this.listViewMaps.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewMaps_KeyDown);
             this.listViewMaps.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewMaps_MouseDoubleClick);
             // 
             // columnHeaderID

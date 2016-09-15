@@ -16,7 +16,7 @@ namespace WorldStamper.Sources.Views
         public event MapItemHandler OnMapsChanged;
         #endregion
 
-        Dictionary<Map, MapConfig> _mapConfigs = new Dictionary<Map, MapConfig>();
+        Dictionary<IResource, IConfig> _configs = new Dictionary<IResource, IConfig>();
         List<IResource> _resources = new List<IResource>();
 
         public MainView()
@@ -31,7 +31,7 @@ namespace WorldStamper.Sources.Views
         {
             var maps = GetResources<Map>();
             foreach (var map in maps)
-                _mapConfigs.Add(map, new MapConfig());
+                _configs.Add(map, new MapConfig());
         }
 
         private void InitializeView()
@@ -56,7 +56,7 @@ namespace WorldStamper.Sources.Views
             };
 
             _resources.Add(map);
-            _mapConfigs.Add(map, new MapConfig());
+            _configs.Add(map, new MapConfig());
 
             OnMapsChanged?.Invoke(_resources[_resources.Count - 1] as Map);
         }
@@ -70,7 +70,7 @@ namespace WorldStamper.Sources.Views
                 if (!HasResource(map))
                 {
                     _resources.Add(map);
-                    _mapConfigs.Add(map, new MapConfig());
+                    _configs.Add(map, new MapConfig());
 
                     OnMapsChanged?.Invoke(_resources[_resources.Count - 1] as Map);
 
@@ -93,14 +93,14 @@ namespace WorldStamper.Sources.Views
             }
 
             return false;
-        } 
+        }
 
         internal void RemoveMap(Map map)
         {
             _resources.Remove(map);
 
-            if (_mapConfigs.ContainsKey(map))
-                _mapConfigs.Remove(map);
+            if (_configs.ContainsKey(map))
+                _configs.Remove(map);
         }
 
         internal void SaveMap(Map map, string fileName)
@@ -108,10 +108,10 @@ namespace WorldStamper.Sources.Views
             map.SaveFile(fileName);
         }
 
-        internal MapConfig GetConfig(Map map)
+        internal IConfig GetConfig(IResource map)
         {
-            if (_mapConfigs.ContainsKey(map))
-                return _mapConfigs[map];
+            if (_configs.ContainsKey(map))
+                return _configs[map];
 
             return null;
         }
@@ -122,9 +122,14 @@ namespace WorldStamper.Sources.Views
             return _resources.OfType<IResource>().Count();
         }
 
-        internal List<IResource> GetResources<IResource>()
+        internal List<T> GetResources<T>() where T : IResource
         {
-            return _resources.OfType<IResource>().ToList();
+            return _resources.OfType<T>().ToList();
+        }
+
+        internal List<T> GetModifiedResources<T>() where T : IResource
+        {
+            return _resources.OfType<T>().Where(r => r.HasChanges()).ToList();
         }
 
         private bool HasResource<IResource>(IResource resource)
@@ -140,8 +145,14 @@ namespace WorldStamper.Sources.Views
         {
             _resources.ForEach(r =>
             {
-                r.Copy();
+                if (r is Map)
+                    (r as Map).CopyToOriginal();
             });
+        }
+
+        internal void OverwriteChange(IResource resource)
+        {
+            if (resource is Map) (resource as Map).CopyToOriginal();
         }
 
         internal bool HasChanges()
@@ -151,6 +162,14 @@ namespace WorldStamper.Sources.Views
                     return true;
 
             return false;
+        }
+
+        internal void SaveResources()
+        {
+            foreach (IResource resource in _resources)
+                resource.SaveFile(resource.GetFilename());
+
+            ResourceUtils.SaveResources(_resources.ToArray());
         }
     }
 }

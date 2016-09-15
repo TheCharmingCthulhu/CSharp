@@ -1,12 +1,14 @@
-﻿namespace WorldStamper.Sources.Models.Editor
+﻿using WorldStamper.Sources.Interfaces;
+
+namespace WorldStamper.Sources.Models.Editor
 {
-    class MapConfig
+    class MapConfig : IConfig
     {
         public Tool Tool { get; set; } = new Tool();
         public Tileset SelectedTileset { get; set; }
         public Image SelectedImage { get; set; }
 
-        internal void ClearSelection()
+        public void Clear()
         {
             SelectedImage = null;
             SelectedTileset = null;

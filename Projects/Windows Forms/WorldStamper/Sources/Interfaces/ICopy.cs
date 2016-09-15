@@ -2,10 +2,16 @@
 {
     interface ICopy
     {
-        // Creates new copy of the current object
-        void Copy();
+        /// <summary>
+        /// Copy the current instance, including all of its properties into a new object and return it.
+        /// </summary>
+        /// <returns>IResource copy of the current instance.</returns>
+        IResource Copy();
 
-        // Validates current object with the copy on any changes
+        /// <summary>
+        /// Validates the current instance on any changes made.
+        /// </summary>
+        /// <returns>The status of changes.</returns>
         bool HasChanges();
     }
 }

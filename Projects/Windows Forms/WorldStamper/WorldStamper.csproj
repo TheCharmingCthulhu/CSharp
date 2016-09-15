@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WorldStamper</RootNamespace>
     <AssemblyName>WorldStamper</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile>
@@ -50,14 +50,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\Dialogs\DialogBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dialogs\DialogResources.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Dialogs\DialogResources.Designer.cs">
+      <DependentUpon>DialogResources.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormBase.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormMaps.cs">
+    <Compile Include="Forms\Dialogs\DialogMaps.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormMaps.Designer.cs">
-      <DependentUpon>FormMaps.cs</DependentUpon>
+    <Compile Include="Forms\Dialogs\DialogMaps.Designer.cs">
+      <DependentUpon>DialogMaps.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormNewMap.cs">
       <SubType>Form</SubType>
@@ -74,6 +83,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Extensions\XMLExtensions.cs" />
+    <Compile Include="Sources\Interfaces\IConfig.cs" />
     <Compile Include="Sources\Interfaces\ICopy.cs" />
     <Compile Include="Sources\Interfaces\IResource.cs" />
     <Compile Include="Sources\Models\Editor\MapConfig.cs" />
@@ -89,8 +99,11 @@
     <Compile Include="Sources\Utilities\ResourceUtils.cs" />
     <Compile Include="Sources\Views\MainView.cs" />
     <Compile Include="Sources\Models\Editor\Tool.cs" />
-    <EmbeddedResource Include="Forms\FormMaps.resx">
-      <DependentUpon>FormMaps.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Dialogs\DialogMaps.resx">
+      <DependentUpon>DialogMaps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Dialogs\DialogResources.resx">
+      <DependentUpon>DialogResources.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormNewMap.resx">
       <DependentUpon>FormNewMap.cs</DependentUpon>

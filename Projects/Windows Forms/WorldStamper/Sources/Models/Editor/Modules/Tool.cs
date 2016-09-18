@@ -1,4 +1,4 @@
-﻿namespace WorldStamper.Sources.Models.Editor
+﻿namespace WorldStamper.Sources.Models.Editor.Modules
 {
     class Tool
     {

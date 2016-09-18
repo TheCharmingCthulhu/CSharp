@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using WorldStamper.Sources.Extensions;
 using WorldStamper.Sources.Interfaces;
-using WorldStamper.Sources.Models.MapModules;
+using WorldStamper.Sources.Models.Entities;
 using WorldStamper.Sources.Utilities;
 
-namespace WorldStamper.Sources.Models
+namespace WorldStamper.Sources.Models.Maps
 {
     class Map : IResource
     {

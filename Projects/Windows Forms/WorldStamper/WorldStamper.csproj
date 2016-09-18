@@ -86,19 +86,22 @@
     <Compile Include="Sources\Interfaces\IConfig.cs" />
     <Compile Include="Sources\Interfaces\ICopy.cs" />
     <Compile Include="Sources\Interfaces\IResource.cs" />
-    <Compile Include="Sources\Models\Editor\MapConfig.cs" />
+    <Compile Include="Sources\Interfaces\ICompare.cs" />
+    <Compile Include="Sources\Models\Editor\Configs\MapConfig.cs" />
+    <Compile Include="Sources\Models\Entities\Layer.cs" />
+    <Compile Include="Sources\Models\Entities\Template.cs" />
     <Compile Include="Sources\Models\Gfx\Image.cs" />
-    <Compile Include="Sources\Models\MapModules\Entity.cs" />
-    <Compile Include="Sources\Models\MapModules\EntityCollection.cs" />
-    <Compile Include="Sources\Models\Map.cs" />
+    <Compile Include="Sources\Models\Entities\Entity.cs" />
+    <Compile Include="Sources\Models\Entities\EntityCollection.cs" />
+    <Compile Include="Sources\Models\Maps\Map.cs" />
     <Compile Include="Sources\Models\Gfx\Sprite.cs" />
     <Compile Include="Sources\Models\Gfx\Tileset.cs" />
-    <Compile Include="Sources\Models\MapModules\Tile.cs" />
-    <Compile Include="Sources\Models\MapModules\Transition.cs" />
+    <Compile Include="Sources\Models\Maps\Tile.cs" />
+    <Compile Include="Sources\Models\Maps\Transition.cs" />
     <Compile Include="Sources\Utilities\GraphicsUtils.cs" />
     <Compile Include="Sources\Utilities\ResourceUtils.cs" />
     <Compile Include="Sources\Views\MainView.cs" />
-    <Compile Include="Sources\Models\Editor\Tool.cs" />
+    <Compile Include="Sources\Models\Editor\Modules\Tool.cs" />
     <EmbeddedResource Include="Forms\Dialogs\DialogMaps.resx">
       <DependentUpon>DialogMaps.cs</DependentUpon>
     </EmbeddedResource>

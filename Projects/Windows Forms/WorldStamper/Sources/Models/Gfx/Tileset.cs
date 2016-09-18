@@ -12,7 +12,7 @@ namespace WorldStamper.Sources.Models
     class Tileset : IResource
     {
         public string Filename { get; set; }
-        public string Name { get; set; }
+        public string Name { get { return Path.GetFileNameWithoutExtension(Filename); } }
         public List<Image> Images { get; set; } = new List<Image>();
 
         public override string ToString()
@@ -37,7 +37,6 @@ namespace WorldStamper.Sources.Models
                 xml.Load(fileName);
 
                 Filename = Path.GetFileName(fileName);
-                Name = Path.GetFileNameWithoutExtension(fileName);
 
                 // Tileset->Images
                 foreach (XmlNode imageNode in xml.ChildNodes[0].ChildNodes)

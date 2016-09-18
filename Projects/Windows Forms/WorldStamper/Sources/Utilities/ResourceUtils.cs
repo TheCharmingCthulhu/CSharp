@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml;
 using WorldStamper.Sources.Interfaces;
 using WorldStamper.Sources.Models;
+using WorldStamper.Sources.Models.Maps;
 
 namespace WorldStamper.Sources.Utilities
 {

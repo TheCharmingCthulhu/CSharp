@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using WorldStamper.Forms.Dialogs;
-using WorldStamper.Sources.Models;
+using WorldStamper.Sources.Models.Maps;
 
 namespace WorldStamper.Forms
 {
@@ -71,8 +71,12 @@ namespace WorldStamper.Forms
                 foreach (ListViewItem listViewItem in listViewMaps.SelectedItems)
                     FormMain.View.LoadMap(int.Parse(listViewItem.SubItems[0].Text));
 
-                Close();
+                DialogResult = DialogResult.OK;
+
+                return;
             }
+
+            DialogResult = DialogResult.Cancel;
         }
 
         private void listViewMaps_MouseDoubleClick(object sender, MouseEventArgs e)

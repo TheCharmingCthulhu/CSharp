@@ -8,6 +8,8 @@ namespace ElegantUI.Controls
 {
     public partial class Grid : UserControl
     {
+        public static Color DefaultColor = Color.ForestGreen;
+
         public class GridArgs
         {
             public int X { get; set; }
@@ -47,6 +49,11 @@ namespace ElegantUI.Controls
         public void SetTile(int x, int y, Image image)
         {
             _Grid[x, y] = new Bitmap(image);
+        }
+
+        public void SetHighlightColor(Color color)
+        {
+            _Hightlight.Color = color;
         }
         #endregion
 
@@ -259,6 +266,11 @@ namespace ElegantUI.Controls
 
                 Invalidate();
             }
+        }
+
+        public void SetHighlightColor(object colors)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace ProjectEuler.Source
 {
@@ -8,7 +10,7 @@ namespace ProjectEuler.Source
     {
         public string Name { get; set; }
         public bool Run { get; set; } = false;
-        public object[] Arguments { get; set; }
+        public object[] Arguments { get; private set; }
 
         public Challenge(params object[] args)
         {
@@ -72,7 +74,7 @@ namespace ProjectEuler.Source
             Result(sum);
         }
 
-        [Challenge(600851475143, Name = "Largest prime factor", Run = true)]
+        [Challenge(600851475143, Name = "Largest Prime factor", Run = false)]
         public void ChallengeThree(long n)
         {
             long number = n;
@@ -93,6 +95,77 @@ namespace ProjectEuler.Source
             } while (number != 1);
 
             Result(factor);
+        }
+
+        [Challenge(3, Name = "Largest Palindrome of two x-digit product", Run = false)]
+        public void ChallengeFour(int digits)
+        {
+            int i = (int)Math.Pow(10, digits) - 1, k = (int)Math.Pow(10, digits) - 1, j, l = (int)Math.Pow(10, digits-1);
+
+            List<int> palindromes = new List<int>();
+
+            do
+            {
+                j = i * k;
+
+                if (new string(j.ToString().ToCharArray().Reverse().ToArray()).Equals(j.ToString()))
+                    palindromes.Add(j);
+
+                i--;
+
+                if (i == l)
+                {
+                    i = (int)Math.Pow(10, digits) - 1;
+                    k--;
+                }
+            } while (i > l && k > l);
+
+            Result(palindromes.Max());
+        }
+
+        [Challenge(Name = "Smallest multiple", Run = false)]
+        public void ChallengeFive()
+        {
+            int number = 1, divider = 0;
+
+            do
+            {
+                for (int i = 1; i < 20 + 1; i++)
+                {
+                    if (number % i == 0)
+                        divider++;
+                    else
+                    {
+                        divider = 0;
+                        break;
+                    }
+
+                    if (divider == 20)
+                    {
+                        Result(number);
+
+                        return;
+                    }
+                }
+
+                number++;
+            } while (true);
+        }
+
+        [Challenge(Name = "Sum square difference", Run = true)]
+        public void ChallengeSix()
+        {
+            double square_sum = 0, sum = 0;
+
+            for (int i = 1; i < 100 + 1; i++)
+            {
+                sum += Math.Pow(i, 2);
+                square_sum += i;
+            }
+
+            square_sum = Math.Pow(square_sum, 2);
+
+            Result(square_sum - sum);
         }
         #endregion
     }

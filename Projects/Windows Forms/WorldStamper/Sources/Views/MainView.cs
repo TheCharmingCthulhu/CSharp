@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using WorldStamper.Sources.Interfaces;
-using WorldStamper.Sources.Models;
-using WorldStamper.Sources.Models.Editor;
+using WorldStamper.Sources.Models.Editor.Configs;
+using WorldStamper.Sources.Models.Maps;
 using WorldStamper.Sources.Utilities;
 
 namespace WorldStamper.Sources.Views
@@ -23,11 +23,11 @@ namespace WorldStamper.Sources.Views
         {
             _resources = ResourceUtils.LoadResources();
 
-            InitializeResources();
+            InitializeMaps();
             InitializeView();
         }
 
-        private void InitializeResources()
+        private void InitializeMaps()
         {
             var maps = GetResources<Map>();
             foreach (var map in maps)
@@ -37,11 +37,8 @@ namespace WorldStamper.Sources.Views
         private void InitializeView()
         {
             foreach (IResource resource in _resources)
-            {
                 if (resource is Map)
                     OnMapsChanged?.Invoke(resource as Map);
-            }
-
         }
 
         #region <- Map Controller ->
@@ -108,10 +105,10 @@ namespace WorldStamper.Sources.Views
             map.SaveFile(fileName);
         }
 
-        internal IConfig GetConfig(IResource map)
+        internal IConfig GetConfig(IResource resource)
         {
-            if (_configs.ContainsKey(map))
-                return _configs[map];
+            if (_configs.ContainsKey(resource))
+                return _configs[resource];
 
             return null;
         }

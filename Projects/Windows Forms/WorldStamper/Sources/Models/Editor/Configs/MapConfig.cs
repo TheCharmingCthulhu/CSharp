@@ -1,6 +1,7 @@
 ﻿using WorldStamper.Sources.Interfaces;
+using WorldStamper.Sources.Models.Editor.Modules;
 
-namespace WorldStamper.Sources.Models.Editor
+namespace WorldStamper.Sources.Models.Editor.Configs
 {
     class MapConfig : IConfig
     {

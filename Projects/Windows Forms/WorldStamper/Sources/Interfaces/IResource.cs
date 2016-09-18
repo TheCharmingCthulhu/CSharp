@@ -2,7 +2,7 @@
 
 namespace WorldStamper.Sources.Interfaces
 {
-    interface IResource : ICopy
+    interface IResource : ICopy, ICompare
     {
         /// <summary>
         /// Loads a file into the current object from disk.
@@ -15,12 +15,6 @@ namespace WorldStamper.Sources.Interfaces
         /// </summary>
         /// <param name="fileName"></param>
         void SaveFile(string fileName);
-
-        /// <summary>
-        /// Checks two resources for equality.
-        /// </summary>
-        /// <param name="resource"></param>
-        bool IsEqual<IResource>(IResource resource);
 
         /// <summary>
         /// Get's the resource's filename.

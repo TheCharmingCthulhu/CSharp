@@ -23,15 +23,17 @@ namespace WorldStamper.Sources.Models.Maps
         public List<Tileset> Tilesets { get; set; } = new List<Tileset>();
         public List<Tile> Tiles { get; set; } = new List<Tile>();
 
-        public Map()
-        {
-
-        }
-
         #region <- Duplicate ->
-        internal void CopyToOriginal()
+        internal void CopyToOriginal(int id = -1)
         {
             _original = Copy() as Map;
+
+            if (id != -1)
+            {
+                _original.ID = id;
+
+                ID = id;
+            }
         }
 
         public IResource Copy()
@@ -175,12 +177,29 @@ namespace WorldStamper.Sources.Models.Maps
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("objects");
-                writer.WriteEndElement();
-
-                writer.WriteStartElement("overlays");
+                foreach(var obj in _original.EntityCollections)
+                {
+                    writer.WriteStartElement("object");
+                    writer.WriteAttributeString("file", obj.Filename);
+                    writer.WriteEndElement();
+                }
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("transitions");
+                foreach(var transition in _original.Transitions)
+                {
+                    writer.WriteStartElement("transition");
+                    writer.WriteAttributeString("x", transition.X.ToString());
+                    writer.WriteAttributeString("y", transition.Y.ToString());
+
+                    writer.WriteStartElement("target");
+                    writer.WriteAttributeString("mapid", transition.Target.ID.ToString());
+                    writer.WriteAttributeString("x", transition.Target.X.ToString());
+                    writer.WriteAttributeString("y", transition.Target.Y.ToString());
+                    writer.WriteEndElement();
+
+                    writer.WriteEndElement();
+                }
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("spawn");
@@ -242,7 +261,7 @@ namespace WorldStamper.Sources.Models.Maps
             {
                 var map = resource as Map;
 
-                if (map.ID == ID) return true;
+                if (map.ID != ID) return false;
 
                 return map.Name.Equals(Name) &&
                         map.Width == Width &&

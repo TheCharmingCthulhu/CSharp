@@ -48,7 +48,7 @@ namespace WorldStamper.Sources.Models.Entities
                 var xml = new XmlDocument();
                 xml.Load(fileName);
 
-                Filename = Path.GetFileNameWithoutExtension(fileName);
+                Filename = Path.GetFileName(fileName);
 
                 foreach (XmlNode entityNode in xml.ChildNodes[0].ChildNodes)
                     if (entityNode.Name.ToLower().Equals("object"))

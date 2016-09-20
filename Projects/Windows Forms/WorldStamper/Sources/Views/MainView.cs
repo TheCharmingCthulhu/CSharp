@@ -102,7 +102,9 @@ namespace WorldStamper.Sources.Views
 
         internal void SaveMap(Map map, string fileName)
         {
-            map.SaveFile(fileName);
+            var newMap = map.Copy() as Map;
+            newMap.CopyToOriginal(GetResourceID<Map>());
+            newMap.SaveFile(fileName);
         }
 
         internal IConfig GetConfig(IResource resource)
@@ -115,9 +117,9 @@ namespace WorldStamper.Sources.Views
         #endregion
 
         #region <- Resources ->
-        internal int GetResourceID<IResource>()
+        internal int GetResourceID<T>() where T : IResource
         {
-            return _resources.OfType<IResource>().Count();
+            return _resources.OfType<T>().Count() + 1;
         }
 
         internal List<T> GetResources<T>() where T : IResource

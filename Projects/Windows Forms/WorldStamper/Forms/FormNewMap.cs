@@ -5,6 +5,9 @@ namespace WorldStamper.Forms
 {
     public partial class FormNewMap : FormBase
     {
+        const int DEFAULT_WIDTH = 20;
+        const int DEFAULT_HEIGHT = 20;
+
         public static string MapName { get; set; }
 
         public static int MapWidth { get; set; } = 20;
@@ -19,17 +22,17 @@ namespace WorldStamper.Forms
 
         private void InitializeView()
         {
-            numericWidth.Value = MapWidth;
-            numericHeight.Value = MapHeight;
+            numericUpDownWidth.Value = MapWidth;
+            numericUpDownHeight.Value = MapHeight;
         }
 
-        public static DialogResult Run(string name = "", int width = 1, int height = 1)
+        public static DialogResult Run(string name = "", int width = DEFAULT_WIDTH, int height = DEFAULT_HEIGHT)
         {
             var f = new FormNewMap();
 
             f.textBoxName.Text = name;
-            f.numericWidth.Value = width;
-            f.numericHeight.Value = height;
+            f.numericUpDownWidth.Value = width;
+            f.numericUpDownHeight.Value = height;
 
             return f.ShowDialog();
         }

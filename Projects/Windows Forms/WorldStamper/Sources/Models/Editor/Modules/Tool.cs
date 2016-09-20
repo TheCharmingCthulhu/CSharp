@@ -1,4 +1,6 @@
-﻿namespace WorldStamper.Sources.Models.Editor.Modules
+﻿using System.Drawing;
+
+namespace WorldStamper.Sources.Models.Editor.Modules
 {
     class Tool
     {
@@ -11,5 +13,6 @@
 
         public DrawMode Mode { get; set; } = DrawMode.Cursor;
         public Sprite Sprite { get; set; }
+        public Bitmap Image { get; set; }
     }
 }

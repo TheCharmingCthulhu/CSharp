@@ -109,8 +109,12 @@ namespace WorldStamperUI.UI.Toolkit
         protected override void OnPaint(PaintEventArgs e)
         {
             DrawImages(e);
-            DrawHighlight(e);
-            DrawSelection(e);
+
+            if (!DesignMode)
+            {
+                DrawSelection(e);
+                DrawHighlight(e);
+            }
 
             base.OnPaint(e);
         }

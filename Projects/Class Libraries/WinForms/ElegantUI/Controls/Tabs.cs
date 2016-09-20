@@ -99,8 +99,10 @@ namespace ElegantUI.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            DrawFrame(e);
             DrawTabs(e);
+
+            if (!DesignMode)
+                DrawFrame(e);
         }
 
         protected override void OnSelectedIndexChanged(EventArgs e)

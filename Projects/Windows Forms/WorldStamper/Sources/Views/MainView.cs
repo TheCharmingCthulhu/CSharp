@@ -114,6 +114,7 @@ namespace WorldStamper.Sources.Views
         }
         #endregion
 
+        #region <- Resources ->
         internal int GetResourceID<IResource>()
         {
             return _resources.OfType<IResource>().Count();
@@ -167,6 +168,7 @@ namespace WorldStamper.Sources.Views
                 resource.SaveFile(resource.GetFilename());
 
             ResourceUtils.SaveResources(_resources.ToArray());
-        }
+        } 
+        #endregion
     }
 }

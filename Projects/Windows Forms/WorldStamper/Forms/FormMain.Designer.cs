@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Spawn", 0);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Spawn", 0);
             this.menuBar = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuItemNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +54,7 @@
             this.tabPageEntities = new System.Windows.Forms.TabPage();
             this.tabControlEntitySections = new System.Windows.Forms.TabControl();
             this.tabPageCore = new System.Windows.Forms.TabPage();
-            this.listViewEntities = new System.Windows.Forms.ListView();
+            this.listViewCoreEntities = new System.Windows.Forms.ListView();
             this.imageListCoreEntities = new System.Windows.Forms.ImageList(this.components);
             this.tabPageObjects = new System.Windows.Forms.TabPage();
             this.listViewObjects = new System.Windows.Forms.ListView();
@@ -65,6 +65,11 @@
             this.statusStripInformation = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusToolMode = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusCellX = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusCellY = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
@@ -294,7 +299,7 @@
             // 
             // tabPageCore
             // 
-            this.tabPageCore.Controls.Add(this.listViewEntities);
+            this.tabPageCore.Controls.Add(this.listViewCoreEntities);
             this.tabPageCore.Location = new System.Drawing.Point(4, 22);
             this.tabPageCore.Name = "tabPageCore";
             this.tabPageCore.Padding = new System.Windows.Forms.Padding(3);
@@ -303,19 +308,19 @@
             this.tabPageCore.Text = "Core";
             this.tabPageCore.UseVisualStyleBackColor = true;
             // 
-            // listViewEntities
+            // listViewCoreEntities
             // 
-            this.listViewEntities.Enabled = false;
-            this.listViewEntities.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
-            this.listViewEntities.LargeImageList = this.imageListCoreEntities;
-            this.listViewEntities.Location = new System.Drawing.Point(6, 6);
-            this.listViewEntities.Name = "listViewEntities";
-            this.listViewEntities.Size = new System.Drawing.Size(146, 349);
-            this.listViewEntities.TabIndex = 0;
-            this.listViewEntities.UseCompatibleStateImageBehavior = false;
-            this.listViewEntities.View = System.Windows.Forms.View.Tile;
-            this.listViewEntities.SelectedIndexChanged += new System.EventHandler(this.listViewEntities_SelectedIndexChanged);
+            this.listViewCoreEntities.Enabled = false;
+            this.listViewCoreEntities.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+            this.listViewCoreEntities.LargeImageList = this.imageListCoreEntities;
+            this.listViewCoreEntities.Location = new System.Drawing.Point(6, 6);
+            this.listViewCoreEntities.Name = "listViewCoreEntities";
+            this.listViewCoreEntities.Size = new System.Drawing.Size(146, 349);
+            this.listViewCoreEntities.TabIndex = 0;
+            this.listViewCoreEntities.UseCompatibleStateImageBehavior = false;
+            this.listViewCoreEntities.View = System.Windows.Forms.View.Tile;
+            this.listViewCoreEntities.SelectedIndexChanged += new System.EventHandler(this.listViewEntities_SelectedIndexChanged);
             // 
             // imageListCoreEntities
             // 
@@ -399,7 +404,12 @@
             // 
             this.statusStripInformation.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.toolStripStatusToolMode});
+            this.toolStripStatusToolMode,
+            this.toolStripStatusLabel2,
+            this.toolStripStatusLabel3,
+            this.toolStripStatusCellX,
+            this.toolStripStatusLabel4,
+            this.toolStripStatusCellY});
             this.statusStripInformation.Location = new System.Drawing.Point(0, 419);
             this.statusStripInformation.Name = "statusStripInformation";
             this.statusStripInformation.Size = new System.Drawing.Size(1008, 22);
@@ -417,6 +427,36 @@
             // 
             this.toolStripStatusToolMode.Name = "toolStripStatusToolMode";
             this.toolStripStatusToolMode.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(16, 17);
+            this.toolStripStatusLabel2.Text = " l ";
+            // 
+            // toolStripStatusLabel3
+            // 
+            this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(17, 17);
+            this.toolStripStatusLabel3.Text = "X:";
+            // 
+            // toolStripStatusCellX
+            // 
+            this.toolStripStatusCellX.Name = "toolStripStatusCellX";
+            this.toolStripStatusCellX.Size = new System.Drawing.Size(13, 17);
+            this.toolStripStatusCellX.Text = "0";
+            // 
+            // toolStripStatusLabel4
+            // 
+            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
+            this.toolStripStatusLabel4.Size = new System.Drawing.Size(17, 17);
+            this.toolStripStatusLabel4.Text = "Y:";
+            // 
+            // toolStripStatusCellY
+            // 
+            this.toolStripStatusCellY.Name = "toolStripStatusCellY";
+            this.toolStripStatusCellY.Size = new System.Drawing.Size(13, 17);
+            this.toolStripStatusCellY.Text = "0";
             // 
             // tabPage2
             // 
@@ -526,10 +566,15 @@
         private System.Windows.Forms.TabControl tabControlEntitySections;
         private System.Windows.Forms.TabPage tabPageObjects;
         private System.Windows.Forms.TabPage tabPageCore;
-        private System.Windows.Forms.ListView listViewEntities;
+        private System.Windows.Forms.ListView listViewCoreEntities;
         private System.Windows.Forms.ImageList imageListCoreEntities;
         private WorldStamperUI.UI.Toolkit.ImageBox imageBoxTiles;
         private ElegantUI.Controls.Tabs tabsMaps;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusCellX;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusCellY;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
     }
 }
 

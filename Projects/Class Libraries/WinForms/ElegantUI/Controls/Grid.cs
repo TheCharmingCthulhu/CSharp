@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using ElegantUI.Utilities;
 using ElegantUI.Controls.Modules;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ElegantUI.Controls
 {
@@ -16,9 +18,19 @@ namespace ElegantUI.Controls
             public int Y { get; set; }
         }
 
+        public class GridOverlay
+        {
+            public int X { get; set; }
+            public int Y { get; set; }
+            public int Level { get; set; }
+            public object Tag { get; set; }
+            public Image Texture { get; set; }
+        }
+
         #region <- Events ->
         public delegate void GridHandler(object sender, GridArgs e);
-        public event GridHandler TileSelect;
+        public event GridHandler CellSelect;
+        public event GridHandler CellHover;
         #endregion
 
         public int GridWidth { get; set; } = 20;
@@ -30,6 +42,7 @@ namespace ElegantUI.Controls
         int _OffsetX = 0, _OffsetY = 0;
 
         Bitmap[,] _Grid;
+        List<GridOverlay> Overlays = new List<GridOverlay>();
         Highlight _Hightlight = new Highlight();
 
         public Grid()
@@ -49,6 +62,35 @@ namespace ElegantUI.Controls
         public void SetTile(int x, int y, Image image)
         {
             _Grid[x, y] = new Bitmap(image);
+        }
+
+        public void SetOverlay(int x, int y, Image image, object tag = null)
+        {
+            Overlays.Add(new GridOverlay()
+            {
+                X = x,
+                Y = y,
+                Level = Overlays.FindAll(go => go.X == x && go.Y == y).Count,
+                Texture = image,
+                Tag = tag
+            });
+        }
+
+        public void RemoveOverlay(int x, int y, int level)
+        {
+            var overlay = Overlays.FirstOrDefault(go => go.X == x && go.Y == y && go.Level == level);
+
+            Overlays.Remove(overlay);
+        }
+
+        public void RemoveOverlays(object tag)
+        {
+            Overlays.RemoveAll(go => go.Tag.Equals(tag));
+        }
+
+        public void RemoveOverlays(int x, int y)
+        {
+            Overlays.RemoveAll(go => go.X == x && go.Y == y);
         }
 
         public void SetHighlightColor(Color color)
@@ -155,6 +197,8 @@ namespace ElegantUI.Controls
                 else
                     vScrollBar.Value = vScrollBar.Minimum;
 
+            HandleCellHover(e);
+
             base.OnMouseWheel(e);
         }
 
@@ -163,7 +207,7 @@ namespace ElegantUI.Controls
         {
             _drag = true;
 
-            HandleTileSelect(e);
+            HandleCellSelect(e);
 
             base.OnMouseDown(e);
         }
@@ -179,18 +223,26 @@ namespace ElegantUI.Controls
         {
             SetFocus(e);
 
-            HandleTileSelect(e);
+            HandleCellHover(e);
+            HandleCellSelect(e);
 
             base.OnMouseMove(e);
         }
 
-        private void HandleTileSelect(MouseEventArgs e)
+        private void HandleCellHover(MouseEventArgs e)
+        {
+            var coords = MouseToCoordinates(e.Location);
+
+            if (coords != new Point(-1, -1) && CellHover != null) CellHover(this, new GridArgs() { X = coords.X + _OffsetX, Y = coords.Y + _OffsetY });
+        }
+
+        private void HandleCellSelect(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && _drag)
             {
                 var coords = MouseToCoordinates(e.Location);
 
-                if (coords != new Point(-1, -1) && TileSelect != null) TileSelect(this, new GridArgs() { X = coords.X + _OffsetX, Y = coords.Y + _OffsetY });
+                if (coords != new Point(-1, -1) && CellSelect != null) CellSelect(this, new GridArgs() { X = coords.X + _OffsetX, Y = coords.Y + _OffsetY });
             }
         }
         #endregion
@@ -200,9 +252,22 @@ namespace ElegantUI.Controls
         {
             DrawGrid(e);
             DrawScrollbarEdge(e);
+            DrawOverlays(e);
             DrawFocusRectangle(e);
 
             base.OnPaint(e);
+        }
+
+        private void DrawOverlays(PaintEventArgs e)
+        {
+            if (Overlays.Count > 0)
+            {
+                int maxLevel = Overlays.Max(go => go.Level);
+
+                for (int i = 0; i < maxLevel + 1; i++)
+                    foreach (var overlay in Overlays.Where(go => go.Level == i))
+                        e.Graphics.DrawImage(overlay.Texture, new PointF(CellWidth * overlay.X, CellHeight * overlay.Y));
+            }
         }
 
         private void DrawScrollbarEdge(PaintEventArgs e)

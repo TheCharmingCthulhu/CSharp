@@ -63,7 +63,8 @@ namespace WorldStamper
             };
             grid.Dock = DockStyle.Fill;
             grid.Parent = tab;
-            grid.TileSelect += Grid_TileSelect;
+            grid.CellSelect += Grid_CellSelect;
+            grid.CellHover += Grid_CellHover;
 
             foreach (var tile in map.Tiles)
                 grid.SetTile(tile.X, tile.Y, tile.Sprite.Texture);
@@ -99,30 +100,53 @@ namespace WorldStamper
         #endregion
 
         #region <- Grid ->
-        private void Grid_TileSelect(object sender, Grid.GridArgs e)
+        private void Grid_CellSelect(object sender, Grid.GridArgs e)
         {
             var view = sender as Grid;
             var map = GetCurrentTabResource() as Map;
-            var config = GetCurrentTabConfig() as MapConfig;
+            var config = GetCurrentTabResourceConfig() as MapConfig;
 
-            if (config.Tool.Sprite != null && config.Tool.Mode == Tool.DrawMode.Paint)
+            if (config != null)
             {
-                view.SetTile(e.X, e.Y, config.Tool.Sprite.Texture);
-
-                map.ReplaceTile(e.X, e.Y, new Tile()
+                switch (config.Tool.Mode)
                 {
-                    X = e.X,
-                    Y = e.Y,
-                    Sprite = new Sprite()
-                    {
-                        ID = config.Tool.Sprite.ID,
-                        X = config.Tool.Sprite.X,
-                        Y = config.Tool.Sprite.Y,
-                        Texture = config.Tool.Sprite.Texture,
-                        Frames = config.Tool.Sprite.Frames
-                    }
-                });
+                    case Tool.DrawMode.Paint:
+                        if (config.Tool.Sprite != null)
+                        {
+                            view.SetTile(e.X, e.Y, config.Tool.Sprite.Texture);
+
+                            map.ReplaceTile(e.X, e.Y, new Tile()
+                            {
+                                X = e.X,
+                                Y = e.Y,
+                                Sprite = new Sprite()
+                                {
+                                    ID = config.Tool.Sprite.ID,
+                                    X = config.Tool.Sprite.X,
+                                    Y = config.Tool.Sprite.Y,
+                                    Texture = config.Tool.Sprite.Texture,
+                                    Frames = config.Tool.Sprite.Frames
+                                }
+                            });
+                        }
+                        break;
+                    case Tool.DrawMode.Entity:
+                        if (config.Tool.Image != null)
+                        {
+                            view.RemoveOverlays(config.Tool.Image.Tag);
+                            view.SetOverlay(e.X, e.Y, config.Tool.Image, config.Tool.Image.Tag);
+
+                            HandleCoreEntityPlacement(map, config, e);
+                        }
+                        break;
+                }
             }
+        }
+
+        private void Grid_CellHover(object sender, Grid.GridArgs e)
+        {
+            toolStripStatusCellX.Text = e.X.ToString();
+            toolStripStatusCellY.Text = e.Y.ToString();
         }
         #endregion
 
@@ -173,7 +197,6 @@ namespace WorldStamper
         {
             foreach (TabPage tabPage in tabsMaps.TabPages)
                 CloseTabPage(tabPage);
-             
         }
 
         private void menuItemClose_Click(object sender, EventArgs e)
@@ -196,13 +219,13 @@ namespace WorldStamper
         #region <- Tilesets ->
         private void buttonCursor_Click(object sender, EventArgs e)
         {
-            (GetCurrentTabConfig() as MapConfig).Tool.Mode = Tool.DrawMode.Cursor;
+            (GetCurrentTabResourceConfig() as MapConfig).Tool.Mode = Tool.DrawMode.Cursor;
 
             comboBoxTilesets.Enabled = false;
             comboBoxImages.Enabled = false;
             imageBoxTiles.Enabled = false;
 
-            GetCurrentTabConfig().Clear();
+            GetCurrentTabResourceConfig().Clear();
 
             ToolkitResetTilesetsTab(false);
 
@@ -211,7 +234,7 @@ namespace WorldStamper
 
         private void buttonPaint_Click(object sender, EventArgs e)
         {
-            (GetCurrentTabConfig() as MapConfig).Tool.Mode = Tool.DrawMode.Paint;
+            (GetCurrentTabResourceConfig() as MapConfig).Tool.Mode = Tool.DrawMode.Paint;
 
             comboBoxTilesets.Enabled = true;
             comboBoxImages.Enabled = false;
@@ -230,7 +253,7 @@ namespace WorldStamper
 
             imageBoxTiles.Clear();
 
-            (GetCurrentTabConfig() as MapConfig).SelectedTileset = view.SelectedItem as Tileset;
+            (GetCurrentTabResourceConfig() as MapConfig).SelectedTileset = view.SelectedItem as Tileset;
         }
 
         private void comboBoxImages_SelectedIndexChanged(object sender, EventArgs e)
@@ -239,18 +262,18 @@ namespace WorldStamper
             if (view.SelectedItem != null)
                 ShowTiles(view.SelectedItem as Image);
 
-            (GetCurrentTabConfig() as MapConfig).SelectedImage = view.SelectedItem as Image;
+            (GetCurrentTabResourceConfig() as MapConfig).SelectedImage = view.SelectedItem as Image;
         }
 
         private void imageBoxTiles_ImageSelected(WorldStamperUI.UI.Toolkit.ImageBox.ImageBoxArgs e)
         {
-            (GetCurrentTabConfig() as MapConfig).Tool.Sprite = e.Item.Tag as Sprite;
+            (GetCurrentTabResourceConfig() as MapConfig).Tool.Sprite = e.Item.Tag as Sprite;
         }
 
         private void ToolkitUpdate()
         {
             var map = GetCurrentTabResource() as Map;
-            var config = GetCurrentTabConfig() as MapConfig;
+            var config = GetCurrentTabResourceConfig() as MapConfig;
 
             if (map != null) ShowTilesets(map);
 
@@ -279,7 +302,7 @@ namespace WorldStamper
 
             if (clear) comboBoxTilesets.Items.Clear();
             else comboBoxTilesets.SelectedIndex = -1;
-            comboBoxTilesets.Enabled = (GetCurrentTabConfig() as MapConfig)?.Tool.Mode == Tool.DrawMode.Paint;
+            comboBoxTilesets.Enabled = (GetCurrentTabResourceConfig() as MapConfig)?.Tool.Mode == Tool.DrawMode.Paint;
 
             if (clear) comboBoxImages.Items.Clear();
             else comboBoxImages.SelectedIndex = -1;
@@ -290,6 +313,19 @@ namespace WorldStamper
         #endregion
 
         #region <- Entities ->
+        private void HandleCoreEntityPlacement(Map map, MapConfig config, Grid.GridArgs e)
+        {
+            if (listViewCoreEntities.SelectedItems.Count > 0)
+            {
+                switch (listViewCoreEntities.SelectedItems[0].Text.ToLower())
+                {
+                    case "spawn":
+                        map.Spawn = new System.Drawing.Point(e.X, e.Y);
+                        break;
+                }
+            }
+        }
+
         private void ToolkitResetEntitiesTab(bool clear = true)
         {
             if (clear) comboBoxObjects.Items.Clear();
@@ -305,31 +341,34 @@ namespace WorldStamper
             if (clear) pictureBoxPreview.Image = null;
             pictureBoxPreview.Enabled = GetCurrentTabResource() != null;
 
-            listViewEntities.Enabled = GetCurrentTabResource() != null;
+            listViewCoreEntities.Enabled = GetCurrentTabResource() != null;
         }
 
         private void tabControlToolkits_SelectedIndexChanged(object sender, EventArgs e)
         {
             var view = sender as TabControl;
             var map = GetCurrentTabResource() as Map;
-            var mapConfig = GetCurrentTabConfig() as MapConfig;
+            var mapConfig = GetCurrentTabResourceConfig() as MapConfig;
 
-            if (view.SelectedIndex == 0)
+            if (map != null && mapConfig != null)
             {
-                mapConfig.Tool.Mode = Tool.DrawMode.Cursor;
-            }
-            else if (view.SelectedIndex == 1)
-            {
-                if (map != null)
+                if (view.SelectedIndex == 0)
                 {
-                    comboBoxObjects.Items.Clear();
+                    mapConfig.Tool.Mode = Tool.DrawMode.Cursor;
+                }
+                else if (view.SelectedIndex == 1)
+                {
+                    if (map != null)
+                    {
+                        comboBoxObjects.Items.Clear();
 
-                    ToolkitResetEntitiesTab();
+                        ToolkitResetEntitiesTab();
 
-                    foreach (var entityCollection in map.EntityCollections)
-                        comboBoxObjects.Items.Add(entityCollection);
+                        foreach (var entityCollection in map.EntityCollections)
+                            comboBoxObjects.Items.Add(entityCollection);
 
-                    mapConfig.Tool.Mode = Tool.DrawMode.Entity;
+                        mapConfig.Tool.Mode = Tool.DrawMode.Entity;
+                    }
                 }
             }
 
@@ -390,7 +429,11 @@ namespace WorldStamper
 
         private void listViewEntities_SelectedIndexChanged(object sender, EventArgs e)
         {
+            var view = sender as ListView;
+            var config = GetCurrentTabResourceConfig() as MapConfig;
 
+            if (view.SelectedItems.Count > 0)
+                config.Tool.Image = new System.Drawing.Bitmap(imageListCoreEntities.Images[view.SelectedItems[0].Index]) { Tag = view.SelectedItems[0].Text.ToLower() };
         }
         #endregion
 
@@ -399,7 +442,7 @@ namespace WorldStamper
         #region <- Statusbar & Buttons ->
         private void UpdateTool()
         {
-            var config = (GetCurrentTabConfig() as MapConfig);
+            var config = (GetCurrentTabResourceConfig() as MapConfig);
 
             if (config != null)
             {
@@ -432,7 +475,7 @@ namespace WorldStamper
             return tabsMaps.SelectedTab.Controls[0] as Grid;
         }
 
-        private IConfig GetCurrentTabConfig()
+        private IConfig GetCurrentTabResourceConfig()
         {
             if (GetCurrentTabResource() != null)
                 return View.GetConfig(GetCurrentTabResource());
@@ -452,11 +495,13 @@ namespace WorldStamper
         {
             var view = (sender as Tabs);
             var map = GetCurrentTabResource();
-            var config = GetCurrentTabConfig() as MapConfig;
+            var config = GetCurrentTabResourceConfig() as MapConfig;
 
             ToolkitResetEntitiesTab();
             ToolkitResetTilesetsTab();
             ToolkitUpdate();
+
+            tabControlToolkits.SelectedIndex = 0;
 
             UpdateTool();
         }

@@ -122,7 +122,7 @@ namespace WorldStamper.Sources.Models.Entities
         #endregion
 
 
-        public bool IsEqual<IResource>(IResource resource)
+        public bool IsEqual(IResource resource)
         {
             if (resource is EntityCollection)
             {
@@ -136,6 +136,14 @@ namespace WorldStamper.Sources.Models.Entities
 
                 return true;
             }
+
+            return false;
+        }
+
+        public bool HasEqualKey(IResource resource)
+        {
+            if (resource is EntityCollection)
+                return (resource as EntityCollection).Name.Equals(Name);
 
             return false;
         }

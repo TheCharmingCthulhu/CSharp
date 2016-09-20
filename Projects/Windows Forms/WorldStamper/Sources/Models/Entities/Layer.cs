@@ -16,7 +16,7 @@ namespace WorldStamper.Sources.Models.Entities
         public LevelType Level { get; set; }
         public Point Offset { get; set; }
 
-        public bool IsEqual<IResource>(IResource resource)
+        public bool IsEqual(IResource resource)
         { 
             if (resource is Layer)
             {
@@ -26,6 +26,14 @@ namespace WorldStamper.Sources.Models.Entities
                        layer.Level.Equals(Level) &&
                        layer.Offset.Equals(Offset);
             }
+
+            return false;
+        }
+
+        public bool HasEqualKey(IResource resource)
+        {
+            if (resource is Layer)
+                return (resource as Layer).Name.Equals(Name);
 
             return false;
         }

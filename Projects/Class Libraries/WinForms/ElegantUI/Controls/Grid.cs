@@ -33,12 +33,13 @@ namespace ElegantUI.Controls
         public event GridHandler CellHover;
         #endregion
 
-        public int GridWidth { get; set; } = 20;
-        public int GridHeight { get; set; } = 20;
+        public int GridWidth { get { return _GridWidth; } set { _GridWidth = value; InitializeGrid(); } }
+        public int GridHeight { get { return _GridHeight; } set { _GridHeight = value; InitializeGrid(); } }
 
         public int CellWidth { get; set; } = 32;
         public int CellHeight { get; set; } = 32;
 
+        int _GridWidth = 20, _GridHeight = 20;
         int _OffsetX = 0, _OffsetY = 0;
 
         Bitmap[,] _Grid;
@@ -55,7 +56,7 @@ namespace ElegantUI.Controls
         {
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
 
-            _Grid = new Bitmap[GridWidth, GridHeight];
+            InitializeGrid();
         }
 
         #region <- Functions ->
@@ -96,6 +97,24 @@ namespace ElegantUI.Controls
         public void SetHighlightColor(Color color)
         {
             _Hightlight.Color = color;
+        }
+
+        private void InitializeGrid()
+        {
+            if (_Grid == null)
+            {
+                _Grid = new Bitmap[_GridWidth, _GridHeight];
+
+                return;
+            }
+
+            Bitmap[,] newGrid = new Bitmap[_GridWidth, _GridHeight];
+
+            for(int x = 0; x < _Grid.GetLength(0); x++)
+                for(int y = 0; y < _Grid.GetLength(1); y++)
+                    newGrid[x, y] = _Grid[x, y];
+
+            _Grid = newGrid;
         }
         #endregion
 
@@ -266,7 +285,11 @@ namespace ElegantUI.Controls
 
                 for (int i = 0; i < maxLevel + 1; i++)
                     foreach (var overlay in Overlays.Where(go => go.Level == i))
-                        e.Graphics.DrawImage(overlay.Texture, new PointF(CellWidth * overlay.X, CellHeight * overlay.Y));
+                    {
+                        var location = new Point((CellWidth * overlay.X) - (CellWidth * _OffsetX), (CellHeight * overlay.Y) - (CellHeight * _OffsetY));
+
+                        e.Graphics.DrawImage(overlay.Texture, location.X, location.Y);
+                    }
             }
         }
 
@@ -331,11 +354,6 @@ namespace ElegantUI.Controls
 
                 Invalidate();
             }
-        }
-
-        public void SetHighlightColor(object colors)
-        {
-            throw new NotImplementedException();
         }
         #endregion
     }

@@ -16,7 +16,7 @@ namespace WorldStamper.Sources.Models.Entities
         public List<Sprite> Sprites { get; set; } = new List<Sprite>();
         public List<Template> Templates { get; set; } = new List<Template>();
 
-        public bool IsEqual<IResource>(IResource resource)
+        public bool IsEqual(IResource resource)
         {
             if (resource is Entity)
             {
@@ -36,6 +36,11 @@ namespace WorldStamper.Sources.Models.Entities
             }
 
             return false;
+        }
+
+        public bool HasEqualKey(IResource resource)
+        {
+            throw new NotImplementedException();
         }
 
         public string GetFilename()

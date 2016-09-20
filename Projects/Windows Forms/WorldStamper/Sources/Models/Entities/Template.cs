@@ -9,7 +9,7 @@ namespace WorldStamper.Sources.Models.Entities
         public string Name { get; set; }
         public List<Layer> Layers { get; set; } = new List<Layer>();
 
-        public bool IsEqual<IResource>(IResource resource)
+        public bool IsEqual(IResource resource)
         {
             if (resource is Template)
             {
@@ -25,9 +25,17 @@ namespace WorldStamper.Sources.Models.Entities
             return false;
         }
 
+        public bool HasEqualKey(IResource resource)
+        {
+            if (resource is Template)
+                return (resource as Template).Name.Equals(Name);
+
+            return false;
+        }
+
         public override string ToString()
         {
             return Name;
-        }
+        }        
     }
 }

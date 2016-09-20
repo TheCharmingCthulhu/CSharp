@@ -11,6 +11,11 @@ namespace WorldStamper.Sources.Interfaces
         /// <summary>
         /// Checks two resources for equality.
         /// </summary>
-        bool IsEqual<IResource>(IResource resource);
+        bool IsEqual(IResource resource);
+
+        /// <summary>
+        /// Checks two resources for equality on a specific primary property.
+        /// </summary>
+        bool HasEqualKey(IResource resource);
     }
 }

@@ -132,11 +132,21 @@ namespace WorldStamper.Sources.Views
             return _resources.OfType<T>().Where(r => r.HasChanges()).ToList();
         }
 
-        private bool HasResource<IResource>(IResource resource)
+        private bool HasResource(IResource resource)
         {
             foreach (var item in _resources)
+            {
+                if (item is Map && resource is Map)
+                {
+                    if ((item as Map).HasEqualKey(resource))
+                        return true;
+                    else
+                        continue;
+                }
+
                 if (item.IsEqual(resource))
                     return true;
+            }
 
             return false;
         }

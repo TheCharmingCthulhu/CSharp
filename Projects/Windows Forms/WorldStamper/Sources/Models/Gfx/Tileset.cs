@@ -90,7 +90,7 @@ namespace WorldStamper.Sources.Models
             return false;
         }
 
-        public bool IsEqual<IResource>(IResource resource)
+        public bool IsEqual(IResource resource)
         {
             if (resource is Tileset)
             {
@@ -99,6 +99,14 @@ namespace WorldStamper.Sources.Models
                 return  tileset.Name.Equals(Name) &&
                         HasEqualCollections(resource);
             }
+
+            return false;
+        }
+
+        public bool HasEqualKey(IResource resource)
+        {
+            if (resource is Tileset)
+                return (resource as Tileset).Name.Equals(Name);
 
             return false;
         }

@@ -255,13 +255,11 @@ namespace WorldStamper.Sources.Models.Maps
         }
 
         #region <- Equality ->
-        public bool IsEqual<IResource>(IResource resource)
+        public bool IsEqual(IResource resource)
         {
             if (resource is Map)
             {
                 var map = resource as Map;
-
-                if (map.ID != ID) return false;
 
                 return map.Name.Equals(Name) &&
                         map.Width == Width &&
@@ -269,6 +267,14 @@ namespace WorldStamper.Sources.Models.Maps
                         map.Spawn == Spawn &&
                         HasEqualCollections(resource);
             }
+
+            return false;
+        }
+
+        public bool HasEqualKey(IResource resource)
+        {
+            if (resource is Map)
+                return (resource as Map).ID == ID;
 
             return false;
         }

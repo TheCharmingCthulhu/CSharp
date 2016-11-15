@@ -32,6 +32,8 @@
             this.buttonCycles = new System.Windows.Forms.Button();
             this.buttonInterfaces = new System.Windows.Forms.Button();
             this.buttonClock = new System.Windows.Forms.Button();
+            this.buttonLerp = new System.Windows.Forms.Button();
+            this.btnStackoverflow = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -40,6 +42,8 @@
             this.flowLayoutPanel1.Controls.Add(this.buttonCycles);
             this.flowLayoutPanel1.Controls.Add(this.buttonInterfaces);
             this.flowLayoutPanel1.Controls.Add(this.buttonClock);
+            this.flowLayoutPanel1.Controls.Add(this.buttonLerp);
+            this.flowLayoutPanel1.Controls.Add(this.btnStackoverflow);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -77,6 +81,26 @@
             this.buttonClock.UseVisualStyleBackColor = true;
             this.buttonClock.Click += new System.EventHandler(this.buttonClock_Click);
             // 
+            // buttonLerp
+            // 
+            this.buttonLerp.Location = new System.Drawing.Point(251, 8);
+            this.buttonLerp.Name = "buttonLerp";
+            this.buttonLerp.Size = new System.Drawing.Size(75, 23);
+            this.buttonLerp.TabIndex = 3;
+            this.buttonLerp.Text = "Lerp";
+            this.buttonLerp.UseVisualStyleBackColor = true;
+            this.buttonLerp.Click += new System.EventHandler(this.buttonLerp_Click);
+            // 
+            // btnStackoverflow
+            // 
+            this.btnStackoverflow.Location = new System.Drawing.Point(332, 8);
+            this.btnStackoverflow.Name = "btnStackoverflow";
+            this.btnStackoverflow.Size = new System.Drawing.Size(88, 23);
+            this.btnStackoverflow.TabIndex = 1;
+            this.btnStackoverflow.Text = "Stackoverflow";
+            this.btnStackoverflow.UseVisualStyleBackColor = true;
+            this.btnStackoverflow.Click += new System.EventHandler(this.btnStackoverflow_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -97,6 +121,8 @@
         private System.Windows.Forms.Button buttonCycles;
         private System.Windows.Forms.Button buttonInterfaces;
         private System.Windows.Forms.Button buttonClock;
+        private System.Windows.Forms.Button buttonLerp;
+        private System.Windows.Forms.Button btnStackoverflow;
     }
 }
 

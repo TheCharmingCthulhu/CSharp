@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using Feast.Sources;
+using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -15,7 +17,7 @@ namespace Feast.Forms
             InitializeComponent();
         }
 
-        internal static DialogResult Run()
+        internal static DialogResult RunCreate()
         {
             var f = new DialogFixedcost();
 
@@ -26,9 +28,17 @@ namespace Feast.Forms
             return f.ShowDialog();
         }
 
+        private void UpdateForm()
+        {
+            pictureBoxIcon.Image = Icon;
+            pictureBoxIcon.Tag = Icon.Tag;
+            textBoxDescription.Text = Description;
+            numericUpDownSum.Value = Sum;
+        }
+
         private void buttonOK_Click(object sender, System.EventArgs e)
         {
-            if (pictureBoxIcon.Image != null && !string.IsNullOrEmpty(textBoxDescription.Text) && numericUpDownSum.Value > -1)
+            if (pictureBoxIcon.Image != null && pictureBoxIcon.Image.Tag != null && !string.IsNullOrEmpty(textBoxDescription.Text) && numericUpDownSum.Value > -1)
             {
                 Icon = pictureBoxIcon.Image;
                 Icon.Tag = pictureBoxIcon.Image.Tag;
@@ -37,6 +47,24 @@ namespace Feast.Forms
 
                 DialogResult = DialogResult.OK;
             }
+            else
+            {
+                if (pictureBoxIcon.Image == null || pictureBoxIcon.Image.Tag == null)
+                    MessageBox.Show("Please select an image.", "Missing Image");
+            }
+        }
+
+        internal static DialogResult RunEdit(Fixcost item)
+        {
+            var f = new DialogFixedcost();
+
+            Icon = item.Icon;
+            Description = item.Description;
+            Sum = item.Sum;
+
+            f.UpdateForm();
+
+            return f.ShowDialog();
         }
 
         private void pictureBoxIcon_MouseDoubleClick(object sender, MouseEventArgs e)

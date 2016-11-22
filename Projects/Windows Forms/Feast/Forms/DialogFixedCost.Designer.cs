@@ -42,7 +42,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(214, 80);
+            this.buttonOK.Location = new System.Drawing.Point(55, 74);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(70, 23);
             this.buttonOK.TabIndex = 0;
@@ -53,7 +53,7 @@
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(140, 80);
+            this.buttonCancel.Location = new System.Drawing.Point(131, 74);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(70, 23);
             this.buttonCancel.TabIndex = 1;
@@ -62,7 +62,7 @@
             // 
             // textBoxDescription
             // 
-            this.textBoxDescription.Location = new System.Drawing.Point(96, 28);
+            this.textBoxDescription.Location = new System.Drawing.Point(11, 22);
             this.textBoxDescription.Name = "textBoxDescription";
             this.textBoxDescription.Size = new System.Drawing.Size(188, 20);
             this.textBoxDescription.TabIndex = 2;
@@ -70,7 +70,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(93, 12);
+            this.label1.Location = new System.Drawing.Point(8, 6);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 3;
@@ -79,7 +79,7 @@
             // numericUpDownSum
             // 
             this.numericUpDownSum.DecimalPlaces = 2;
-            this.numericUpDownSum.Location = new System.Drawing.Point(140, 54);
+            this.numericUpDownSum.Location = new System.Drawing.Point(55, 48);
             this.numericUpDownSum.Name = "numericUpDownSum";
             this.numericUpDownSum.Size = new System.Drawing.Size(144, 20);
             this.numericUpDownSum.TabIndex = 4;
@@ -89,7 +89,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(93, 56);
+            this.label2.Location = new System.Drawing.Point(8, 50);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(41, 13);
             this.label2.TabIndex = 5;
@@ -102,10 +102,10 @@
             this.pictureBoxIcon.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBoxIcon.Image = global::Feast.Properties.Resources.img_icon;
             this.pictureBoxIcon.InitialImage = null;
-            this.pictureBoxIcon.Location = new System.Drawing.Point(12, 28);
+            this.pictureBoxIcon.Location = new System.Drawing.Point(205, 22);
             this.pictureBoxIcon.Name = "pictureBoxIcon";
-            this.pictureBoxIcon.Size = new System.Drawing.Size(78, 75);
-            this.pictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBoxIcon.Size = new System.Drawing.Size(32, 32);
+            this.pictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxIcon.TabIndex = 6;
             this.pictureBoxIcon.TabStop = false;
             this.pictureBoxIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBoxIcon_MouseDoubleClick);
@@ -113,7 +113,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 12);
+            this.label3.Location = new System.Drawing.Point(202, 6);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(31, 13);
             this.label3.TabIndex = 7;
@@ -123,7 +123,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(296, 114);
+            this.ClientSize = new System.Drawing.Size(247, 106);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.pictureBoxIcon);
             this.Controls.Add(this.label2);

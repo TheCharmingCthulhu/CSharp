@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBoxOverview = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -51,11 +52,16 @@
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.listViewFixcosts = new System.Windows.Forms.ListView();
+            this.contextMenuStripFixcostOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBoxOverview.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.contextMenuStripFixcostOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxOverview
@@ -288,7 +294,38 @@
             this.listViewFixcosts.Size = new System.Drawing.Size(313, 167);
             this.listViewFixcosts.TabIndex = 0;
             this.listViewFixcosts.UseCompatibleStateImageBehavior = false;
+            this.listViewFixcosts.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listViewFixcosts_MouseClick);
             this.listViewFixcosts.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewFixcosts_MouseDown);
+            // 
+            // contextMenuStripFixcostOptions
+            // 
+            this.contextMenuStripFixcostOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.insertToolStripMenuItem,
+            this.editToolStripMenuItem,
+            this.removeToolStripMenuItem});
+            this.contextMenuStripFixcostOptions.Name = "contextMenuStripFixcostOptions";
+            this.contextMenuStripFixcostOptions.Size = new System.Drawing.Size(153, 92);
+            // 
+            // insertToolStripMenuItem
+            // 
+            this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
+            this.insertToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.insertToolStripMenuItem.Text = "Hinzufügen";
+            this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editToolStripMenuItem.Text = "Editieren";
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            // 
+            // removeToolStripMenuItem
+            // 
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removeToolStripMenuItem.Text = "Entfernen";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // FormMain
             // 
@@ -312,6 +349,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.contextMenuStripFixcostOptions.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -340,6 +378,10 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ListView listViewFixcosts;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripFixcostOptions;
+        private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
     }
 }
 

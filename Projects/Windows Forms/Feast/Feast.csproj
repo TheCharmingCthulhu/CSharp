@@ -62,6 +62,7 @@
     <Compile Include="Sources\Fixcost.cs" />
     <Compile Include="Sources\FixcostManager.cs" />
     <Compile Include="Sources\ApplicationTypes.cs" />
+    <Compile Include="Sources\Services\Winapi.cs" />
     <EmbeddedResource Include="Forms\DialogFixedcost.resx">
       <DependentUpon>DialogFixedcost.cs</DependentUpon>
     </EmbeddedResource>

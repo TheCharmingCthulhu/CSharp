@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Crisscross.Properties
+namespace FinanciA.Properties
 {
 
 

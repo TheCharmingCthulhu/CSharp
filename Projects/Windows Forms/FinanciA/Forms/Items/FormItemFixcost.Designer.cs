@@ -1,4 +1,4 @@
-﻿namespace FinanciA.Forms.Fixcosts
+﻿namespace FinanciA.Forms.Fixcosts.Items
 {
     partial class FormItemFixcost
     {
@@ -52,11 +52,11 @@
             // metroLabelPrice
             // 
             this.metroLabelPrice.AutoSize = true;
-            this.metroLabelPrice.Location = new System.Drawing.Point(73, 151);
+            this.metroLabelPrice.Location = new System.Drawing.Point(63, 151);
             this.metroLabelPrice.Name = "metroLabelPrice";
-            this.metroLabelPrice.Size = new System.Drawing.Size(40, 19);
+            this.metroLabelPrice.Size = new System.Drawing.Size(50, 19);
             this.metroLabelPrice.TabIndex = 3;
-            this.metroLabelPrice.Text = "Preis:";
+            this.metroLabelPrice.Text = "* Preis:";
             // 
             // metroButtonOk
             // 
@@ -91,11 +91,11 @@
             // metroLabel2
             // 
             this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Location = new System.Drawing.Point(65, 60);
+            this.metroLabel2.Location = new System.Drawing.Point(55, 59);
             this.metroLabel2.Name = "metroLabel2";
-            this.metroLabel2.Size = new System.Drawing.Size(48, 19);
+            this.metroLabel2.Size = new System.Drawing.Size(58, 19);
             this.metroLabel2.TabIndex = 7;
-            this.metroLabel2.Text = "Name:";
+            this.metroLabel2.Text = "* Name:";
             // 
             // textBoxName
             // 
@@ -124,7 +124,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
-            this.ClientSize = new System.Drawing.Size(304, 222);
+            this.ClientSize = new System.Drawing.Size(304, 219);
             this.Controls.Add(this.textBoxPrice);
             this.Controls.Add(this.textBoxName);
             this.Controls.Add(this.metroLabel2);
@@ -140,7 +140,7 @@
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.SystemShadow;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "N/A";
+            this.Text = "Fixkost";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormFixcostItem_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).EndInit();
             this.ResumeLayout(false);

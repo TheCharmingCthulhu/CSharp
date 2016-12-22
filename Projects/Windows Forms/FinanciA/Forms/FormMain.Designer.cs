@@ -68,7 +68,7 @@
             this.metroLabel2.Location = new System.Drawing.Point(60, 85);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(98, 25);
-            this.metroLabel2.TabIndex = 3;
+            this.metroLabel2.TabIndex = 2;
             this.metroLabel2.Text = "Fixkosten:";
             // 
             // metroLabelFixcosts
@@ -79,7 +79,7 @@
             this.metroLabelFixcosts.Location = new System.Drawing.Point(164, 85);
             this.metroLabelFixcosts.Name = "metroLabelFixcosts";
             this.metroLabelFixcosts.Size = new System.Drawing.Size(44, 25);
-            this.metroLabelFixcosts.TabIndex = 4;
+            this.metroLabelFixcosts.TabIndex = 3;
             this.metroLabelFixcosts.Text = "N/A";
             // 
             // metroLabelDateTime
@@ -90,7 +90,7 @@
             this.metroLabelDateTime.Location = new System.Drawing.Point(20, 250);
             this.metroLabelDateTime.Name = "metroLabelDateTime";
             this.metroLabelDateTime.Size = new System.Drawing.Size(560, 25);
-            this.metroLabelDateTime.TabIndex = 5;
+            this.metroLabelDateTime.TabIndex = 4;
             this.metroLabelDateTime.Text = "00.00.2016 00:00:00";
             // 
             // timerUpdate
@@ -108,7 +108,7 @@
             this.tileExplorerToolset.Location = new System.Drawing.Point(20, 275);
             this.tileExplorerToolset.Name = "tileExplorerToolset";
             this.tileExplorerToolset.Size = new System.Drawing.Size(560, 127);
-            this.tileExplorerToolset.TabIndex = 2;
+            this.tileExplorerToolset.TabIndex = 5;
             // 
             // FormMain
             // 
@@ -116,11 +116,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 422);
             this.Controls.Add(this.metroLabelDateTime);
+            this.Controls.Add(this.tileExplorerToolset);
             this.Controls.Add(this.metroLabelFixcosts);
             this.Controls.Add(this.metroLabel2);
-            this.Controls.Add(this.tileExplorerToolset);
             this.Controls.Add(this.metroLabelSalary);
             this.Controls.Add(this.metroLabel1);
+            this.MinimumSize = new System.Drawing.Size(600, 196);
             this.Name = "FormMain";
             this.Text = "FinanciA";
             this.Load += new System.EventHandler(this.FormMain_Load);

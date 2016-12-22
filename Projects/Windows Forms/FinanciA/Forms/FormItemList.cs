@@ -1,8 +1,11 @@
-﻿using FinanciA.Forms.Fixcosts;
-using FinanciA.Source;
+﻿using FinanciA.Source;
 using MetroFramework.Forms;
 using System.Windows.Forms;
 using System;
+using FinanciA.Forms.Fixcosts.Items;
+using FinanciA.Forms.Items;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FinanciA.Forms
 {
@@ -14,7 +17,6 @@ namespace FinanciA.Forms
         {
             Fixcost,
             Salary,
-            Service
         }
 
         public FormItemList()
@@ -33,8 +35,8 @@ namespace FinanciA.Forms
             return f.ShowDialog();
         }
 
-        #region <- ListView : Fixcosts ->
-        private void listViewFixcosts_MouseDown(object sender, MouseEventArgs e)
+        #region <- ListView : Objects ->
+        private void listViewObjects_MouseDown(object sender, MouseEventArgs e)
         {
             var view = sender as ListView;
             var hitInfo = view.HitTest(e.Location);
@@ -53,14 +55,15 @@ namespace FinanciA.Forms
                     switch (Type)
                     {
                         case CurrencyDataType.Fixcost:
-                            if (FormItemFixcost.Run() == DialogResult.OK)
-                            {
-                                FormMain.FixcostManager.Items.Add(FormItemFixcost.Item);
-                                FormMain.FixcostManager.Save();
-                                UpdateItems();
-                            }
+                            if (FormItemFixcost.Run() == DialogResult.OK) FormMain.FixcostManager.AppendItem(FormItemFixcost.Item);
+                            break;
+
+                        case CurrencyDataType.Salary:
+                            if (FormItemSalary.Run() == DialogResult.OK) FormMain.SalaryManager.AppendItem(FormItemSalary.Item);
                             break;
                     }
+
+                    UpdateItems();
                 }
             }
 
@@ -73,23 +76,31 @@ namespace FinanciA.Forms
             }
         }
 
-        private void listViewFixcosts_KeyDown(object sender, KeyEventArgs e)
+        private void listViewObjects_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
-                listViewFixcosts_RemoveItem(sender);
+                listViewObjects_RemoveItem(sender);
             }
         }
 
-        private void listViewFixcosts_RemoveItem(object sender)
+        private void listViewObjects_RemoveItem(object sender)
         {
             var view = sender as ListView;
             if (view != null && view.SelectedItems.Count > 0)
             {
                 if (MessageBox.Show("Sind Sie sicher das Sie das ausgewählte Element endgültig löschen möchten?", "Löschvorgang", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
-                    FormMain.FixcostManager.Items.Remove(view.SelectedItems[0].Tag as Fixcost);
-                    FormMain.FixcostManager.Save();
+                    switch (Type)
+                    {
+                        case CurrencyDataType.Fixcost:
+                            FormMain.FixcostManager.RemoveItem(view.SelectedItems[0].Tag as Fixcost);
+                            break;
+
+                        case CurrencyDataType.Salary:
+                            FormMain.SalaryManager.RemoveItem(view.SelectedItems[0].Tag as Salary);
+                            break;
+                    }
 
                     UpdateItems();
                 }
@@ -101,66 +112,77 @@ namespace FinanciA.Forms
             var view = sender as ListView;
             if (view != null && view.SelectedItems.Count > 0)
             {
-                var fixcostItem = view.SelectedItems[0].Tag as Fixcost;
-
                 switch (Type)
                 {
                     case CurrencyDataType.Fixcost:
-                        if (FormItemFixcost.Run(fixcostItem) == DialogResult.OK)
-                        {
-                            var index = FormMain.FixcostManager.Items.IndexOf(fixcostItem);
-                            FormMain.FixcostManager.Items.RemoveAt(index);
-                            FormMain.FixcostManager.Items.Insert(index, FormItemFixcost.Item);
-                            FormMain.FixcostManager.Save();
-                            UpdateItems();
-                        }
+                        var fixcostItem = view.SelectedItems[0].Tag as Fixcost;
+                        if (fixcostItem != null && FormItemFixcost.Run(fixcostItem) == DialogResult.OK)
+                            FormMain.FixcostManager.ReplaceItem(fixcostItem, FormItemFixcost.Item);
+                        break;
+
+                    case CurrencyDataType.Salary:
+                        var salaryItem = view.SelectedItems[0].Tag as Salary;
+                        if (salaryItem != null && FormItemSalary.Run(salaryItem) == DialogResult.OK)
+                            FormMain.SalaryManager.ReplaceItem(salaryItem, FormItemSalary.Item);
                         break;
                 }
+
+                UpdateItems();
             }
         }
         #endregion
 
         private void UpdateItems()
         {
-            listViewFixcosts.Items.Clear();
+            listViewObjects.Items.Clear();
 
-            if (FormMain.FixcostManager == null || FormMain.FixcostManager.Items.Count <= 0)
+            List<CurrencyDataItem> items = null;
+
+            switch (Type)
+            {
+                case CurrencyDataType.Fixcost:
+                    items = FormMain.FixcostManager.Items.ToList<CurrencyDataItem>();
+                    break;
+
+                case CurrencyDataType.Salary:
+                    items = FormMain.SalaryManager.Items.ToList<CurrencyDataItem>();
+                    break;
+            }
+
+            if (items.Count <= 0)
             {
                 metroLabelEmptyLabel.Visible = true;
                 return;
             }
             else metroLabelEmptyLabel.Visible = false;
 
-            if (FormMain.FixcostManager != null && FormMain.FixcostManager.Items.Count > 0)
+            foreach (var item in items)
             {
-                foreach (var fixcostItem in FormMain.FixcostManager.Items)
-                {
-                    var listItem = new ListViewItem(fixcostItem.Name);
-                    listItem.SubItems.Add(fixcostItem.Description);
-                    listItem.SubItems.Add(fixcostItem.Price.ToString("C2"));
-                    listItem.Tag = fixcostItem;
+                var listItem = new ListViewItem(item.Name);
+                listItem.SubItems.Add(item.Description);
+                listItem.SubItems.Add(item.Price.ToString("C2"));
+                listItem.Tag = item;
 
-                    listViewFixcosts.Items.Add(listItem);
-                }
-
-                listViewFixcosts.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                listViewFixcosts.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+                listViewObjects.Items.Add(listItem);
             }
+
+            listViewObjects.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listViewObjects.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         private void metroLabelEmptyLabel_MouseDown(object sender, MouseEventArgs e)
         {
-            listViewFixcosts_MouseDown(listViewFixcosts, e);
+            listViewObjects_MouseDown(listViewObjects, e);
         }
 
         private void löschenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            listViewFixcosts_RemoveItem(listViewFixcosts);
+            listViewObjects_RemoveItem(listViewObjects);
         }
 
         private void editierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            listViewFixcosts_EditItem(listViewFixcosts);
+            listViewFixcosts_EditItem(listViewObjects);
         }
     }
 }

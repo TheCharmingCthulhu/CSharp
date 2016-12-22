@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.listViewFixcosts = new System.Windows.Forms.ListView();
+            this.listViewObjects = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -42,26 +42,26 @@
             // 
             // listViewFixcosts
             // 
-            this.listViewFixcosts.Alignment = System.Windows.Forms.ListViewAlignment.Default;
-            this.listViewFixcosts.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listViewFixcosts.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.listViewObjects.Alignment = System.Windows.Forms.ListViewAlignment.Default;
+            this.listViewObjects.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listViewObjects.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
-            this.listViewFixcosts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewFixcosts.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listViewFixcosts.FullRowSelect = true;
-            this.listViewFixcosts.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listViewFixcosts.HideSelection = false;
-            this.listViewFixcosts.Location = new System.Drawing.Point(20, 60);
-            this.listViewFixcosts.MultiSelect = false;
-            this.listViewFixcosts.Name = "listViewFixcosts";
-            this.listViewFixcosts.Size = new System.Drawing.Size(390, 220);
-            this.listViewFixcosts.TabIndex = 0;
-            this.listViewFixcosts.UseCompatibleStateImageBehavior = false;
-            this.listViewFixcosts.View = System.Windows.Forms.View.Details;
-            this.listViewFixcosts.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewFixcosts_KeyDown);
-            this.listViewFixcosts.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewFixcosts_MouseDown);
+            this.listViewObjects.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewObjects.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewObjects.FullRowSelect = true;
+            this.listViewObjects.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewObjects.HideSelection = false;
+            this.listViewObjects.Location = new System.Drawing.Point(20, 60);
+            this.listViewObjects.MultiSelect = false;
+            this.listViewObjects.Name = "listViewFixcosts";
+            this.listViewObjects.Size = new System.Drawing.Size(390, 220);
+            this.listViewObjects.TabIndex = 0;
+            this.listViewObjects.UseCompatibleStateImageBehavior = false;
+            this.listViewObjects.View = System.Windows.Forms.View.Details;
+            this.listViewObjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewObjects_KeyDown);
+            this.listViewObjects.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewObjects_MouseDown);
             // 
             // columnHeader1
             // 
@@ -117,7 +117,7 @@
             this.BorderStyle = MetroFramework.Drawing.MetroBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(430, 300);
             this.Controls.Add(this.metroLabelEmptyLabel);
-            this.Controls.Add(this.listViewFixcosts);
+            this.Controls.Add(this.listViewObjects);
             this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -133,7 +133,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ListView listViewFixcosts;
+        private System.Windows.Forms.ListView listViewObjects;
         private MetroFramework.Controls.MetroLabel metroLabelEmptyLabel;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;

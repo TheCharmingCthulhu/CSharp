@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 
-namespace FinanciA.Forms.Fixcosts
+namespace FinanciA.Forms.Fixcosts.Items
 {
     public partial class FormItemFixcost : MetroForm
     {
@@ -19,18 +19,18 @@ namespace FinanciA.Forms.Fixcosts
             InitializeComponent();
         }
 
-        public static DialogResult Run(CurrencyDataItem fixcostItem = null)
+        public static DialogResult Run(Fixcost item = null)
         {
             Item = null;
 
             var f = new FormItemFixcost();
 
-            if (fixcostItem != null)
+            if (item != null)
             {
-                f.Title = fixcostItem.Name;
-                f.Description = fixcostItem.Description;
-                f.Price = fixcostItem.Price;
-                f.Image = fixcostItem.Icon;
+                f.Title = item.Name;
+                f.Description = item.Description;
+                f.Price = item.Price;
+                f.Image = item.Icon;
             }
 
             f.InitializeForm();
@@ -67,6 +67,7 @@ namespace FinanciA.Forms.Fixcosts
             decimal.TryParse((sender as TextBox).Text, NumberStyles.Currency, CultureInfo.CurrentCulture, out price);
 
             if (price > 0) Price = price;
+            else (sender as TextBox).Clear();
         }
 
         private void metroButtonOk_Click(object sender, System.EventArgs e)
@@ -84,8 +85,8 @@ namespace FinanciA.Forms.Fixcosts
                 DialogResult = DialogResult.OK;
             }
             else
-                MessageBox.Show("Überprüfen Sie den Namen und den Preis", "Fehlende Angaben", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        } 
+                MessageBox.Show("Bitte füllen Sie alle erforderlichen Felder aus", "Fehlende Angaben", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
         #endregion
 
         private void FormFixcostItem_KeyDown(object sender, KeyEventArgs e)

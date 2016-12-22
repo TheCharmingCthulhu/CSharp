@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System;
 
 namespace FinanciA.Source
 {
@@ -33,6 +34,36 @@ namespace FinanciA.Source
                 Items = JsonConvert.DeserializeObject<List<T>>(data);
         }
 
+        public void AppendItem(T item)
+        {
+            Items.Add(item);
+
+            Save();
+        }
+
+        public void RemoveItem(T item)
+        {
+            Items.Remove(item);
+
+            Save();
+        }
+
+        public bool ReplaceItem(T item, T newItem)
+        {
+            var index = Items.IndexOf(item);
+            if (index > -1)
+            {
+                Items.RemoveAt(index);
+                Items.Insert(index, newItem);
+
+                Save();
+
+                return true;
+            }
+
+            return false;
+        }
+
         public string GetResourceFile()
         {
             var path = StorageManager.GetStoragePath(1);
@@ -55,7 +86,7 @@ namespace FinanciA.Source
 
     public class FixcostManager : CurrencyDataManager<Fixcost>
     {
-
+        
     }
 
     public class SalaryManager : CurrencyDataManager<Salary>

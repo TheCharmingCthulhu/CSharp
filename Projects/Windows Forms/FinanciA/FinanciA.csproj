@@ -79,11 +79,17 @@
     <Compile Include="Forms\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Items\FormItemList.cs">
+    <Compile Include="Forms\FormItemList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Items\FormItemList.Designer.cs">
+    <Compile Include="Forms\FormItemList.Designer.cs">
       <DependentUpon>FormItemList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Items\FormItemSalary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Items\FormItemSalary.Designer.cs">
+      <DependentUpon>FormItemSalary.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,11 +102,14 @@
     <EmbeddedResource Include="Forms\Items\FormItemFixcost.resx">
       <DependentUpon>FormItemFixcost.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Items\FormItemList.resx">
+    <EmbeddedResource Include="Forms\FormItemList.resx">
       <DependentUpon>FormItemList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Items\FormItemSalary.resx">
+      <DependentUpon>FormItemSalary.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -124,9 +133,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MetroFramework.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

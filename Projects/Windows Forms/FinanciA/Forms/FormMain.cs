@@ -1,7 +1,8 @@
 ﻿using MetroFramework.Forms;
-using FinanciA.Forms;
 using FinanciA.Source;
+using FinanciA.Forms;
 using System;
+using System.Diagnostics;
 
 namespace FinanciA
 {

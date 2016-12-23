@@ -30,9 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.listViewObjects = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.metroLabelEmptyLabel = new MetroFramework.Controls.MetroLabel();
             this.contextMenuStripOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editierenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,14 +37,10 @@
             this.contextMenuStripOptions.SuspendLayout();
             this.SuspendLayout();
             // 
-            // listViewFixcosts
+            // listViewObjects
             // 
             this.listViewObjects.Alignment = System.Windows.Forms.ListViewAlignment.Default;
             this.listViewObjects.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listViewObjects.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
             this.listViewObjects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewObjects.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewObjects.FullRowSelect = true;
@@ -55,27 +48,13 @@
             this.listViewObjects.HideSelection = false;
             this.listViewObjects.Location = new System.Drawing.Point(20, 60);
             this.listViewObjects.MultiSelect = false;
-            this.listViewObjects.Name = "listViewFixcosts";
+            this.listViewObjects.Name = "listViewObjects";
             this.listViewObjects.Size = new System.Drawing.Size(390, 220);
             this.listViewObjects.TabIndex = 0;
             this.listViewObjects.UseCompatibleStateImageBehavior = false;
             this.listViewObjects.View = System.Windows.Forms.View.Details;
             this.listViewObjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listViewObjects_KeyDown);
             this.listViewObjects.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewObjects_MouseDown);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            this.columnHeader1.Width = 25;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Beschreibung";
-            this.columnHeader2.Width = 25;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Preis";
             // 
             // metroLabelEmptyLabel
             // 
@@ -135,9 +114,6 @@
 
         private System.Windows.Forms.ListView listViewObjects;
         private MetroFramework.Controls.MetroLabel metroLabelEmptyLabel;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripOptions;
         private System.Windows.Forms.ToolStripMenuItem editierenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem löschenToolStripMenuItem;

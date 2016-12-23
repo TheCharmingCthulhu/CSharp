@@ -36,6 +36,8 @@
             this.metroLabelDateTime = new MetroFramework.Controls.MetroLabel();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
             this.tileExplorerToolset = new FinanciA.Controls.TileExplorer();
+            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabelAllowance = new MetroFramework.Controls.MetroLabel();
             this.SuspendLayout();
             // 
             // metroLabel1
@@ -110,11 +112,35 @@
             this.tileExplorerToolset.Size = new System.Drawing.Size(560, 127);
             this.tileExplorerToolset.TabIndex = 5;
             // 
+            // metroLabel3
+            // 
+            this.metroLabel3.AutoSize = true;
+            this.metroLabel3.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.metroLabel3.FontWeight = MetroFramework.MetroLabelWeight.Bold;
+            this.metroLabel3.Location = new System.Drawing.Point(54, 110);
+            this.metroLabel3.Name = "metroLabel3";
+            this.metroLabel3.Size = new System.Drawing.Size(104, 25);
+            this.metroLabel3.TabIndex = 6;
+            this.metroLabel3.Text = "Freibetrag:";
+            // 
+            // metroLabelAllowance
+            // 
+            this.metroLabelAllowance.AutoSize = true;
+            this.metroLabelAllowance.FontSize = MetroFramework.MetroLabelSize.Tall;
+            this.metroLabelAllowance.FontWeight = MetroFramework.MetroLabelWeight.Regular;
+            this.metroLabelAllowance.Location = new System.Drawing.Point(164, 110);
+            this.metroLabelAllowance.Name = "metroLabelAllowance";
+            this.metroLabelAllowance.Size = new System.Drawing.Size(44, 25);
+            this.metroLabelAllowance.TabIndex = 7;
+            this.metroLabelAllowance.Text = "N/A";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(600, 422);
+            this.Controls.Add(this.metroLabelAllowance);
+            this.Controls.Add(this.metroLabel3);
             this.Controls.Add(this.metroLabelDateTime);
             this.Controls.Add(this.tileExplorerToolset);
             this.Controls.Add(this.metroLabelFixcosts);
@@ -139,6 +165,8 @@
         private MetroFramework.Controls.MetroLabel metroLabelFixcosts;
         private MetroFramework.Controls.MetroLabel metroLabelDateTime;
         private System.Windows.Forms.Timer timerUpdate;
+        private MetroFramework.Controls.MetroLabel metroLabel3;
+        private MetroFramework.Controls.MetroLabel metroLabelAllowance;
     }
 }
 

@@ -48,7 +48,7 @@ namespace FinanciA.Forms
                     if (view != null && view.SelectedItems.Count > 0)
                         if (hitInfo != null && hitInfo.Item != null)
                         {
-                            listViewFixcosts_EditItem(sender);
+                            listViewObjects_EditItem(sender);
                             return;
                         }
 
@@ -107,7 +107,7 @@ namespace FinanciA.Forms
             }
         }
 
-        private void listViewFixcosts_EditItem(object sender)
+        private void listViewObjects_EditItem(object sender)
         {
             var view = sender as ListView;
             if (view != null && view.SelectedItems.Count > 0)
@@ -134,7 +134,7 @@ namespace FinanciA.Forms
 
         private void UpdateItems()
         {
-            listViewObjects.Items.Clear();
+            listViewObjects.Clear();
 
             List<CurrencyDataItem> items = null;
 
@@ -142,10 +142,18 @@ namespace FinanciA.Forms
             {
                 case CurrencyDataType.Fixcost:
                     items = FormMain.FixcostManager.Items.ToList<CurrencyDataItem>();
+
+                    listViewObjects.Columns.Add("Name");
+                    listViewObjects.Columns.Add("Beschreibung");
+                    listViewObjects.Columns.Add("Preis");
                     break;
 
                 case CurrencyDataType.Salary:
                     items = FormMain.SalaryManager.Items.ToList<CurrencyDataItem>();
+
+                    listViewObjects.Columns.Add("Beschreibung");
+                    listViewObjects.Columns.Add("Gehalt");
+                    listViewObjects.Columns.Add("Datum");
                     break;
             }
 
@@ -158,11 +166,26 @@ namespace FinanciA.Forms
 
             foreach (var item in items)
             {
-                var listItem = new ListViewItem(item.Name);
-                listItem.SubItems.Add(item.Description);
-                listItem.SubItems.Add(item.Price.ToString("C2"));
-                listItem.Tag = item;
+                var listItem = new ListViewItem();
 
+                switch (Type)
+                {
+                    case CurrencyDataType.Fixcost:
+                        listItem.Text = item.Name;
+                        listItem.SubItems.Add(item.Description);
+                        listItem.SubItems.Add(item.Price.ToString("C2"));
+                        break;
+
+                    case CurrencyDataType.Salary:
+                        var dateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, (item as Salary).Payment);
+
+                        listItem.Text = item.Description;
+                        listItem.SubItems.Add(item.Price.ToString("C2"));
+                        listItem.SubItems.Add(dateTime.ToLongDateString());
+                        break;
+                }
+
+                listItem.Tag = item;
                 listViewObjects.Items.Add(listItem);
             }
 
@@ -182,7 +205,7 @@ namespace FinanciA.Forms
 
         private void editierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            listViewFixcosts_EditItem(listViewObjects);
+            listViewObjects_EditItem(listViewObjects);
         }
     }
 }

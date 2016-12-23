@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace FinanciA.Source
 {
@@ -17,6 +18,6 @@ namespace FinanciA.Source
 
     public class Salary : CurrencyDataItem
     {
-
+        public int Payment { get; set; }
     }
 }

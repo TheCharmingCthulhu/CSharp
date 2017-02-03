@@ -19,8 +19,7 @@ namespace Discardmin.Source
         public string Username { get; private set; }
         public string Password { get; private set; }
         public string Authorization { get; private set; }
-
-        public List<Server> Servers { get { return _Client.Servers.ToList(); } }
+        public List<Server> Servers { get { return _Client.Servers.ToList(); }}
 
         DiscordClient _Client;
 

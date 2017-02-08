@@ -30,21 +30,23 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormChannel));
             this.tabControlAdministration = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.listViewMessages = new System.Windows.Forms.ListView();
+            this.columnHeaderCheckbox = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.checkedListBoxMessages = new System.Windows.Forms.CheckedListBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonPrevious = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButtonApply = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonNext = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripTextBoxActions = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripButtonApply = new System.Windows.Forms.ToolStripButton();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tabControlAdministration.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.toolStrip2.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControlAdministration
@@ -58,20 +60,9 @@
             this.tabControlAdministration.Size = new System.Drawing.Size(423, 361);
             this.tabControlAdministration.TabIndex = 0;
             // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.toolStrip1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(415, 335);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Users";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.checkedListBoxMessages);
+            this.tabPage2.Controls.Add(this.listViewMessages);
             this.tabPage2.Controls.Add(this.toolStrip2);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -81,18 +72,35 @@
             this.tabPage2.Text = "Messages";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // toolStrip1
+            // listViewMessages
             // 
-            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.Location = new System.Drawing.Point(3, 307);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(409, 25);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
+            this.listViewMessages.CheckBoxes = true;
+            this.listViewMessages.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderCheckbox,
+            this.columnHeaderMessage});
+            this.listViewMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewMessages.FullRowSelect = true;
+            this.listViewMessages.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewMessages.HideSelection = false;
+            this.listViewMessages.Location = new System.Drawing.Point(3, 3);
+            this.listViewMessages.MultiSelect = false;
+            this.listViewMessages.Name = "listViewMessages";
+            this.listViewMessages.Size = new System.Drawing.Size(409, 304);
+            this.listViewMessages.TabIndex = 1;
+            this.listViewMessages.UseCompatibleStateImageBehavior = false;
+            this.listViewMessages.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeaderCheckbox
+            // 
+            this.columnHeaderCheckbox.Text = "";
+            // 
+            // columnHeaderMessage
+            // 
+            this.columnHeaderMessage.Text = "Message";
             // 
             // toolStrip2
             // 
+            this.toolStrip2.BackColor = System.Drawing.Color.Transparent;
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -107,15 +115,6 @@
             this.toolStrip2.Size = new System.Drawing.Size(409, 25);
             this.toolStrip2.TabIndex = 0;
             this.toolStrip2.Text = "toolStrip2";
-            // 
-            // checkedListBoxMessages
-            // 
-            this.checkedListBoxMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkedListBoxMessages.FormattingEnabled = true;
-            this.checkedListBoxMessages.Location = new System.Drawing.Point(3, 3);
-            this.checkedListBoxMessages.Name = "checkedListBoxMessages";
-            this.checkedListBoxMessages.Size = new System.Drawing.Size(409, 304);
-            this.checkedListBoxMessages.TabIndex = 1;
             // 
             // toolStripButton1
             // 
@@ -136,15 +135,6 @@
             this.toolStripButtonPrevious.Text = "toolStripButton2";
             this.toolStripButtonPrevious.Click += new System.EventHandler(this.toolStripButtonPrevious_Click);
             // 
-            // toolStripButtonApply
-            // 
-            this.toolStripButtonApply.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonApply.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonApply.Image")));
-            this.toolStripButtonApply.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonApply.Name = "toolStripButtonApply";
-            this.toolStripButtonApply.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonApply.Text = "toolStripButton3";
-            // 
             // toolStripButtonNext
             // 
             this.toolStripButtonNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -162,8 +152,43 @@
             // 
             // toolStripTextBoxActions
             // 
+            this.toolStripTextBoxActions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.toolStripTextBoxActions.Items.AddRange(new object[] {
+            "Pin",
+            "Delete"});
             this.toolStripTextBoxActions.Name = "toolStripTextBoxActions";
             this.toolStripTextBoxActions.Size = new System.Drawing.Size(100, 25);
+            // 
+            // toolStripButtonApply
+            // 
+            this.toolStripButtonApply.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonApply.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonApply.Image")));
+            this.toolStripButtonApply.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonApply.Name = "toolStripButtonApply";
+            this.toolStripButtonApply.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonApply.Text = "toolStripButton3";
+            this.toolStripButtonApply.Click += new System.EventHandler(this.toolStripButtonApply_Click);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.toolStrip1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(415, 335);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Users";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Location = new System.Drawing.Point(3, 307);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(409, 25);
+            this.toolStrip1.TabIndex = 0;
+            this.toolStrip1.Text = "toolStrip1";
             // 
             // FormChannel
             // 
@@ -173,12 +198,12 @@
             this.Name = "FormChannel";
             this.Size = new System.Drawing.Size(423, 361);
             this.tabControlAdministration.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -190,12 +215,14 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.CheckedListBox checkedListBoxMessages;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripButton toolStripButtonPrevious;
         private System.Windows.Forms.ToolStripButton toolStripButtonApply;
         private System.Windows.Forms.ToolStripButton toolStripButtonNext;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripComboBox toolStripTextBoxActions;
+        private System.Windows.Forms.ListView listViewMessages;
+        private System.Windows.Forms.ColumnHeader columnHeaderMessage;
+        private System.Windows.Forms.ColumnHeader columnHeaderCheckbox;
     }
 }

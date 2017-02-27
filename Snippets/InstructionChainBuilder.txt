@@ -1,24 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-
-namespace Motomatic.Source.Automation
-{
-    class InstructionBuilder
-    {
-        InstructionSet _Set = new InstructionSet();
-
-        public static InstructionBuilder Plan()
-        {
-            return new InstructionBuilder();
-        }
-
-        public InstructionSet Finalize()
-        {
-            return _Set;
-        }
-
-        /// <summary>
+/// <summary>
         /// Custom function.
         /// </summary>
         public InstructionBuilder Action(Action expr)
@@ -107,24 +87,3 @@ namespace Motomatic.Source.Automation
 
             return this;
         }
-
-        public InstructionBuilder Parse(string classname, string method)
-        {
-            var classType = Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(t => t.Name.ToLower().Equals(classname.ToLower()));
-            _Set.InsertExpression(Instruction.New(Delegate.CreateDelegate(classType, classType.GetMethods().FirstOrDefault(m => m.Name.ToLower().Equals(method)))));
-
-            return this;
-        }
-
-        public InstructionBuilder Parse<A, B>(string classname, string method, A value1, B value2)
-        {
-            _Set.InsertExpression(Instruction.New(Delegate.CreateDelegate(typeof(Action<A, B>), 
-                Assembly
-                .GetExecutingAssembly()
-                .GetTypes().FirstOrDefault(t => t.Name.ToLower().Equals(classname.ToLower()))
-                .GetMethods().FirstOrDefault(m => m.Name.ToLower().Equals(method))), value1, value2));
-
-            return this;
-        }
-    }
-}

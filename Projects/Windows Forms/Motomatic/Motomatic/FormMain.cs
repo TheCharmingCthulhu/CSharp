@@ -1,9 +1,8 @@
 ﻿using FastColoredTextBoxNS;
-using Motomatic.Source;
 using Motomatic.Source.Automation;
 using System;
 using System.Drawing;
-using System.Text.RegularExpressions;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace Motomatic
@@ -36,7 +35,7 @@ namespace Motomatic
 
         private void buttonRun_Click(object sender, System.EventArgs e)
         {
-            MessageBox.Show("Time Required: " + new TimeSpan(Reflexor.Parse(fastColoredTextBoxScript.Text)).ToString());
+            Reflexor.Parse(Assembly.LoadFile(Environment.CurrentDirectory + "\\MotomaticBase.dll"), fastColoredTextBoxScript.Text).CallEntire();
         }
 
         #region <- Styles ->
@@ -55,6 +54,11 @@ namespace Motomatic
 
             e.ChangedRange.ClearStyle(parameters);
             e.ChangedRange.SetStyle(parameters, "([A-z0-9]{1,})[,;]");
+        }
+
+        private void timerUpdate_Tick(object sender, EventArgs e)
+        {
+            toolStripStatusLabelCallStatus.Text = _worker.PassDuration.ToString();
         }
     }
 }

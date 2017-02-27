@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,9 +8,11 @@ namespace Motomatic.Source.Automation
 {
     class Worker
     {
+        private Stopwatch _KeeperTime = new Stopwatch(); 
         private Task _Keeper;
         private CancellationTokenSource _KeeperToken = new CancellationTokenSource();
-        public Stack<InstructionSet> Pool { get; set; } = new Stack<InstructionSet>();
+        public Dictionary<EventChain, InstructionSet> Pool { get; private set; } = new Dictionary<EventChain, InstructionSet>();
+        public TimeSpan PassDuration { get; private set; }
 
         public Worker()
         {
@@ -38,18 +41,17 @@ namespace Motomatic.Source.Automation
         {
             while (true)
             {
-                if (Pool.Count > 0)
-                {
-                    InstructionSet instruct = Pool.Pop();
-                }
-
                 if (_KeeperToken.IsCancellationRequested) return;
             }
         }
 
-        public void Run(InstructionSet instructions)
+        public void Insert(EventChain events, InstructionSet set)
         {
             if (_Keeper == null) Begin();
+        }
+
+        public void Remove(int index)
+        {
 
         }
     }

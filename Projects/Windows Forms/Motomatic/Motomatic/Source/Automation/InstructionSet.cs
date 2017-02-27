@@ -36,7 +36,7 @@ namespace Motomatic.Source.Automation
             if (index > -1 && index < _Expressions.Count) _Expressions[index].Expression.DynamicInvoke(_Expressions[index].Parameters);
         }
 
-        public void CallAll()
+        public void CallEntire()
         {
             _Expressions.ForEach(expr =>
             {

@@ -28,148 +28,87 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
-            this.buttonLoad = new System.Windows.Forms.Button();
-            this.buttonRun = new System.Windows.Forms.Button();
-            this.fastColoredTextBoxScript = new FastColoredTextBoxNS.FastColoredTextBox();
-            this.listViewScripts = new System.Windows.Forms.ListView();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabelCallStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBoxScript)).BeginInit();
-            this.statusStrip1.SuspendLayout();
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("+ New Event Chain");
+            this.splitContainerBasePanel = new System.Windows.Forms.SplitContainer();
+            this.treeViewEventManager = new System.Windows.Forms.TreeView();
+            this.tabControlEventChains = new System.Windows.Forms.TabControl();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerBasePanel)).BeginInit();
+            this.splitContainerBasePanel.Panel1.SuspendLayout();
+            this.splitContainerBasePanel.Panel2.SuspendLayout();
+            this.splitContainerBasePanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // buttonLoad
+            // splitContainerBasePanel
             // 
-            this.buttonLoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonLoad.Location = new System.Drawing.Point(12, 244);
-            this.buttonLoad.Name = "buttonLoad";
-            this.buttonLoad.Size = new System.Drawing.Size(75, 23);
-            this.buttonLoad.TabIndex = 0;
-            this.buttonLoad.Text = "Load";
-            this.buttonLoad.UseVisualStyleBackColor = true;
+            this.splitContainerBasePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerBasePanel.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerBasePanel.Name = "splitContainerBasePanel";
             // 
-            // buttonRun
+            // splitContainerBasePanel.Panel1
             // 
-            this.buttonRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonRun.Location = new System.Drawing.Point(397, 244);
-            this.buttonRun.Name = "buttonRun";
-            this.buttonRun.Size = new System.Drawing.Size(75, 23);
-            this.buttonRun.TabIndex = 3;
-            this.buttonRun.Text = "Run";
-            this.buttonRun.UseVisualStyleBackColor = true;
-            this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
+            this.splitContainerBasePanel.Panel1.Controls.Add(this.treeViewEventManager);
             // 
-            // fastColoredTextBoxScript
+            // splitContainerBasePanel.Panel2
             // 
-            this.fastColoredTextBoxScript.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.fastColoredTextBoxScript.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.fastColoredTextBoxScript.AutoScrollMinSize = new System.Drawing.Size(27, 14);
-            this.fastColoredTextBoxScript.BackBrush = null;
-            this.fastColoredTextBoxScript.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.fastColoredTextBoxScript.CharHeight = 14;
-            this.fastColoredTextBoxScript.CharWidth = 8;
-            this.fastColoredTextBoxScript.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.fastColoredTextBoxScript.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBoxScript.IsReplaceMode = false;
-            this.fastColoredTextBoxScript.Location = new System.Drawing.Point(193, 12);
-            this.fastColoredTextBoxScript.Name = "fastColoredTextBoxScript";
-            this.fastColoredTextBoxScript.Paddings = new System.Windows.Forms.Padding(0);
-            this.fastColoredTextBoxScript.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.fastColoredTextBoxScript.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBoxScript.ServiceColors")));
-            this.fastColoredTextBoxScript.Size = new System.Drawing.Size(279, 226);
-            this.fastColoredTextBoxScript.TabIndex = 5;
-            this.fastColoredTextBoxScript.Zoom = 100;
-            this.fastColoredTextBoxScript.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fastColoredTextBoxScript_TextChanged);
+            this.splitContainerBasePanel.Panel2.Controls.Add(this.tabControlEventChains);
+            this.splitContainerBasePanel.Size = new System.Drawing.Size(784, 601);
+            this.splitContainerBasePanel.SplitterDistance = 226;
+            this.splitContainerBasePanel.SplitterWidth = 8;
+            this.splitContainerBasePanel.TabIndex = 0;
             // 
-            // listViewScripts
+            // treeViewEventManager
             // 
-            this.listViewScripts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.listViewScripts.Location = new System.Drawing.Point(12, 12);
-            this.listViewScripts.Name = "listViewScripts";
-            this.listViewScripts.Size = new System.Drawing.Size(175, 226);
-            this.listViewScripts.TabIndex = 6;
-            this.listViewScripts.UseCompatibleStateImageBehavior = false;
+            this.treeViewEventManager.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewEventManager.HideSelection = false;
+            this.treeViewEventManager.HotTracking = true;
+            this.treeViewEventManager.Location = new System.Drawing.Point(0, 0);
+            this.treeViewEventManager.Name = "treeViewEventManager";
+            treeNode1.Name = "nodeInsertEvent";
+            treeNode1.Tag = "+NewEventChain";
+            treeNode1.Text = "+ New Event Chain";
+            this.treeViewEventManager.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            this.treeViewEventManager.Size = new System.Drawing.Size(226, 601);
+            this.treeViewEventManager.TabIndex = 0;
+            this.treeViewEventManager.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewEventManager_NodeMouseClick);
+            this.treeViewEventManager.MouseMove += new System.Windows.Forms.MouseEventHandler(this.treeViewEventManager_MouseMove);
             // 
-            // statusStrip1
+            // tabControlEventChains
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1,
-            this.toolStripStatusLabelCallStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 274);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(484, 22);
-            this.statusStrip1.TabIndex = 7;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(65, 17);
-            this.toolStripStatusLabel1.Text = "Call Status:";
-            // 
-            // toolStripStatusLabelCallStatus
-            // 
-            this.toolStripStatusLabelCallStatus.Name = "toolStripStatusLabelCallStatus";
-            this.toolStripStatusLabelCallStatus.Size = new System.Drawing.Size(29, 17);
-            this.toolStripStatusLabelCallStatus.Text = "N/A";
-            // 
-            // timerUpdate
-            // 
-            this.timerUpdate.Enabled = true;
-            this.timerUpdate.Interval = 1000;
-            this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
+            this.tabControlEventChains.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlEventChains.Location = new System.Drawing.Point(0, 0);
+            this.tabControlEventChains.Name = "tabControlEventChains";
+            this.tabControlEventChains.SelectedIndex = 0;
+            this.tabControlEventChains.Size = new System.Drawing.Size(550, 601);
+            this.tabControlEventChains.TabIndex = 0;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 296);
-            this.Controls.Add(this.listViewScripts);
-            this.Controls.Add(this.fastColoredTextBoxScript);
-            this.Controls.Add(this.buttonRun);
-            this.Controls.Add(this.buttonLoad);
-            this.Controls.Add(this.statusStrip1);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(784, 601);
+            this.Controls.Add(this.splitContainerBasePanel);
             this.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MinimumSize = new System.Drawing.Size(500, 280);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(800, 640);
+            this.MinimumSize = new System.Drawing.Size(640, 480);
             this.Name = "FormMain";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Motomatic";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
-            this.Resize += new System.EventHandler(this.FormMain_Resize);
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBoxScript)).EndInit();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.splitContainerBasePanel.Panel1.ResumeLayout(false);
+            this.splitContainerBasePanel.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerBasePanel)).EndInit();
+            this.splitContainerBasePanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button buttonLoad;
-        private System.Windows.Forms.Button buttonRun;
-        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBoxScript;
-        private System.Windows.Forms.ListView listViewScripts;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelCallStatus;
-        private System.Windows.Forms.Timer timerUpdate;
+        private System.Windows.Forms.SplitContainer splitContainerBasePanel;
+        private System.Windows.Forms.TreeView treeViewEventManager;
+        private System.Windows.Forms.TabControl tabControlEventChains;
     }
 }
 

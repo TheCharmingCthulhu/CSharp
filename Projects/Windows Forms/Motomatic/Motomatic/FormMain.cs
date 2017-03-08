@@ -1,15 +1,12 @@
-﻿using FastColoredTextBoxNS;
-using Motomatic.Source.Automation;
-using System;
-using System.Drawing;
-using System.Reflection;
+﻿using Motomatic.Forms;
+using Motomatic.Source.Automating;
 using System.Windows.Forms;
 
 namespace Motomatic
 {
     public partial class FormMain : Form
     {
-        Worker _worker = new Worker();
+        EventChain _CurrentEventChain;
 
         public FormMain()
         {
@@ -19,46 +16,49 @@ namespace Motomatic
 
         private void InitializeMotomatic()
         {
-
+            EventManager.Instance();
         }
 
-        #region <- Form ->
-        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        #region <- Treeview : EventManager ->
+        private void treeViewEventManager_MouseMove(object sender, MouseEventArgs e)
         {
-            _worker.End();
-        }
-        private void FormMain_Resize(object sender, System.EventArgs e)
-        {
+            var view = sender as TreeView;
 
+            MouseMoveChangeCursor(view, view.HitTest(e.Location));
+        }
+
+        private static void MouseMoveChangeCursor(TreeView view, TreeViewHitTestInfo hitInfo)
+        {
+            if (hitInfo.Node != null && hitInfo.Location == TreeViewHitTestLocations.Label || hitInfo.Location == TreeViewHitTestLocations.PlusMinus)
+            {
+                switch (hitInfo.Node.Tag.ToString()[0])
+                {
+                    case '+':
+                        view.HotTracking = true;
+                        view.Cursor = Cursors.Hand;
+                        break;
+                }
+            }
+            else
+            {
+                view.HotTracking = false;
+                view.Cursor = Cursors.Default;
+            }
+        }
+
+        private void treeViewEventManager_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Tag.ToString().Equals("+NewEventChain"))
+            {
+                if (FormEventChain.Run() == DialogResult.OK)
+                {
+                    _CurrentEventChain = new EventChain(FormEventChain.EventName);
+
+                    tabControlEventChains.TabPages.Add(_CurrentEventChain.Name);
+                }
+                //tabControlEventChains.TabPages.Add()
+            }
         } 
         #endregion
-
-        private void buttonRun_Click(object sender, System.EventArgs e)
-        {
-            Reflexor.Parse(Assembly.LoadFile(Environment.CurrentDirectory + "\\MotomaticBase.dll"), fastColoredTextBoxScript.Text).CallEntire();
-        }
-
-        #region <- Styles ->
-        Style classes = new TextStyle(Brushes.Blue, Brushes.White, FontStyle.Underline);
-        Style modules = new TextStyle(Brushes.Goldenrod, Brushes.White, FontStyle.Regular);
-        Style parameters = new TextStyle(Brushes.ForestGreen, Brushes.White, FontStyle.Italic);
-        #endregion
-
-        private void fastColoredTextBoxScript_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            e.ChangedRange.ClearStyle(classes);
-            e.ChangedRange.SetStyle(classes, "([A-z0-9]{1,})->");
-
-            e.ChangedRange.ClearStyle(modules);
-            e.ChangedRange.SetStyle(modules, "([A-z0-9]{1,}):");
-
-            e.ChangedRange.ClearStyle(parameters);
-            e.ChangedRange.SetStyle(parameters, "([A-z0-9]{1,})[,;]");
-        }
-
-        private void timerUpdate_Tick(object sender, EventArgs e)
-        {
-            toolStripStatusLabelCallStatus.Text = _worker.PassDuration.ToString();
-        }
     }
 }

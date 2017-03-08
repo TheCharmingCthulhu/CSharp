@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoHotkey.Interop">
+      <HintPath>packages\AutoHotkey.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="FastColoredTextBox, Version=2.16.21.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
       <HintPath>packages\FCTB.2.16.21.0\lib\FastColoredTextBox.dll</HintPath>
     </Reference>
@@ -55,17 +58,29 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormEventChain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormEventChain.Designer.cs">
+      <DependentUpon>FormEventChain.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Automation\EventChain.cs" />
-    <Compile Include="Source\Automation\Instruction.cs" />
-    <Compile Include="Source\Automation\InstructionBuilder.cs" />
-    <Compile Include="Source\Modules\Mouse.cs" />
-    <Compile Include="Source\Automation\InstructionSet.cs" />
-    <Compile Include="Source\Automation\Reflexor.cs" />
-    <Compile Include="Source\Automation\Worker.cs" />
+    <Compile Include="Source\Automating\Automation.cs" />
+    <Compile Include="Source\Automating\Event.cs" />
+    <Compile Include="Source\Automating\EventChain.cs" />
+    <Compile Include="Source\Automating\EventManager.cs" />
+    <Compile Include="Source\Automating\Operations\System\MotoImage.cs" />
+    <Compile Include="Source\Automating\Operations\System\MotoWindow.cs" />
+    <Compile Include="Source\Automating\Parser.cs" />
+    <Compile Include="Source\Automating\Variable.cs" />
+    <Compile Include="Source\Storage\Script.cs" />
+    <Compile Include="Source\Storage\ScriptManager.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormEventChain.resx">
+      <DependentUpon>FormEventChain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

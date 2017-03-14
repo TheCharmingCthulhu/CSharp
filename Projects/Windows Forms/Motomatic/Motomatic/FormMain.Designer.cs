@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("+ New Event Chain");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("+ New Event Chain");
             this.splitContainerBasePanel = new System.Windows.Forms.SplitContainer();
             this.treeViewEventManager = new System.Windows.Forms.TreeView();
             this.tabControlEventChains = new System.Windows.Forms.TabControl();
@@ -50,6 +50,7 @@
             // 
             // splitContainerBasePanel.Panel2
             // 
+            this.splitContainerBasePanel.Panel2.BackColor = System.Drawing.Color.Transparent;
             this.splitContainerBasePanel.Panel2.Controls.Add(this.tabControlEventChains);
             this.splitContainerBasePanel.Size = new System.Drawing.Size(784, 601);
             this.splitContainerBasePanel.SplitterDistance = 226;
@@ -63,11 +64,11 @@
             this.treeViewEventManager.HotTracking = true;
             this.treeViewEventManager.Location = new System.Drawing.Point(0, 0);
             this.treeViewEventManager.Name = "treeViewEventManager";
-            treeNode1.Name = "nodeInsertEvent";
-            treeNode1.Tag = "+NewEventChain";
-            treeNode1.Text = "+ New Event Chain";
+            treeNode2.Name = "nodeInsertEvent";
+            treeNode2.Tag = "+NewEventChain";
+            treeNode2.Text = "+ New Event Chain";
             this.treeViewEventManager.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
+            treeNode2});
             this.treeViewEventManager.Size = new System.Drawing.Size(226, 601);
             this.treeViewEventManager.TabIndex = 0;
             this.treeViewEventManager.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewEventManager_NodeMouseClick);
@@ -89,6 +90,7 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(784, 601);
             this.Controls.Add(this.splitContainerBasePanel);
+            this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(800, 640);
@@ -96,6 +98,7 @@
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Motomatic";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.splitContainerBasePanel.Panel1.ResumeLayout(false);
             this.splitContainerBasePanel.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerBasePanel)).EndInit();

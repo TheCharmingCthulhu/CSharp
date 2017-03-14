@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Motomatic.Source.Automating
 {
-    class EventChain
+    public class EventChain
     {
         string _Name;
         List<Event> _Events = new List<Event>();

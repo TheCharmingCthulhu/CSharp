@@ -10,8 +10,9 @@ namespace Motomatic.Source.Automating.Operations.System
     {
         public class Search : Event
         {
-            string _Filename;
             Rectangle _Area;
+
+            public string Filename { get; set; }
 
             public Search(string filename) : this(filename, Rectangle.Empty)
             {
@@ -20,7 +21,7 @@ namespace Motomatic.Source.Automating.Operations.System
 
             public Search(string filename, Rectangle area, int offset = -1) : base()
             {
-                _Filename = filename;
+                Filename = filename;
                 _Area = area;
                
                 if (offset != -1)
@@ -33,15 +34,15 @@ namespace Motomatic.Source.Automating.Operations.System
             /// <returns>Returns the found image coordinate otherwise an empty point</returns>
             protected override object Observe()
             {
-                if (!string.IsNullOrEmpty(_Filename))
-                    if (File.Exists(_Filename))
+                if (!string.IsNullOrEmpty(Filename))
+                    if (File.Exists(Filename))
                     {
                         if (_Area.IsEmpty) _Area = Screen.PrimaryScreen.Bounds;
 
                         Engine.ExecRaw(Parser.New()
                             .Chain("CoordMode Pixel, Screen")
                             .Chain("ImageSearch, Fx, Fy, {0}, {1}, {2}, {3}, {4}",
-                                _Area.Left, _Area.Top, _Area.Left + _Area.Width, _Area.Top + _Area.Height, _Filename)
+                                _Area.Left, _Area.Top, _Area.Left + _Area.Width, _Area.Top + _Area.Height, Filename)
                             .Finalize());
 
                         return !string.IsNullOrEmpty(Engine.GetVar("Fx")) && !string.IsNullOrEmpty(Engine.GetVar("Fx")) ? new Point(int.Parse(Engine.GetVar("Fx")), int.Parse(Engine.GetVar("Fy"))) : Point.Empty;

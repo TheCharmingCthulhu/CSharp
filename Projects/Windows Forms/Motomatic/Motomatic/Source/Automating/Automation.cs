@@ -1,4 +1,5 @@
 ﻿using AutoHotkey.Interop;
+using System;
 using System.IO;
 
 namespace Motomatic.Source.Automating

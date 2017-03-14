@@ -4,7 +4,7 @@ namespace Motomatic.Forms
 {
     public partial class FormEventChain : Form
     {
-        public static string EventName { get; set; }
+        public static string EventChainName { get; set; }
 
         public FormEventChain()
         {
@@ -20,7 +20,7 @@ namespace Motomatic.Forms
 
         private void textBoxName_TextChanged(object sender, System.EventArgs e)
         {
-            EventName = (sender as TextBox).Text;
+            EventChainName = (sender as TextBox).Text;
         }
     }
 }

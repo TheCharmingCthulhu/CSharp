@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Motomatic.Source.Automating
@@ -8,6 +11,15 @@ namespace Motomatic.Source.Automating
     class EventManager
     {
         const int EVENT_SLEEP = 100;
+        const string EVENT_FILE = "\\Data\\Events.bin";
+
+        public delegate void EventChainHandler(EventChain ev);
+        public event EventChainHandler EventAdd;
+        public event EventChainHandler EventRemove;
+
+        public delegate void EventListHandler(List<EventChain> events);
+        public event EventListHandler EventListSave;
+        public event EventListHandler EventListLoad;
 
         static EventManager _Manager;
 
@@ -27,37 +39,57 @@ namespace Motomatic.Source.Automating
             Task.Run(() => Loop());
         }
 
-        public bool Create(EventChain ev)
+        public EventChain Create(string name)
         {
-            if (!Directory.Exists(GetEventPath() + ev.Name))
-            {
-                Directory.CreateDirectory(GetEventPath() + ev.Name);
+            if (Directory.Exists(GetEventPath() + name))
+                Directory.Delete(GetEventPath() + name, true);
 
-                _EventChains.Add(ev);
+            Directory.CreateDirectory(GetEventPath() + name);
 
-                return true;
-            }
+            var eventChain = new EventChain(name);
 
-            return false;
+            _EventChains.Add(eventChain);
+
+            EventAdd?.Invoke(eventChain);
+
+            return eventChain;
         }
 
-        public bool Delete(EventChain ev)
+        public void Delete(string name)
         {
-            if (Directory.Exists(GetEventPath() + ev.Name))
-            {
-                Directory.Delete(GetEventPath() + ev.Name, true);
+            EventRemove?.Invoke(GetEvent(name));
 
-                _EventChains.Remove(ev);
+            if (Directory.Exists(GetEventPath() + name))
+                Directory.Delete(GetEventPath() + name, true);
 
-                return true;
-            }
+            _EventChains.RemoveAll(ev => ev.Name.ToLower().Equals(name));
+        }
 
-            return false;
+        public EventChain GetEvent(string name)
+        {
+            return _EventChains.Find(ev => ev.Name.ToLower().Equals(name));
         }
 
         public string GetEventPath()
         {
             return string.Format("{0}\\Data\\Events\\", Environment.CurrentDirectory);
+        }
+
+        public void SaveEvents()
+        {
+            var path = string.Format("{0}\\{1}", Environment.CurrentDirectory, EVENT_FILE);
+
+            File.WriteAllText(Environment.CurrentDirectory + "\\Data\\Events.bin", Convert.ToBase64String(Encoding.Unicode.GetBytes(JsonConvert.SerializeObject(_EventChains))));
+        }
+
+        public void LoadEvents()
+        {
+            var path = string.Format("{0}\\{1}", Environment.CurrentDirectory, EVENT_FILE);
+
+            if (File.Exists(path))
+                _EventChains = JsonConvert.DeserializeObject<List<EventChain>>(Encoding.Unicode.GetString(Convert.FromBase64String(File.ReadAllText(path))));
+
+            EventListLoad?.Invoke(_EventChains);
         }
 
         public void Remove(int index)

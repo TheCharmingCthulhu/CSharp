@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FinanciA.Properties
+namespace Extreme.Properties
 {
 
 

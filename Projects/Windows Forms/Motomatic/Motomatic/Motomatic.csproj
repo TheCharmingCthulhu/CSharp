@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,19 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\DraggablePictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TabPages\EventPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\TabPages\EventPageBody.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\TabPages\EventPageBody.Designer.cs">
-      <DependentUpon>EventPageBody.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TabPages\EventPageBodyItem.cs" />
+    <Compile Include="Controls\UI\FileEditor.cs" />
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,9 +88,6 @@
     <Compile Include="Source\Storage\Script.cs" />
     <Compile Include="Source\Storage\ScriptManager.cs" />
     <Compile Include="Source\Utilities\Comparator\AlphaNummericComparer.cs" />
-    <EmbeddedResource Include="Controls\TabPages\EventPageBody.resx">
-      <DependentUpon>EventPageBody.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>

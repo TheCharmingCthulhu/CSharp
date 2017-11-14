@@ -6,9 +6,10 @@ namespace Motomatic.Source.Automating
     public class EventChain
     {
         string _Name;
-        List<Event> _Events = new List<Event>();
 
         public string Name { get { return _Name; } }
+
+        public List<Event> Events { get; private set; } = new List<Event>();
 
         public EventChain(string name)
         {
@@ -22,34 +23,25 @@ namespace Motomatic.Source.Automating
 
         public EventChain Chain(Event ev)
         {
-            _Events.Add(ev);
+            Events.Add(ev);
 
             return this;
         }
 
-        public EventChain Chain<T>(Event.EventHandler handler, params object[] args) where T : Event
+        public void RemoveChain(Event ev)
         {
-            var callback = handler != null ? handler : new Event.EventHandler((engine, obj) => { });
-
-            _Events.Add(((Event)Activator.CreateInstance(typeof(T), args)).Callback(callback));
-
-            return this;
+            Events.Remove(ev);
         }
 
-        public void UnChain(Event ev)
+        public void RemoveChain(int index)
         {
-            _Events.Remove(ev);
-        }
-
-        public void UnChain(int index)
-        {
-            _Events.RemoveAt(index);
+            Events.RemoveAt(index);
         }
 
         public void Execute()
         {
-            if (_Events.Count > 0)
-                _Events.ForEach(e => e.Execute());
+            if (Events.Count > 0)
+                Events.ForEach(e => e.Run());
         }
     }
 }

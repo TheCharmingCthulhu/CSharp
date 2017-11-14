@@ -76,7 +76,6 @@ namespace WorldStamper.Sources.Models
 
         public void SaveFile(string fileName)
         {
-            throw new NotImplementedException();
         }
         #endregion
 

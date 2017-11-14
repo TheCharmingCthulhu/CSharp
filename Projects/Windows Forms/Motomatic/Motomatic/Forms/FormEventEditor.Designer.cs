@@ -49,8 +49,11 @@
             this.propertyGridProperties.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGridProperties.Location = new System.Drawing.Point(0, 28);
             this.propertyGridProperties.Name = "propertyGridProperties";
+            this.propertyGridProperties.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.propertyGridProperties.Size = new System.Drawing.Size(304, 433);
             this.propertyGridProperties.TabIndex = 1;
+            this.propertyGridProperties.ToolbarVisible = false;
+            this.propertyGridProperties.Click += new System.EventHandler(this.propertyGridProperties_Click);
             // 
             // FormEventEditor
             // 
@@ -59,7 +62,12 @@
             this.ClientSize = new System.Drawing.Size(304, 461);
             this.Controls.Add(this.propertyGridProperties);
             this.Controls.Add(this.labelEventName);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormEventEditor";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Event Editor";
             this.ResumeLayout(false);
 

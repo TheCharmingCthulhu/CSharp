@@ -79,7 +79,7 @@ namespace Motomatic.Source.Automating
         {
             var path = string.Format("{0}\\{1}", Environment.CurrentDirectory, EVENT_FILE);
 
-            File.WriteAllText(Environment.CurrentDirectory + "\\Data\\Events.bin", Convert.ToBase64String(Encoding.Unicode.GetBytes(JsonConvert.SerializeObject(_EventChains))));
+            File.WriteAllText(Environment.CurrentDirectory + "\\Data\\Events.bin", Convert.ToBase64String(Encoding.Unicode.GetBytes(JsonConvert.SerializeObject(_EventChains, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All }))));
         }
 
         public void LoadEvents()
@@ -87,7 +87,7 @@ namespace Motomatic.Source.Automating
             var path = string.Format("{0}\\{1}", Environment.CurrentDirectory, EVENT_FILE);
 
             if (File.Exists(path))
-                _EventChains = JsonConvert.DeserializeObject<List<EventChain>>(Encoding.Unicode.GetString(Convert.FromBase64String(File.ReadAllText(path))));
+                _EventChains = JsonConvert.DeserializeObject<List<EventChain>>(Encoding.Unicode.GetString(Convert.FromBase64String(File.ReadAllText(path))), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All });
 
             EventListLoad?.Invoke(_EventChains);
         }

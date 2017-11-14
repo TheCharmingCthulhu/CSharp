@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 14 for Windows Desktop
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Finman", "Finman.csproj", "{DE74FB6C-E9FF-4283-B81C-4B45542576AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expansion", "..\..\Class Libraries\WinForms\Expansion\Expansion.csproj", "{59C64372-18C7-48FA-8C9A-FE8901525187}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE74FB6C-E9FF-4283-B81C-4B45542576AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE74FB6C-E9FF-4283-B81C-4B45542576AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE74FB6C-E9FF-4283-B81C-4B45542576AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE74FB6C-E9FF-4283-B81C-4B45542576AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59C64372-18C7-48FA-8C9A-FE8901525187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59C64372-18C7-48FA-8C9A-FE8901525187}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59C64372-18C7-48FA-8C9A-FE8901525187}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59C64372-18C7-48FA-8C9A-FE8901525187}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -49,11 +49,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\FormCasting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormCasting.Designer.cs">
+      <DependentUpon>FormCasting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormClock.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormClock.Designer.cs">
       <DependentUpon>FormClock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormFixedListbox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormFixedListbox.Designer.cs">
+      <DependentUpon>FormFixedListbox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormLerp.cs">
       <SubType>Form</SubType>
@@ -67,6 +79,12 @@
     <Compile Include="Forms\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormValueConversion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormValueConversion.Designer.cs">
+      <DependentUpon>FormValueConversion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Forms\FormSequences.cs">
@@ -77,18 +95,30 @@
     </Compile>
     <Compile Include="Sources\Interfaces\IItem.cs" />
     <Compile Include="Sources\Interfaces\Shape.cs" />
+    <Compile Include="Sources\Listbox\TransparentListbox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Sources\Sequences\CustomItems.cs" />
     <Compile Include="Sources\Sequences\Cycles.cs" />
     <Compile Include="Sources\Sequences\CyclesManager.cs" />
     <Compile Include="Sources\Stackoverflow\Stacky.cs" />
+    <EmbeddedResource Include="Forms\FormCasting.resx">
+      <DependentUpon>FormCasting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormClock.resx">
       <DependentUpon>FormClock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormFixedListbox.resx">
+      <DependentUpon>FormFixedListbox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormSequences.resx">
       <DependentUpon>FormSequences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormValueConversion.resx">
+      <DependentUpon>FormValueConversion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -35,7 +35,11 @@ namespace Extreme.Controls
             base.OnMouseMove(e);
 
             ResizeCursor(e);
-            ResizeContainer(e);
+
+            if (ResizeAnchor != AnchorStyles.None)
+                ResizeContainer(e);
+            else
+                MoveContainer(e);
         }
 
         Rectangle _OriginalBounds;
@@ -58,11 +62,18 @@ namespace Extreme.Controls
             {
                 _MousePoint = e.Location;
 
-                if (ResizeAnchor == AnchorStyles.None)
-                    Selected = !Selected;
+                if (!Selected)
+                    (Parent as ExtremeGrid).SelectWindow(this);
             }
 
             Invalidate();
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+
+            Cursor = Cursors.Default;
         }
 
         private void DrawResizeBorder(PaintEventArgs e)
@@ -73,6 +84,20 @@ namespace Extreme.Controls
                     e.Graphics.DrawRectangle(Pens.Violet,
                         new Rectangle(e.ClipRectangle.Left + i, e.ClipRectangle.Top + i, e.ClipRectangle.Right - (i + 1) * 2, e.ClipRectangle.Bottom - (i + 1) * 2));
             }
+        }
+
+        private AnchorStyles GetResizeAnchor(MouseEventArgs e)
+        {
+            if (e.X >= 0 && e.X <= BorderSize)
+                return AnchorStyles.Left;
+            else if (e.X >= Width - BorderSize && e.X <= Width)
+                return AnchorStyles.Right;
+            else if (e.Y >= 0 && e.Y < BorderSize)
+                return AnchorStyles.Top;
+            else if (e.Y >= Height - BorderSize && e.Y <= Height)
+                return AnchorStyles.Bottom;
+            else
+                return AnchorStyles.None;
         }
 
         private void ResizeContainer(MouseEventArgs e)
@@ -90,15 +115,33 @@ namespace Extreme.Controls
 
                     switch (ResizeAnchor)
                     {
+                        case AnchorStyles.Left:
+                            Left = (Left + deltaX) - (deltaX % parent.GridSize);
+
+                            if (parent.CheckWindowCollision(this) || !parent.CheckWindowWithinClient(this))
+                                Left = _OriginalBounds.Left;
+
+                            Width = Width - (Left - _OriginalBounds.Left);
+
+                            break;
+                        case AnchorStyles.Right:
+                            Width = e.Location.X - (e.Location.X % parent.GridSize) + parent.GridSize;
+
+                            if (parent.CheckWindowCollision(this) || !parent.CheckWindowWithinClient(this))
+                                Width = _OriginalBounds.Width;
+
+                            break;
+
                         case AnchorStyles.Top:
                             Top = (Top + deltaY) - (deltaY % parent.GridSize);
 
                             if (parent.CheckWindowCollision(this) || !parent.CheckWindowWithinClient(this))
                                 Top = _OriginalBounds.Top;
 
+                            Height = Height - (Top - _OriginalBounds.Top);
+
                             break;
                         case AnchorStyles.Bottom:
-
                             Height = e.Location.Y - (e.Location.Y % parent.GridSize) + parent.GridSize;
 
                             if (parent.CheckWindowCollision(this) || !parent.CheckWindowWithinClient(this))
@@ -110,20 +153,6 @@ namespace Extreme.Controls
                     Refresh();
                 }
             }
-        }
-
-        private AnchorStyles GetResizeAnchor(MouseEventArgs e)
-        {
-            if (e.X >= 0 && e.X <= BorderSize)
-                return AnchorStyles.Left;
-            else if (e.X >= Width - BorderSize && e.X <= Width)
-                return AnchorStyles.Right;
-            else if (e.Y >= 0 && e.Y < BorderSize)
-                return AnchorStyles.Top;
-            else if (e.Y >= Height - BorderSize && e.Y <= Height)
-                return AnchorStyles.Bottom;
-            else
-                return AnchorStyles.None;
         }
 
         private void ResizeCursor(MouseEventArgs e)
@@ -144,6 +173,19 @@ namespace Extreme.Controls
                         Cursor = Cursors.Default;
                         break;
                 }
+            }
+        }
+
+        private void MoveContainer(MouseEventArgs e)
+        {
+            if (Selected && e.Button == MouseButtons.Left)
+            {
+                int deltaX = e.X - _MousePoint.X;
+                int deltaY = e.Y - _MousePoint.Y;
+
+                var parent = Parent as ExtremeGrid;
+
+                Left = e.Location.X - e.Location.X % parent.GridSize;
             }
         }
     }

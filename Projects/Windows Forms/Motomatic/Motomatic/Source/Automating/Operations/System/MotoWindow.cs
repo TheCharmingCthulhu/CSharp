@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Motomatic.Source.Automating.Operations.System
 {
@@ -90,7 +85,7 @@ namespace Motomatic.Source.Automating.Operations.System
                 _Windows = windows;
             }
 
-            protected override object Observe()
+            protected override bool Observe()
             {
                 if (_Windows.Length > 0)
                 {
@@ -112,7 +107,7 @@ namespace Motomatic.Source.Automating.Operations.System
                             .Finalize());
                     }
 
-                    return ErrorLevel == 0;
+                    return GetErrorLevel() == 0;
                 }
 
                 return false;

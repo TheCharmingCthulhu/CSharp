@@ -2,8 +2,6 @@
 using Motomatic.Source.Automating;
 using System.Windows.Forms;
 using System;
-using Motomatic.Controls;
-using Motomatic.Controls.TabPages;
 using Motomatic.Source.Utilities.Comparator;
 
 namespace Motomatic
@@ -19,124 +17,129 @@ namespace Motomatic
         private void InitializeMotomatic()
         {
             InitializeEventManager();
+            Debug();
+        }
+
+        private void Debug()
+        {
         }
 
         private void InitializeEventManager()
         {
             // Subscribe to events;
-            EventManager.Instance().EventAdd += (ev) =>
+            EventManager.Instance().EventAdd += (evChain) =>
             {
-                EventChain_CreateNode(ev);
+                EventChain_CreateItem(evChain);
             };
-            EventManager.Instance().EventRemove += (ev) =>
+            EventManager.Instance().EventRemove += (evChain) =>
             {
-                tabControlEventChains.TabPages.RemoveByKey(ev.Name);
+
             };
-            EventManager.Instance().EventListLoad += (events) =>
+            EventManager.Instance().EventListLoad += (evChains) =>
             {
-                events.Sort((a, b) => { return AlphaNumericComparer.Compare(a.Name, b.Name); });
-                foreach (var ev in events)
-                    EventChain_CreateNode(ev);
+                evChains.Sort((a, b) => { return AlphaNumericComparer.Compare(a.Name, b.Name); });
+
+                foreach (var evChain in evChains)
+                    EventChain_CreateItem(evChain);
             };
 
             // Initialization;
             EventManager.Instance().LoadEvents();
         }
 
-        private void EventChain_CreateNode(EventChain ev)
+        private void EventChain_CreateItem(EventChain evChain)
         {
-            var baseNode = new TreeNode()
-            {
-                Name = ev.Name,
-                Text = ev.Name,
-                Tag = ev,
-            };
+            var lvItem = new ListViewItem();
 
-            var eventNode = new TreeNode()
-            {
-                Name = "+ New Event",
-                Text = "+ New Event",
-                Tag = "+NewEvent"
-            };
+            lvItem.Text = evChain.Name;
+            lvItem.Tag = evChain;
 
-            baseNode.Nodes.Add(eventNode);
-
-            treeViewEventManager.Nodes.Insert(0, baseNode);
+            listViewEventChains.Items.Add(lvItem);
         }
 
-        private void EventChain_CreateEvent(EventChain ev)
+        private void Event_CreateItem(EventChain evChain)
         {
-            var eventName = ev.Name + " - Unspecified";
+            listViewEvents.Clear();
 
-            if (!tabControlEventChains.TabPages.ContainsKey(eventName))
+            foreach (var ev in evChain.Events)
             {
-                tabControlEventChains.TabPages.Add(new EventPage()
-                {
-                    Name = eventName,
-                    Text = eventName
-                });
-            }
+                var lvItem = new ListViewItem();
 
-            tabControlEventChains.SelectedTab = tabControlEventChains.TabPages[eventName];
-        }
+                lvItem.Text = ev.ToString();
+                lvItem.Tag = ev;
 
-        #region <- Treeview ->
-        private void treeViewEventManager_MouseMove(object sender, MouseEventArgs e)
-        {
-            var view = sender as TreeView;
-
-            MouseMoveChangeCursor(view, view.HitTest(e.Location));
-        }
-
-        private static void MouseMoveChangeCursor(TreeView view, TreeViewHitTestInfo hitInfo)
-        {
-            if (hitInfo.Node != null && hitInfo.Location == TreeViewHitTestLocations.Label || hitInfo.Location == TreeViewHitTestLocations.PlusMinus)
-            {
-                if (hitInfo.Node.Tag != null)
-                {
-                    if (hitInfo.Node.Tag is string)
-                    {
-                        switch (hitInfo.Node.Tag.ToString()[0])
-                        {
-                            case '+':
-                                view.HotTracking = true;
-                                view.Cursor = Cursors.Hand;
-                                break;
-                        }
-                    }
-                    else if (hitInfo.Node.Tag is EventChain)
-                    {
-                        view.HotTracking = true;
-                        view.Cursor = Cursors.Hand;
-                    }
-                }
-            }
-            else
-            {
-                view.HotTracking = false;
-                view.Cursor = Cursors.Default;
+                listViewEvents.Items.Add(lvItem);
             }
         }
-
-        private void treeViewEventManager_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (!e.Node.IsExpanded) e.Node.Expand();
-
-            if (e.Node.Tag.ToString().Equals("+NewEventChain"))
-            {
-                if (FormEventChain.Run() == DialogResult.OK)
-                {
-                    EventManager.Instance().Create(FormEventChain.EventChainName);
-                }
-            }
-            else if (e.Node.Tag.ToString().Equals("+NewEvent"))
-                EventChain_CreateEvent(e.Node.Parent.Tag as EventChain);
-        }
-        #endregion
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             EventManager.Instance().SaveEvents();
+        }
+
+        private void listViewEventChains_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var view = sender as ListView;
+
+            var evChain = GetSelectedEventChain();
+            if (evChain != null) 
+                Event_CreateItem(view.SelectedItems[0].Tag as EventChain);
+        }
+
+        #region <- Toolset ->
+        private void toolStripButtonNewEventChain_Click(object sender, EventArgs e)
+        {
+            if (FormEventChain.Run() == DialogResult.OK)
+            {
+                var ev = EventManager.Instance().Create(FormEventChain.EventChainName);
+            }
+        }
+        #endregion
+
+        private EventChain GetSelectedEventChain()
+        {
+            return listViewEventChains.SelectedItems.Count > 0 ? listViewEventChains.SelectedItems[0].Tag as EventChain : null;
+        }
+
+        private Event GetSelectedEvent()
+        {
+            return listViewEvents.SelectedItems.Count > 0 ? listViewEvents.SelectedItems[0].Tag as Event : null;
+        }
+
+        private void listViewEvents_DoubleClick(object sender, EventArgs e)
+        {
+            var ev = GetSelectedEvent();
+            if (ev != null)
+            {
+                if (FormEventEditor.Run(ev.ToString(), ev) == DialogResult.OK)
+                {
+
+                }
+            }
+        }
+
+        private void listViewEvents_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var view = sender as ListView;
+            fastColoredTextBoxScript.Enabled = view.SelectedItems.Count > 0;
+
+            var ev = GetSelectedEvent();
+            if (ev != null)
+                fastColoredTextBoxScript.Text = ev.Script != null ? ev.Script : "";
+        }
+
+        private void fastColoredTextBoxScript_TextChanged(object sender, FastColoredTextBoxNS.TextChangedEventArgs e)
+        {
+            var ev = GetSelectedEvent();
+            if (ev != null)
+            {
+                ev.Script = e.ChangedRange.Text;
+            }
+        }
+
+        private void fastColoredTextBoxScript_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

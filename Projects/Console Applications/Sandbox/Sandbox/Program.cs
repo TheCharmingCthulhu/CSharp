@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -9,10 +11,31 @@ namespace Sandbox
     {
         static void Main(string[] args)
         {
-            //StringTemplate();
-            FizzBuzz();
+            //Test_Add();
+
+            NonPublicItem.GetItem();
 
             Console.ReadKey();
+        }
+
+        private static void Test_Add()
+        {
+            for (int i = 1; i < 51; i++)
+            {
+                int j = i;
+
+                int result = Add(i, j);
+
+                Assert.Greater(result, 0, "Value is below threshold.");
+                Assert.Less(result, 100, "Value is above threshold.");
+            }
+
+            Console.WriteLine("Unit Test Success");
+        }
+
+        private static int Add(int a, int b)
+        {
+            return a + b;
         }
 
         private static void FizzBuzz()

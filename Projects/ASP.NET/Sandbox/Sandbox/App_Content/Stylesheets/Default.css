@@ -1,0 +1,21 @@
+﻿body {
+    
+}
+
+footer {
+    width: 100%;
+    padding: 10px;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+}
+
+div.content {
+    padding: 1%;
+}
+
+
+/* Materialize */
+a.brand-logo {
+    margin-left: 1%;
+}

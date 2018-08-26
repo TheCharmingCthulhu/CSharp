@@ -1,0 +1,43 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="Sandbox.Main" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title>Sandbox - App</title>
+    
+    <%-- Stylesheets --%>
+    <link href="App_Content/Stylesheets/Materialize.min.css" rel="stylesheet" />
+    <link href="App_Content/Stylesheets/Default.css" rel="stylesheet" />
+    <link href="App_Content/Stylesheets/Gesign.css" rel="stylesheet"/>
+
+    <%-- Scripts --%>
+    <script src="App_Content/Scripts/Jquery-3.3.1.min.js"></script>
+    <script src="App_Content/Scripts/Materialize.min.js"></script>
+    <script src="App_Content/Scripts/Gesign.js"></script>
+
+    <asp:ContentPlaceHolder ID="cphHead" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <%--<nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">Sandbox</a>
+            <asp:ContentPlaceHolder ID="cphNavbar" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </nav>--%>
+
+    <form runat="server">
+        <div class="content">
+            <asp:ContentPlaceHolder ID="cphContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+
+    <%--<footer class="page-footer">
+        <asp:ContentPlaceHolder ID="cphFooter" runat="server">
+        </asp:ContentPlaceHolder>
+    </footer>--%>
+</body>
+</html>

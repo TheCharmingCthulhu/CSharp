@@ -1,0 +1,15 @@
+﻿.g-builder {
+    background-color: darkorange;
+    padding: 10px;
+}
+
+.g-content {
+    display: grid;
+    grid-template-columns:  1fr 1fr 1fr; /* 3x3 Layout */
+    grid-auto-rows: 1fr;
+    background-color: orange;
+}
+
+.g-div {
+    background-color: orangered;
+}
